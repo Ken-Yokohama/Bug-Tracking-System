@@ -41,10 +41,41 @@ app.post("/register", async (req, res) => {
             });
         } else {
             console.log("User Found");
-            res.status(409).send("User Already Registered, Please Login");
-            return;
+            return res
+                .status(409)
+                .send("User Already Registered, Please Login");
         }
     });
+});
+
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    const sanitizedEmail = email.toLowerCase();
+
+    const user = await UsersModel.findOne({
+        email: sanitizedEmail,
+    });
+
+    const correctPassword = await bcrypt.compare(password, user.password);
+
+    if (!user) {
+        console.log("No User Found");
+    }
+
+    if (!correctPassword) {
+        console.log("Wrong Password");
+    }
+
+    if (user && correctPassword) {
+        const token = jwt.sign(user.toJSON(), sanitizedEmail, {
+            expiresIn: "24h",
+            // expiresIn: "120",
+        });
+        console.log(token);
+        res.status(201).json({ token, email: sanitizedEmail });
+        return;
+    }
+    res.status(400).send("Invalid Credentials");
 });
 
 app.listen(3001, () => {
