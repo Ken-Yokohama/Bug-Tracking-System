@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button, Link, Paper, TextField, FormHelperText } from "@mui/material";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
 const Login = () => {
     const [toggleLogin, setToggleLogin] = useState<Boolean>(true);
@@ -10,11 +12,31 @@ const Login = () => {
 
     const [loginEmail, setLoginEmail] = useState<string>("");
     const [loginPassword, setLoginPassword] = useState<string>("");
-    const [loginError, setLoginError] = useState<string>("loginError");
+    const [loginError, setLoginError] = useState<string>("");
 
     const [registerEmail, setRegisterEmail] = useState<string>("");
     const [registerPassword, setRegisterPassword] = useState<string>("");
-    const [registerError, setRegisterError] = useState<string>("loginError");
+    const [registerError, setRegisterError] = useState<string>("");
+
+    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
+
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/register",
+                {
+                    email: registerEmail,
+                    password: registerPassword,
+                }
+            );
+
+            setCookie("Email", response.data.email);
+            setCookie("AuthToken", response.data.token);
+
+            console.log(response.data);
+            window.location.reload();
+        } catch (err) {}
+    };
 
     return (
         <div
@@ -23,6 +45,9 @@ const Login = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundImage:
+                    "url(https://media.istockphoto.com/photos/colorful-background-red-blue-and-yellow-orange-colors-abstract-modern-picture-id1332601848?b=1&k=20&m=1332601848&s=170667a&w=0&h=_zrnj0NBLjjuMfPvSqxEHn2-oVlExHhOPXP9HsOO_eI=)",
+                backgroundSize: "cover",
             }}
         >
             {toggleLogin && (
@@ -42,16 +67,21 @@ const Login = () => {
                 >
                     <h3 style={{ fontWeight: "100" }}>Login User</h3>
                     <TextField
-                        id="outlined-basic"
                         label="Email"
                         variant="outlined"
                         fullWidth
+                        onChange={(e) => {
+                            setLoginEmail(e.target.value);
+                        }}
                     />
                     <TextField
-                        id="outlined-basic"
                         label="Password"
                         variant="outlined"
+                        type={"password"}
                         fullWidth
+                        onChange={(e) => {
+                            setLoginPassword(e.target.value);
+                        }}
                     />
                     <Button variant="contained">Login</Button>
                     <Link
@@ -82,18 +112,25 @@ const Login = () => {
                 >
                     <h3 style={{ fontWeight: "100" }}>Register User</h3>
                     <TextField
-                        id="outlined-basic"
                         label="Email"
                         variant="outlined"
                         fullWidth
+                        onChange={(e) => {
+                            setRegisterEmail(e.target.value);
+                        }}
                     />
                     <TextField
-                        id="outlined-basic"
                         label="Password"
+                        type={"password"}
                         variant="outlined"
                         fullWidth
+                        onChange={(e) => {
+                            setRegisterPassword(e.target.value);
+                        }}
                     />
-                    <Button variant="contained">Register</Button>
+                    <Button variant="contained" onClick={handleRegister}>
+                        Register
+                    </Button>
                     <Link
                         sx={{ cursor: "pointer", textAlign: "center" }}
                         onClick={handleToggleLogin}
