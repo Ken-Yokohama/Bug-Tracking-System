@@ -5,7 +5,7 @@ import { Login } from "./pages";
 
 function App() {
     return (
-        <div className="App">
+        <div className="App" style={{ height: "100%" }}>
             <Routes>
                 <Route path="/*" element={<Main />} />
                 <Route path="/login" element={<Login />} />
