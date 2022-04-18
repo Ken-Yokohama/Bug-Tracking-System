@@ -82,6 +82,30 @@ app.post("/login", async (req, res) => {
     res.status(400).send("Invalid Credentials, Check Username and Password");
 });
 
+// Middleware
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+    const email = req.headers["email"];
+    if (!token) {
+        res.send("No Token Found!");
+    } else {
+        // When using a JWT Secret, just place it inside a process.env inside the server
+        // Basically The authorization server verifies whether the JWT was issued by this authorization server
+        jwt.verify(token, email, (err, decoded) => {
+            if (err) {
+                res.json({ auth: false, message: "U failed to authenticate" });
+            } else {
+                req.userId = decoded.id;
+                next();
+            }
+        });
+    }
+};
+
+app.get("/isUserAuth", verifyJWT, (req, res) => {
+    res.send("Yo, u are authenticated. Congrats!");
+});
+
 app.listen(3001, () => {
     console.log("App listening on port 3000!");
 });
