@@ -33,13 +33,32 @@ const Login = () => {
             setCookie("Email", response.data.email);
             setCookie("AuthToken", response.data.token);
 
-            console.log(response.data);
             window.location.reload();
         } catch (err: any) {
             if (err?.response?.data) {
                 setRegisterError(err.response.data);
             } else {
                 setRegisterEmail(err.message);
+            }
+        }
+    };
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post("http://localhost:3001/login", {
+                email: loginEmail,
+                password: loginPassword,
+            });
+
+            setCookie("Email", response.data.email);
+            setCookie("AuthToken", response.data.token);
+
+            window.location.reload();
+        } catch (err: any) {
+            if (err?.response?.data) {
+                setLoginError(err.response.data);
+            } else {
+                setLoginError(err.message);
             }
         }
     };
@@ -89,7 +108,9 @@ const Login = () => {
                             setLoginPassword(e.target.value);
                         }}
                     />
-                    <Button variant="contained">Login</Button>
+                    <Button variant="contained" onClick={handleLogin}>
+                        Login
+                    </Button>
                     <Link
                         sx={{ cursor: "pointer", textAlign: "center" }}
                         onClick={handleToggleLogin}

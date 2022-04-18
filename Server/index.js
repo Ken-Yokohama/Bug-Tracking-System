@@ -56,11 +56,15 @@ app.post("/login", async (req, res) => {
         email: sanitizedEmail,
     });
 
-    const correctPassword = await bcrypt.compare(password, user.password);
-
     if (!user) {
         console.log("No User Found");
+        res.status(400).send(
+            "Invalid Credentials, Check Username and Password"
+        );
+        return;
     }
+
+    const correctPassword = await bcrypt.compare(password, user.password);
 
     if (!correctPassword) {
         console.log("Wrong Password");
@@ -75,7 +79,7 @@ app.post("/login", async (req, res) => {
         res.status(201).json({ token, email: sanitizedEmail });
         return;
     }
-    res.status(400).send("Invalid Credentials");
+    res.status(400).send("Invalid Credentials, Check Username and Password");
 });
 
 app.listen(3001, () => {
