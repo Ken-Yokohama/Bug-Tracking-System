@@ -5,6 +5,8 @@ const { default: mongoose } = require("mongoose");
 app.use(express.json());
 app.use(cors());
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Models
 const UsersModel = require("./models/UsersSchema");
