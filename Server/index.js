@@ -24,7 +24,11 @@ app.post("/register", async (req, res) => {
         if (!doc) {
             console.log("No User Found");
             // Create a User in MongoDb
-            var user = { email: sanitizedEmail, password: hashedPassword };
+            var user = {
+                email: sanitizedEmail,
+                password: hashedPassword,
+                role: "developer",
+            };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
                 console.log(docs);
@@ -37,9 +41,8 @@ app.post("/register", async (req, res) => {
             });
         } else {
             console.log("User Found");
-            return res
-                .status(409)
-                .send("User Already Registered, Please Login");
+            res.status(409).send("User Already Registered, Please Login");
+            return;
         }
     });
 });

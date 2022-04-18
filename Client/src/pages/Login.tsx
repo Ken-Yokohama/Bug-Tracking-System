@@ -35,7 +35,11 @@ const Login = () => {
 
             console.log(response.data);
             window.location.reload();
-        } catch (err) {}
+        } catch (err: any) {
+            if (err) {
+                setRegisterError(err.response.data);
+            }
+        }
     };
 
     return (
