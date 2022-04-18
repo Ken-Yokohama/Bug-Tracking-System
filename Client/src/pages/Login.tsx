@@ -36,8 +36,10 @@ const Login = () => {
             console.log(response.data);
             window.location.reload();
         } catch (err: any) {
-            if (err) {
+            if (err?.response?.data) {
                 setRegisterError(err.response.data);
+            } else {
+                setRegisterEmail(err.message);
             }
         }
     };
