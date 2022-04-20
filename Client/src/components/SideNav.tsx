@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -29,7 +29,18 @@ const SideNav = () => {
                 link="administration/"
                 Icon={AdminPanelSettingsTwoToneIcon}
             />
-            <button onClick={logout}>Logout</button>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0.5rem",
+                }}
+            >
+                <Button variant="contained" color="error" onClick={logout}>
+                    Logout
+                </Button>
+            </Box>
         </Box>
     );
 };
