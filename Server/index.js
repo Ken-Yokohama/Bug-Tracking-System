@@ -32,7 +32,7 @@ app.post("/register", async (req, res) => {
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
                 console.log(docs);
-                const token = jwt.sign(docs.toJSON(), sanitizedEmail, {
+                const token = jwt.sign(docs.toJSON(), process.env.JWTSECRET, {
                     expiresIn: "24hrs",
                 });
                 console.log(token);
@@ -71,7 +71,8 @@ app.post("/login", async (req, res) => {
     }
 
     if (user && correctPassword) {
-        const token = jwt.sign(user.toJSON(), sanitizedEmail, {
+        console.log(user);
+        const token = jwt.sign(user.toJSON(), process.env.JWTSECRET, {
             expiresIn: "24h",
             // expiresIn: "120",
         });
@@ -91,11 +92,11 @@ const verifyJWT = (req, res, next) => {
     } else {
         // When using a JWT Secret, just place it inside a process.env inside the server
         // Basically The authorization server verifies whether the JWT was issued by this authorization server
-        jwt.verify(token, email, (err, decoded) => {
+        jwt.verify(token, process.env.JWTSECRET, (err, decodedUser) => {
             if (err) {
                 res.json({ auth: false, message: "U failed to authenticate" });
             } else {
-                req.userId = decoded.id;
+                req.userId = decodedUser;
                 next();
             }
         });
@@ -103,7 +104,12 @@ const verifyJWT = (req, res, next) => {
 };
 
 app.get("/isUserAuth", verifyJWT, (req, res) => {
+    console.log(req.userId);
     res.send("Yo, u are authenticated. Congrats!");
+});
+
+app.get("/pingServer", (req, res) => {
+    res.send("Server Is Up!");
 });
 
 app.listen(3001, () => {

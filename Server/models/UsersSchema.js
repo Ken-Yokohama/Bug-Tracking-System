@@ -14,7 +14,7 @@ var userSchema = new mongoose.Schema({
     role: {
         type: String,
     },
-    projects: [String],
+    // projects: [String],
 });
 
 //Export the model

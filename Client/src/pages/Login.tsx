@@ -92,7 +92,7 @@ const Login = () => {
                 >
                     <h3 style={{ fontWeight: "100" }}>Login User</h3>
                     <TextField
-                        label="Email"
+                        label="Email / Username"
                         variant="outlined"
                         fullWidth
                         onChange={(e) => {
@@ -139,7 +139,7 @@ const Login = () => {
                 >
                     <h3 style={{ fontWeight: "100" }}>Register User</h3>
                     <TextField
-                        label="Email"
+                        label="Email / Username"
                         variant="outlined"
                         fullWidth
                         onChange={(e) => {
