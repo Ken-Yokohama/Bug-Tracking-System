@@ -11,6 +11,7 @@ const bcrypt = require("bcrypt");
 // Models
 const UsersModel = require("./models/UsersSchema");
 const ProjectsModel = require("./models/ProjectsSchema");
+const TicketsModel = require("./models/TicketsSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
