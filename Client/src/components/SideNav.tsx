@@ -29,7 +29,6 @@ const SideNav = () => {
                     position: "fixed",
                     backgroundColor: toggleMenu ? "white" : "none",
                     width: "100%",
-                    height: "100%",
                 },
             }}
         >
@@ -41,18 +40,21 @@ const SideNav = () => {
                         display: "flex",
                         justifyContent: "flex-end",
                         padding: "0.5rem 1rem",
+                        backgroundColor: "orange",
                     },
                 }}
             >
                 {toggleMenu ? (
                     <CloseIcon
                         fontSize="large"
+                        sx={{ color: "white" }}
                         onClick={() => {
                             setToggleMenu((prevValue) => !prevValue);
                         }}
                     />
                 ) : (
                     <MenuIcon
+                        sx={{ color: "white" }}
                         fontSize="large"
                         onClick={() => {
                             setToggleMenu((prevValue) => !prevValue);

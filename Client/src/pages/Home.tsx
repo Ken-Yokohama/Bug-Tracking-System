@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useCookies } from "react-cookie";
@@ -17,6 +18,14 @@ const Home = () => {
 
     return (
         <div>
+            <Box
+                id="Padding for Menu"
+                sx={{
+                    "@media(max-width: 700px)": {
+                        height: "3.1rem",
+                    },
+                }}
+            ></Box>
             Home
             <br />
             <button onClick={checkAuthenticated}>Test JWT</button>
