@@ -21,6 +21,9 @@ const Main = () => {
                     display: "grid",
                     gridTemplateColumns: "1fr 4fr",
                     maxWidth: "2200px",
+                    "@media(max-width: 700px)": {
+                        gridTemplateColumns: "1fr",
+                    },
                 }}
             >
                 <SideNav />

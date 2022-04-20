@@ -6,9 +6,10 @@ interface props {
     link: string;
     label: string;
     Icon: any;
+    setToggleMenu: any;
 }
 
-const MenuOptions = ({ link, label, Icon }: props) => {
+const MenuOptions = ({ link, label, Icon, setToggleMenu }: props) => {
     const navigate = useNavigate();
 
     return (
@@ -25,6 +26,7 @@ const MenuOptions = ({ link, label, Icon }: props) => {
             }}
             onClick={() => {
                 navigate(link);
+                setToggleMenu(false);
             }}
         >
             <Icon />
