@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 
 // Models
 const UsersModel = require("./models/UsersSchema");
+const ProjectsModel = require("./models/ProjectsSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
