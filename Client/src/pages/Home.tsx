@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
+import { useDispatch, useSelector } from "react-redux";
+import { setProjects } from "../features/allProjectsSlice";
 
 interface ProjectsModel {
     title?: String;
@@ -25,50 +27,12 @@ const Home = () => {
     //     console.log(response.data);
     // };
 
-    const projectSample = [
-        {
-            title: "project1",
-            description: "Full STack Something Something",
-            creator: "user123@gmail.com",
-        },
-        {
-            title: "project2",
-            description: "Full STack Something Something",
-            creator: "user11223@gmail.com",
-        },
-        {
-            title: "project3",
-            description: "Full STack Something Something",
-            creator: "user12323@gmail.com",
-        },
-        {
-            title: "project4",
-            description: "Full STack Something Something",
-            creator: "user1213@gmail.com",
-        },
-    ];
+    const dispatch = useDispatch();
 
-    const [projectsArray, setProjectsArray] = useState<[ProjectsModel]>([{}]);
-
-    useEffect(() => {
-        const getProjects = async () => {};
-        getProjects();
-    }, []);
-
-    // Modal Controllers
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false);
-        setNewProjectErr("");
-    };
-
-    // New Project States
-    const [newProjectTitle, setNewProjectTitle] = useState<String>("");
-    const [newProjectDescription, setNewProjectDescription] =
-        useState<String>("");
-    const [loadingButton, setLoadingButton] = useState<boolean>(false);
-    const [newProjectErr, setNewProjectErr] = useState<String>("");
+    const allProjects = useSelector(
+        (state: { allProjects: { value: [ProjectsModel] } }) =>
+            state.allProjects.value
+    );
 
     // Add New Project
     const addNewProject = async () => {
@@ -100,6 +64,37 @@ const Home = () => {
             }
         }
     };
+
+    useEffect(() => {
+        const getProjects = async () => {
+            const response = await axios.get(
+                "http://localhost:3001/getAllProjects",
+                {
+                    headers: {
+                        "x-access-token": cookies.AuthToken,
+                        email: cookies.Email,
+                    },
+                }
+            );
+            dispatch(setProjects(response.data));
+        };
+        getProjects();
+    }, [addNewProject]);
+
+    // Modal Controllers
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setNewProjectErr("");
+    };
+
+    // New Project States
+    const [newProjectTitle, setNewProjectTitle] = useState<String>("");
+    const [newProjectDescription, setNewProjectDescription] =
+        useState<String>("");
+    const [loadingButton, setLoadingButton] = useState<boolean>(false);
+    const [newProjectErr, setNewProjectErr] = useState<String>("");
 
     return (
         <Box>
@@ -133,7 +128,7 @@ const Home = () => {
                         gap: "1rem",
                     }}
                 >
-                    <p>Project Title</p>
+                    <p style={{ minWidth: "83px" }}>Project Title</p>
                     <Box
                         sx={{
                             flex: "1",
@@ -145,7 +140,7 @@ const Home = () => {
                         <p>Creator</p>
                     </Box>
                 </Box>
-                {projectSample.map((project, index) => (
+                {allProjects.map((project, index) => (
                     <Box
                         key={index}
                         sx={{
@@ -158,7 +153,7 @@ const Home = () => {
                             },
                         }}
                     >
-                        <p>{project.title}</p>
+                        <p style={{ minWidth: "83px" }}>{project.title}</p>
                         <Box
                             sx={{
                                 flex: "1",
@@ -166,10 +161,10 @@ const Home = () => {
                                 justifyContent: "space-between",
                             }}
                         >
-                            <p>{project.description}</p>
                             <p style={{ wordBreak: "break-word" }}>
-                                {project.creator}
+                                {project.description}
                             </p>
+                            <p>{project.creator}</p>
                         </Box>
                     </Box>
                 ))}
