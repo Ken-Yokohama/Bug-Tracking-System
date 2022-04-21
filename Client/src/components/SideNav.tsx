@@ -25,10 +25,13 @@ const SideNav = () => {
             sx={{
                 display: "flex",
                 flexDirection: "column",
+                borderRight: "1px solid",
+                borderColor: "#E8E8E8",
                 "@media(max-width: 700px)": {
                     position: "fixed",
                     backgroundColor: toggleMenu ? "white" : "none",
                     width: "100%",
+                    zIndex: "1",
                 },
             }}
         >

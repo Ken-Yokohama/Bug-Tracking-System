@@ -37,7 +37,6 @@ app.post("/register", async (req, res) => {
                 const token = jwt.sign(docs.toJSON(), process.env.JWTSECRET, {
                     expiresIn: "24hrs",
                 });
-                console.log(token);
                 // Send Token + Email Object
                 res.status(201).json({ token, email: sanitizedEmail });
             });
@@ -78,7 +77,6 @@ app.post("/login", async (req, res) => {
             expiresIn: "24h",
             // expiresIn: "120",
         });
-        console.log(token);
         res.status(201).json({ token, email: sanitizedEmail });
         return;
     }
@@ -112,6 +110,17 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
 
 app.get("/pingServer", (req, res) => {
     res.send("Server Is Up!");
+});
+
+app.post("/createProject", verifyJWT, (req, res) => {
+    var project = {
+        title: req.body.title,
+        description: req.body.description,
+        author: req.userId.email,
+    };
+    ProjectsModel.create(project).then((docs) => {
+        res.json("Succesfully Added a New Project");
+    });
 });
 
 app.listen(3001, () => {
