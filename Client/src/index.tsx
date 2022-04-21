@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import allProjectsReducer from "./features/allProjectsSlice";
+import ticketsReducer from "./features/ticketsSlice";
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
@@ -14,6 +15,7 @@ const root = ReactDOM.createRoot(
 const store = configureStore({
     reducer: {
         allProjects: allProjectsReducer,
+        tickets: ticketsReducer,
     },
     //Place Reducers Here ^^
 });
