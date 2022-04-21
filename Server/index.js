@@ -116,10 +116,25 @@ app.post("/createProject", verifyJWT, (req, res) => {
     var project = {
         title: req.body.title,
         description: req.body.description,
-        author: req.userId.email,
+        creator: req.userId.email,
     };
+    console.log(req.userId.email);
     ProjectsModel.create(project).then((docs) => {
         res.json("Succesfully Added a New Project");
+    });
+});
+
+app.get("/getAllProjects", verifyJWT, (req, res) => {
+    ProjectsModel.find({}, (err, docs) => {
+        if (err) {
+            console.log(`Error: ` + err);
+        } else {
+            if (docs.length === 0) {
+                res.json("No Documents Found");
+            } else {
+                res.json(docs);
+            }
+        }
     });
 });
 

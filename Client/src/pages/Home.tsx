@@ -6,6 +6,12 @@ import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
 
+interface ProjectsModel {
+    title?: String;
+    description?: String;
+    creator?: String;
+}
+
 const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
@@ -42,7 +48,12 @@ const Home = () => {
         },
     ];
 
-    useEffect(() => {}, []);
+    const [projectsArray, setProjectsArray] = useState<[ProjectsModel]>([{}]);
+
+    useEffect(() => {
+        const getProjects = async () => {};
+        getProjects();
+    }, []);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
