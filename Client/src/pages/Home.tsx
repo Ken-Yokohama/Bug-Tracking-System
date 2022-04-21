@@ -1,6 +1,6 @@
 import { Box, Button, Paper, TextField } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -42,19 +42,53 @@ const Home = () => {
         },
     ];
 
+    useEffect(() => {}, []);
+
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setNewProjectErr("");
+    };
 
     // New Project States
     const [newProjectTitle, setNewProjectTitle] = useState<String>("");
     const [newProjectDescription, setNewProjectDescription] =
         useState<String>("");
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
-    const [newProjectErr, setNewProjectErr] = useState<String>(
-        "Error Creating Project Try Again"
-    );
+    const [newProjectErr, setNewProjectErr] = useState<String>("");
+
+    // Add New Project
+    const addNewProject = async () => {
+        setLoadingButton(true);
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/createProject",
+                {
+                    title: newProjectTitle,
+                    description: newProjectDescription,
+                },
+                {
+                    headers: {
+                        "x-access-token": cookies.AuthToken,
+                        email: cookies.Email,
+                    },
+                }
+            );
+            console.log(response?.data);
+            setLoadingButton(false);
+            handleClose();
+        } catch (err) {
+            if (err instanceof Error) {
+                setNewProjectErr(err.message);
+                setLoadingButton(false);
+            } else {
+                setNewProjectErr(String(err));
+                setLoadingButton(false);
+            }
+        }
+    };
 
     return (
         <Box>
@@ -174,6 +208,7 @@ const Home = () => {
                         variant="contained"
                         loading={loadingButton}
                         sx={{ marginTop: "0.5rem" }}
+                        onClick={addNewProject}
                     >
                         Add Project
                     </LoadingButton>
