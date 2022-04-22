@@ -206,6 +206,10 @@ const Tickets = () => {
     // Filtered Ticket State
     const [filteredTickets, setFilteredTickets] = useState([{}]);
 
+    const [selectedFilteredTicket, setSelectedFilteredTicket] = useState<any>(
+        {}
+    );
+
     return (
         <Box>
             <Box
@@ -216,54 +220,38 @@ const Tickets = () => {
                     },
                 }}
             ></Box>
-            <Paper sx={{ margin: "1rem" }} elevation={3}>
-                <Box
-                    sx={{
+            <Box
+                sx={{
+                    "@media(min-width: 700px)": {
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "1rem",
-                    }}
-                >
-                    <h3>Tickets</h3>
-                    <Button size="small" onClick={handleOpen}>
-                        Add Ticket
-                    </Button>
-                </Box>
-                <Box
-                    sx={{
-                        padding: "1rem",
-                        backgroundColor: "#D3D3D3",
-                        display: "flex",
-                        gap: "1rem",
-                    }}
-                >
-                    <p style={{ flex: "1" }}>Ticket Title</p>
+                        flexDirection: "column",
+                        height: "100%",
+                    },
+                }}
+            >
+                <Paper sx={{ margin: "1rem", flex: "1" }} elevation={3}>
                     <Box
                         sx={{
-                            flex: "4",
                             display: "flex",
+                            alignItems: "center",
                             justifyContent: "space-between",
+                            padding: "1rem",
                         }}
                     >
-                        <p>Description</p>
-                        <p>Creator</p>
+                        <h3>Tickets</h3>
+                        <Button size="small" onClick={handleOpen}>
+                            Add Ticket
+                        </Button>
                     </Box>
-                </Box>
-                {filteredTickets.map((ticket: any, index) => (
                     <Box
-                        key={index}
                         sx={{
                             padding: "1rem",
+                            backgroundColor: "#D3D3D3",
                             display: "flex",
                             gap: "1rem",
-                            ":hover": {
-                                backgroundColor: "#F0F0F0",
-                                cursor: "pointer",
-                            },
                         }}
                     >
-                        <p style={{ flex: "1" }}>{ticket.title}</p>
+                        <p style={{ flex: "1" }}>Ticket Title</p>
                         <Box
                             sx={{
                                 flex: "4",
@@ -271,14 +259,172 @@ const Tickets = () => {
                                 justifyContent: "space-between",
                             }}
                         >
-                            <p style={{ wordBreak: "break-word" }}>
-                                {ticket.description}
-                            </p>
-                            <p>{ticket.ticketAuthor}</p>
+                            <p>Description</p>
+                            <p>Creator</p>
                         </Box>
                     </Box>
-                ))}
-            </Paper>
+                    {filteredTickets.map((ticket: any, index) => (
+                        <Box
+                            key={index}
+                            onClick={() => {
+                                setSelectedFilteredTicket(ticket);
+                            }}
+                            sx={{
+                                padding: "1rem",
+                                display: "flex",
+                                gap: "1rem",
+                                ":hover": {
+                                    backgroundColor: "#F0F0F0",
+                                    cursor: "pointer",
+                                },
+                            }}
+                        >
+                            <p style={{ flex: "1" }}>{ticket.title}</p>
+                            <Box
+                                sx={{
+                                    flex: "4",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <p style={{ wordBreak: "break-word" }}>
+                                    {ticket.description}
+                                </p>
+                                <p>{ticket.ticketAuthor}</p>
+                            </Box>
+                        </Box>
+                    ))}
+                </Paper>
+                <Box
+                    sx={{
+                        "@media(min-width: 700px)": {
+                            display: "flex",
+                            flex: "1",
+                        },
+                    }}
+                >
+                    <Paper
+                        sx={{
+                            margin: "1rem",
+                            flex: "1",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                        elevation={3}
+                    >
+                        <Box
+                            sx={{
+                                padding: "1rem",
+                                backgroundColor: "orange",
+                                color: "white",
+                            }}
+                        >
+                            <h3>Ticket Info</h3>
+                        </Box>
+                        <Box
+                            sx={{
+                                flex: "1",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "1rem",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    flex: "1",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 2fr",
+                                }}
+                            >
+                                <Box>
+                                    <p>Title</p>
+                                    {selectedFilteredTicket?.title}
+                                </Box>
+                                <Box>
+                                    <p>Author</p>
+                                    {selectedFilteredTicket?.ticketAuthor}
+                                </Box>
+                                <Box>
+                                    <p>Description</p>
+                                    {selectedFilteredTicket?.description}
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                    flex: "1",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                                }}
+                            >
+                                <Box>
+                                    <p>Status</p>
+                                    {selectedFilteredTicket?.status}
+                                </Box>
+                                <Box>
+                                    <p>Priority</p>
+                                    {selectedFilteredTicket?.priority}
+                                </Box>
+                                <Box>
+                                    <p>Type</p>
+                                    {selectedFilteredTicket?.type}
+                                </Box>
+                                <Box>
+                                    <p>Time (hrs)</p>
+                                    {selectedFilteredTicket?.estimatedTime}
+                                </Box>
+                            </Box>
+                            <Box sx={{ display: "flex", flex: "1" }}>
+                                <p>Assigned Devs</p>
+                                {selectedFilteredTicket?.assignedDevs?.map(
+                                    (devs: string, index: number) => (
+                                        <p key={index}>{devs}</p>
+                                    )
+                                )}
+                            </Box>
+                        </Box>
+                    </Paper>
+                    <Paper
+                        sx={{
+                            margin: "1rem",
+                            flex: "1",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                        elevation={3}
+                    >
+                        <Box
+                            sx={{
+                                padding: "1rem",
+                                backgroundColor: "#0A95FF",
+                                color: "white",
+                            }}
+                        >
+                            <h3>Comments</h3>
+                        </Box>
+                        <Box
+                            sx={{
+                                flex: "1",
+                                overflowY: "scroll",
+                            }}
+                        >
+                            {selectedFilteredTicket?.comments?.map(
+                                (
+                                    comment: {
+                                        author: string;
+                                        comment: string;
+                                    },
+                                    index: number
+                                ) => (
+                                    <Box key={index}>
+                                        <p>{comment.author}</p>
+                                        <p>{comment.comment}</p>
+                                    </Box>
+                                )
+                            )}
+                        </Box>
+                    </Paper>
+                </Box>
+            </Box>
             {/* <button onClick={checkAuthenticated}>Test JWT</button> */}
             {/* Modal */}
             <Modal
