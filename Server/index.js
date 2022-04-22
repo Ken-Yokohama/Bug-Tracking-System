@@ -170,6 +170,26 @@ app.get("/getAllTickets", verifyJWT, (req, res) => {
     });
 });
 
+app.post("/updateStatus", verifyJWT, (req, res) => {
+    console.log(req.body.status);
+    TicketsModel.updateOne(
+        {
+            _id: req.body.id,
+        },
+        {
+            status: req.body.status,
+        },
+        (err, doc) => {
+            if (err) {
+                console.log(`Error: ` + err);
+            } else {
+                res.json("Succesfully Updated Status");
+                console.log("Succesfully Updated Status");
+            }
+        }
+    );
+});
+
 app.listen(3001, () => {
     console.log("App listening on port 3000!");
 });

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProjects } from "../features/allProjectsSlice";
 import Autocomplete from "@mui/material/Autocomplete";
 import { setTickets } from "../features/ticketsSlice";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 interface ProjectsModel {
     title?: String;
@@ -207,9 +209,44 @@ const Tickets = () => {
     // Filtered Ticket State
     const [filteredTickets, setFilteredTickets] = useState([{}]);
 
+    // Selected Ticket Object
     const [selectedFilteredTicket, setSelectedFilteredTicket] = useState<any>(
         {}
     );
+
+    const handleChangeStatus = async (e: any) => {
+        const response = await axios.post(
+            "http://localhost:3001/updateStatus",
+            {
+                id: selectedFilteredTicket?._id,
+                status: e.target.value,
+            },
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
+        // Update Ticket Obj State
+        const updatedStatusObj = {
+            ...selectedFilteredTicket,
+            status: e.target.value,
+        };
+        setSelectedFilteredTicket(updatedStatusObj);
+
+        // Update Ticket Obj Collection
+        const collectionWithoutObj = filteredTickets?.filter((obj: any) => {
+            return obj.title != updatedStatusObj.title;
+        });
+        const updatedTicketsCollection = [
+            updatedStatusObj,
+            ...collectionWithoutObj,
+        ];
+        setFilteredTickets(updatedTicketsCollection);
+
+        // console.log(response?.data);
+    };
 
     return (
         <Box>
@@ -361,7 +398,25 @@ const Tickets = () => {
                             >
                                 <Box>
                                     <p>Status</p>
-                                    {selectedFilteredTicket?.status}
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={
+                                            selectedFilteredTicket?.status || ""
+                                        }
+                                        label="Age"
+                                        size="small"
+                                        onChange={handleChangeStatus}
+                                    >
+                                        <MenuItem value="new">new</MenuItem>
+                                        <MenuItem value={"in progress"}>
+                                            in progress
+                                        </MenuItem>
+                                        <MenuItem value={"resolved"}>
+                                            resolved
+                                        </MenuItem>
+                                    </Select>
+                                    {/* {selectedFilteredTicket?.status} */}
                                 </Box>
                                 <Box>
                                     <p>Priority</p>
