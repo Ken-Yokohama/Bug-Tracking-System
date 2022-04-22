@@ -151,7 +151,21 @@ app.post("/createTicket", verifyJWT, (req, res) => {
         comments: [],
     };
     TicketsModel.create(ticket).then((docs) => {
-        res.json("uccesfully Added a New Ticket");
+        res.json("Succesfully Added a New Ticket");
+    });
+});
+
+app.get("/getTickets", verifyJWT, (req, res) => {
+    TicketsModel.find({}, (err, docs) => {
+        if (err) {
+            console.log(`Error: ` + err);
+        } else {
+            if (docs.length === 0) {
+                res.json("No Documents Found");
+            } else {
+                res.json(docs);
+            }
+        }
     });
 });
 
