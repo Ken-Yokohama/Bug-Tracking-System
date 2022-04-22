@@ -37,40 +37,44 @@ const Tickets = () => {
 
     // Add New Project
     const addNewProject = async () => {
-        console.log(ticketTitle);
-        console.log(ticketDescription);
-        console.log(ticketProject);
-        console.log(priority);
-        console.log(type);
-        console.log(estimatedTime);
-        // setLoadingButton(true);
-        // try {
-        //     const response = await axios.post(
-        //         "http://localhost:3001/createProject",
-        //         {
-        //             title: newProjectTitle,
-        //             description: newProjectDescription,
-        //         },
-        //         {
-        //             headers: {
-        //                 "x-access-token": cookies.AuthToken,
-        //                 email: cookies.Email,
-        //             },
-        //         }
-        //     );
-        //     console.log(response?.data);
-        //     setLoadingButton(false);
-        //     getProjects();
-        //     handleClose();
-        // } catch (err) {
-        //     if (err instanceof Error) {
-        //         setNewProjectErr(err.message);
-        //         setLoadingButton(false);
-        //     } else {
-        //         setNewProjectErr(String(err));
-        //         setLoadingButton(false);
-        //     }
-        // }
+        // console.log(ticketTitle);
+        // console.log(ticketDescription);
+        // console.log(ticketProject);
+        // console.log(priority);
+        // console.log(type);
+        // console.log(estimatedTime);
+        setLoadingButton(true);
+        try {
+            const response = await axios.post(
+                "http://localhost:3001/createTicket",
+                {
+                    title: ticketTitle,
+                    description: ticketDescription,
+                    project: ticketProject,
+                    priority: priority,
+                    type: type,
+                    estimatedTime: estimatedTime,
+                },
+                {
+                    headers: {
+                        "x-access-token": cookies.AuthToken,
+                        email: cookies.Email,
+                    },
+                }
+            );
+            console.log(response?.data);
+            setLoadingButton(false);
+            // getProjects();
+            handleClose();
+        } catch (err) {
+            if (err instanceof Error) {
+                setNewTicketErr(err.message);
+                setLoadingButton(false);
+            } else {
+                setNewTicketErr(String(err));
+                setLoadingButton(false);
+            }
+        }
     };
 
     const getProjects = async () => {
@@ -100,7 +104,7 @@ const Tickets = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        setNewProjectErr("");
+        setNewTicketErr("");
     };
 
     // Project Options for AutoComplete
@@ -150,7 +154,7 @@ const Tickets = () => {
 
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
     // Rename to newTicketErr
-    const [newProjectErr, setNewProjectErr] = useState<String>("");
+    const [newTicketErr, setNewTicketErr] = useState<String>("");
 
     return (
         <Box>
@@ -341,8 +345,8 @@ const Tickets = () => {
                     >
                         Add Ticket
                     </LoadingButton>
-                    {newProjectErr && (
-                        <FormHelperText error>{newProjectErr}</FormHelperText>
+                    {newTicketErr && (
+                        <FormHelperText error>{newTicketErr}</FormHelperText>
                     )}
                 </Box>
             </Modal>

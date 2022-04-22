@@ -139,9 +139,9 @@ app.get("/getAllProjects", verifyJWT, (req, res) => {
 
 app.post("/createTicket", verifyJWT, (req, res) => {
     var ticket = {
-        project: req.body.project,
         title: req.body.title,
         description: req.body.description,
+        project: req.body.project,
         ticketAuthor: req.userId.email,
         priority: req.body.priority,
         status: "new",
