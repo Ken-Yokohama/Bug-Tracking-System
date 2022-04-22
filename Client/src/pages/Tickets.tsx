@@ -58,6 +58,11 @@ const Tickets = () => {
         (state: { tickets: { value: [TicketsModel] } }) => state.tickets.value
     );
 
+    const selectedProject = useSelector(
+        (state: { selectedProject: { value: string } }) =>
+            state.selectedProject.value
+    );
+
     const getTickets = async () => {
         const response = await axios.get(
             "http://localhost:3001/getAllTickets",
@@ -130,11 +135,12 @@ const Tickets = () => {
         const userTicketsFilter = allTickets.filter(
             (tickets) => tickets.ticketAuthor == cookies.Email
         );
-        // const projectTicketsFilter = allTickets.filter(
-        //     (tickets) => tickets.ticketAuthor == cookies.Email
-        // );
+        const projectTicketsFilter = allTickets.filter(
+            (tickets) => tickets.project == selectedProject
+        );
         setUserTickets(userTicketsFilter);
-    }, [allTickets]);
+        console.log(projectTicketsFilter);
+    }, [allTickets, selectedProject]);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);

@@ -8,6 +8,8 @@ import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumbe
 import AdminPanelSettingsTwoToneIcon from "@mui/icons-material/AdminPanelSettingsTwoTone";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch } from "react-redux";
+import { setSelectedProject } from "../features/selectedProjectSlice";
 
 const SideNav = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -19,6 +21,12 @@ const SideNav = () => {
     };
 
     const [toggleMenu, setToggleMenu] = useState<Boolean>(false);
+
+    const dispatch = useDispatch();
+
+    const handleTicketMenu = () => {
+        dispatch(setSelectedProject(""));
+    };
 
     return (
         <Box
@@ -78,12 +86,14 @@ const SideNav = () => {
                     Icon={HomeTwoToneIcon}
                     setToggleMenu={setToggleMenu}
                 />
-                <MenuOptions
-                    label="Tickets"
-                    link="/tickets"
-                    Icon={ConfirmationNumberTwoToneIcon}
-                    setToggleMenu={setToggleMenu}
-                />
+                <Box onClick={handleTicketMenu}>
+                    <MenuOptions
+                        label="Tickets"
+                        link="/tickets"
+                        Icon={ConfirmationNumberTwoToneIcon}
+                        setToggleMenu={setToggleMenu}
+                    />
+                </Box>
                 <MenuOptions
                     label="Administration"
                     link="administration/"

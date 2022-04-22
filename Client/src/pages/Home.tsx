@@ -7,6 +7,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useDispatch, useSelector } from "react-redux";
 import { setProjects } from "../features/allProjectsSlice";
+import { setSelectedProject } from "../features/selectedProjectSlice";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectsModel {
     title?: String;
@@ -98,6 +100,13 @@ const Home = () => {
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
     const [newProjectErr, setNewProjectErr] = useState<String>("");
 
+    const navigate = useNavigate();
+
+    const handleSelectedProject = (title: String | undefined) => {
+        dispatch(setSelectedProject(title));
+        navigate("/tickets");
+    };
+
     return (
         <Box>
             <Box
@@ -153,6 +162,9 @@ const Home = () => {
                                 backgroundColor: "#F0F0F0",
                                 cursor: "pointer",
                             },
+                        }}
+                        onClick={() => {
+                            handleSelectedProject(project.title);
                         }}
                     >
                         <p style={{ minWidth: "83px" }}>{project.title}</p>
