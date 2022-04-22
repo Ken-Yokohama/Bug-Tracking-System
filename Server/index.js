@@ -155,7 +155,7 @@ app.post("/createTicket", verifyJWT, (req, res) => {
     });
 });
 
-app.get("/getTickets", verifyJWT, (req, res) => {
+app.get("/getAllTickets", verifyJWT, (req, res) => {
     TicketsModel.find({}, (err, docs) => {
         if (err) {
             console.log(`Error: ` + err);
@@ -163,6 +163,7 @@ app.get("/getTickets", verifyJWT, (req, res) => {
             if (docs.length === 0) {
                 res.json("No Documents Found");
             } else {
+                console.log("Sending Tickets");
                 res.json(docs);
             }
         }

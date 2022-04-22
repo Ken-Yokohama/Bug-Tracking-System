@@ -8,11 +8,30 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { useDispatch, useSelector } from "react-redux";
 import { setProjects } from "../features/allProjectsSlice";
 import Autocomplete from "@mui/material/Autocomplete";
+import { setTickets } from "../features/ticketsSlice";
 
 interface ProjectsModel {
     title?: String;
     description?: String;
     creator?: String;
+}
+
+interface TicketsModel {
+    project?: String;
+    title?: String;
+    description?: String;
+    ticketAuthor?: String;
+    priority?: String;
+    status?: String;
+    type?: String;
+    estimatedTime?: Number;
+    assignedDevs?: [String];
+    comments?: [
+        {
+            author: String;
+            comment: String;
+        }
+    ];
 }
 
 const Tickets = () => {
@@ -35,14 +54,25 @@ const Tickets = () => {
             state.allProjects.value
     );
 
+    const allTickets = useSelector(
+        (state: { tickets: { value: [TicketsModel] } }) => state.tickets.value
+    );
+
+    const getTickets = async () => {
+        const response = await axios.get(
+            "http://localhost:3001/getAllTickets",
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
+        dispatch(setTickets(response.data));
+    };
+
     // Add New Project
-    const addNewProject = async () => {
-        // console.log(ticketTitle);
-        // console.log(ticketDescription);
-        // console.log(ticketProject);
-        // console.log(priority);
-        // console.log(type);
-        // console.log(estimatedTime);
+    const addNewTicket = async () => {
         setLoadingButton(true);
         try {
             const response = await axios.post(
@@ -64,7 +94,7 @@ const Tickets = () => {
             );
             console.log(response?.data);
             setLoadingButton(false);
-            // getProjects();
+            getTickets();
             handleClose();
         } catch (err) {
             if (err instanceof Error) {
@@ -97,7 +127,14 @@ const Tickets = () => {
 
     useEffect(() => {
         getProjects();
-    }, []);
+        const userTicketsFilter = allTickets.filter(
+            (tickets) => tickets.ticketAuthor == cookies.Email
+        );
+        // const projectTicketsFilter = allTickets.filter(
+        //     (tickets) => tickets.ticketAuthor == cookies.Email
+        // );
+        setUserTickets(userTicketsFilter);
+    }, [allTickets]);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
@@ -155,6 +192,10 @@ const Tickets = () => {
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
     // Rename to newTicketErr
     const [newTicketErr, setNewTicketErr] = useState<String>("");
+
+    // Filtered Ticket State
+    const [userTickets, setUserTickets] = useState([{}]);
+    const [projectTickets, setProjectTickets] = useState<[TicketsModel]>([{}]);
 
     return (
         <Box>
@@ -341,7 +382,7 @@ const Tickets = () => {
                         variant="contained"
                         loading={loadingButton}
                         sx={{ marginTop: "0.5rem" }}
-                        onClick={addNewProject}
+                        onClick={addNewTicket}
                     >
                         Add Ticket
                     </LoadingButton>

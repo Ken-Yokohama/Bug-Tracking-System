@@ -1,14 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Main } from "./containers";
+import { setTickets } from "./features/ticketsSlice";
 import { Loading, Login } from "./pages";
 
 function App() {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const [serverIsDown, setServerIsDown] = useState<Boolean>(true);
+
+    const dispatch = useDispatch();
+
+    const getTickets = async () => {
+        const response = await axios.get(
+            "http://localhost:3001/getAllTickets",
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
+        dispatch(setTickets(response.data));
+    };
 
     useEffect(() => {
         const pingServer = async () => {
@@ -24,6 +41,7 @@ function App() {
             }
         };
         pingServer();
+        getTickets();
     }, []);
 
     return (
