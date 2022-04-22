@@ -7,6 +7,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useDispatch, useSelector } from "react-redux";
 import { setProjects } from "../features/allProjectsSlice";
+import Autocomplete from "@mui/material/Autocomplete";
 
 interface ProjectsModel {
     title?: String;
@@ -36,50 +37,58 @@ const Tickets = () => {
 
     // Add New Project
     const addNewProject = async () => {
-        setLoadingButton(true);
-        try {
-            const response = await axios.post(
-                "http://localhost:3001/createProject",
-                {
-                    title: newProjectTitle,
-                    description: newProjectDescription,
+        console.log(ticketProject);
+        // setLoadingButton(true);
+        // try {
+        //     const response = await axios.post(
+        //         "http://localhost:3001/createProject",
+        //         {
+        //             title: newProjectTitle,
+        //             description: newProjectDescription,
+        //         },
+        //         {
+        //             headers: {
+        //                 "x-access-token": cookies.AuthToken,
+        //                 email: cookies.Email,
+        //             },
+        //         }
+        //     );
+        //     console.log(response?.data);
+        //     setLoadingButton(false);
+        //     getProjects();
+        //     handleClose();
+        // } catch (err) {
+        //     if (err instanceof Error) {
+        //         setNewProjectErr(err.message);
+        //         setLoadingButton(false);
+        //     } else {
+        //         setNewProjectErr(String(err));
+        //         setLoadingButton(false);
+        //     }
+        // }
+    };
+
+    const getProjects = async () => {
+        const response = await axios.get(
+            "http://localhost:3001/getAllProjects",
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
                 },
-                {
-                    headers: {
-                        "x-access-token": cookies.AuthToken,
-                        email: cookies.Email,
-                    },
-                }
-            );
-            console.log(response?.data);
-            setLoadingButton(false);
-            handleClose();
-        } catch (err) {
-            if (err instanceof Error) {
-                setNewProjectErr(err.message);
-                setLoadingButton(false);
-            } else {
-                setNewProjectErr(String(err));
-                setLoadingButton(false);
             }
-        }
+        );
+        dispatch(setProjects(response.data));
+        setProjectOptions(
+            response.data.map((project: any) => {
+                return project.title;
+            })
+        );
     };
 
     useEffect(() => {
-        const getProjects = async () => {
-            const response = await axios.get(
-                "http://localhost:3001/getAllProjects",
-                {
-                    headers: {
-                        "x-access-token": cookies.AuthToken,
-                        email: cookies.Email,
-                    },
-                }
-            );
-            dispatch(setProjects(response.data));
-        };
         getProjects();
-    }, [addNewProject]);
+    }, []);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
@@ -89,11 +98,15 @@ const Tickets = () => {
         setNewProjectErr("");
     };
 
-    // New Project States
-    const [newProjectTitle, setNewProjectTitle] = useState<String>("");
-    const [newProjectDescription, setNewProjectDescription] =
-        useState<String>("");
+    // Project Options for AutoComplete
+    const [projectOptions, setProjectOptions] = useState([]);
+    // new Ticket States
+    const [ticketProject, setTicketProject] = useState<string>("");
+    const [ticketTitle, setTicketTitle] = useState<string>("");
+    const [ticketDescription, setTicketDescription] = useState<string>("");
+
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
+    // Rename to newTicketErr
     const [newProjectErr, setNewProjectErr] = useState<String>("");
 
     return (
@@ -193,12 +206,24 @@ const Tickets = () => {
                     }}
                 >
                     <h3 style={{ fontWeight: "100" }}>Create New Ticket:</h3>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={projectOptions}
+                        sx={{ width: 300 }}
+                        onChange={(e: any, value: any) => {
+                            setTicketProject(value);
+                        }}
+                        renderInput={(params: any) => (
+                            <TextField {...params} label="Choose Project" />
+                        )}
+                    />
                     <TextField
                         id="standard-basic"
                         label="Title"
                         variant="standard"
                         onChange={(e) => {
-                            setNewProjectTitle(e.target.value);
+                            setTicketTitle(e.target.value);
                         }}
                     />
                     <TextField
@@ -207,7 +232,7 @@ const Tickets = () => {
                         variant="standard"
                         multiline
                         onChange={(e) => {
-                            setNewProjectDescription(e.target.value);
+                            setTicketDescription(e.target.value);
                         }}
                     />
                     <LoadingButton

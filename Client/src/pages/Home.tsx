@@ -53,6 +53,7 @@ const Home = () => {
             );
             console.log(response?.data);
             setLoadingButton(false);
+            getProjects();
             handleClose();
         } catch (err) {
             if (err instanceof Error) {
@@ -65,21 +66,22 @@ const Home = () => {
         }
     };
 
+    const getProjects = async () => {
+        const response = await axios.get(
+            "http://localhost:3001/getAllProjects",
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
+        dispatch(setProjects(response.data));
+    };
+
     useEffect(() => {
-        const getProjects = async () => {
-            const response = await axios.get(
-                "http://localhost:3001/getAllProjects",
-                {
-                    headers: {
-                        "x-access-token": cookies.AuthToken,
-                        email: cookies.Email,
-                    },
-                }
-            );
-            dispatch(setProjects(response.data));
-        };
         getProjects();
-    }, [addNewProject]);
+    }, []);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
