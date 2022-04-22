@@ -78,7 +78,9 @@ const Home = () => {
                 },
             }
         );
-        dispatch(setProjects(response.data));
+        if (response.data != "No Documents Found") {
+            dispatch(setProjects(response.data));
+        }
     };
 
     useEffect(() => {

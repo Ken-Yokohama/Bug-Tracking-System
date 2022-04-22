@@ -24,7 +24,9 @@ function App() {
                 },
             }
         );
-        dispatch(setTickets(response.data));
+        if (response.data != "No Documents Found") {
+            dispatch(setTickets(response.data));
+        }
     };
 
     useEffect(() => {

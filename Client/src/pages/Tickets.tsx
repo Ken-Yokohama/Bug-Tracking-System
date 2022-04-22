@@ -122,24 +122,25 @@ const Tickets = () => {
                 },
             }
         );
-        dispatch(setProjects(response.data));
-        setProjectOptions(
-            response.data.map((project: any) => {
-                return project.title;
-            })
-        );
+        if (response.data != "No Documents Found") {
+            dispatch(setProjects(response.data));
+            setProjectOptions(
+                response.data.map((project: any) => {
+                    return project.title;
+                })
+            );
+        }
     };
 
     useEffect(() => {
         getProjects();
-
         if (selectedProject) {
-            const projectTicketsFilter = allTickets.filter(
+            const projectTicketsFilter = allTickets?.filter(
                 (tickets) => tickets.project == selectedProject
             );
             setFilteredTickets(projectTicketsFilter);
         } else {
-            const userTicketsFilter = allTickets.filter(
+            const userTicketsFilter = allTickets?.filter(
                 (tickets) => tickets.ticketAuthor == cookies.Email
             );
             setFilteredTickets(userTicketsFilter);
