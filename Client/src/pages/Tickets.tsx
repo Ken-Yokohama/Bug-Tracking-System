@@ -264,37 +264,39 @@ const Tickets = () => {
                             <p>Creator</p>
                         </Box>
                     </Box>
-                    {filteredTickets.map((ticket: any, index) => (
-                        <Box
-                            key={index}
-                            onClick={() => {
-                                setSelectedFilteredTicket(ticket);
-                            }}
-                            sx={{
-                                padding: "1rem",
-                                display: "flex",
-                                gap: "1rem",
-                                ":hover": {
-                                    backgroundColor: "#F0F0F0",
-                                    cursor: "pointer",
-                                },
-                            }}
-                        >
-                            <p style={{ flex: "1" }}>{ticket.title}</p>
+                    <Box sx={{ maxHeight: "280px", overflowY: "scroll" }}>
+                        {filteredTickets.map((ticket: any, index) => (
                             <Box
+                                key={index}
+                                onClick={() => {
+                                    setSelectedFilteredTicket(ticket);
+                                }}
                                 sx={{
-                                    flex: "4",
+                                    padding: "1rem",
                                     display: "flex",
-                                    justifyContent: "space-between",
+                                    gap: "1rem",
+                                    ":hover": {
+                                        backgroundColor: "#F0F0F0",
+                                        cursor: "pointer",
+                                    },
                                 }}
                             >
-                                <p style={{ wordBreak: "break-word" }}>
-                                    {ticket.description}
-                                </p>
-                                <p>{ticket.ticketAuthor}</p>
+                                <p style={{ flex: "1" }}>{ticket.title}</p>
+                                <Box
+                                    sx={{
+                                        flex: "4",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <p style={{ wordBreak: "break-word" }}>
+                                        {ticket.description}
+                                    </p>
+                                    <p>{ticket.ticketAuthor}</p>
+                                </Box>
                             </Box>
-                        </Box>
-                    ))}
+                        ))}
+                    </Box>
                 </Paper>
                 <Box
                     sx={{
