@@ -37,7 +37,12 @@ const Tickets = () => {
 
     // Add New Project
     const addNewProject = async () => {
+        console.log(ticketTitle);
+        console.log(ticketDescription);
         console.log(ticketProject);
+        console.log(priority);
+        console.log(type);
+        console.log(estimatedTime);
         // setLoadingButton(true);
         // try {
         //     const response = await axios.post(
@@ -100,10 +105,48 @@ const Tickets = () => {
 
     // Project Options for AutoComplete
     const [projectOptions, setProjectOptions] = useState([]);
+
+    // Options for Priority
+    const priorityOptions = ["Low", "Medium", "High"];
+
+    // Options for Type
+    const typeOptions = ["Issue", "Bug Fix", "Feature Request"];
+
+    // Options for Time
+    const timeOptions = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+    ];
+
     // new Ticket States
     const [ticketProject, setTicketProject] = useState<string>("");
     const [ticketTitle, setTicketTitle] = useState<string>("");
     const [ticketDescription, setTicketDescription] = useState<string>("");
+    const [priority, setPriority] = useState<string>("");
+    const [type, setType] = useState<string>("");
+    const [estimatedTime, setEstimatedTime] = useState<number>(0);
 
     const [loadingButton, setLoadingButton] = useState<boolean>(false);
     // Rename to newTicketErr
@@ -206,35 +249,90 @@ const Tickets = () => {
                     }}
                 >
                     <h3 style={{ fontWeight: "100" }}>Create New Ticket:</h3>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={projectOptions}
-                        sx={{ width: 300 }}
-                        onChange={(e: any, value: any) => {
-                            setTicketProject(value);
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1rem",
+                            "@media (min-Width: 700px)": {
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                            },
                         }}
-                        renderInput={(params: any) => (
-                            <TextField {...params} label="Choose Project" />
-                        )}
-                    />
-                    <TextField
-                        id="standard-basic"
-                        label="Title"
-                        variant="standard"
-                        onChange={(e) => {
-                            setTicketTitle(e.target.value);
-                        }}
-                    />
-                    <TextField
-                        id="standard-basic"
-                        label="Description"
-                        variant="standard"
-                        multiline
-                        onChange={(e) => {
-                            setTicketDescription(e.target.value);
-                        }}
-                    />
+                    >
+                        <TextField
+                            id="standard-basic"
+                            label="Ticket Title"
+                            variant="standard"
+                            onChange={(e) => {
+                                setTicketTitle(e.target.value);
+                            }}
+                        />
+                        <TextField
+                            id="standard-basic"
+                            label="Ticket Description"
+                            variant="standard"
+                            multiline
+                            onChange={(e) => {
+                                setTicketDescription(e.target.value);
+                            }}
+                        />
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            size="small"
+                            options={projectOptions}
+                            onChange={(e: any, value: any) => {
+                                setTicketProject(value);
+                            }}
+                            renderInput={(params: any) => (
+                                <TextField {...params} label="Choose Project" />
+                            )}
+                        />
+                        <Autocomplete
+                            fullWidth
+                            disablePortal
+                            id="combo-box-demo"
+                            options={priorityOptions}
+                            size="small"
+                            onChange={(e: any, value: any) => {
+                                setPriority(value);
+                            }}
+                            renderInput={(params: any) => (
+                                <TextField
+                                    {...params}
+                                    label="Choose Priority"
+                                />
+                            )}
+                        />
+                        <Autocomplete
+                            fullWidth
+                            disablePortal
+                            id="combo-box-demo"
+                            options={typeOptions}
+                            size="small"
+                            onChange={(e: any, value: any) => {
+                                setType(value);
+                            }}
+                            renderInput={(params: any) => (
+                                <TextField {...params} label="Type" />
+                            )}
+                        />
+                        <Autocomplete
+                            fullWidth
+                            disablePortal
+                            id="combo-box-demo"
+                            options={timeOptions}
+                            size="small"
+                            onChange={(e: any, value: any) => {
+                                setEstimatedTime(value);
+                            }}
+                            renderInput={(params: any) => (
+                                <TextField {...params} label="Time Hrs" />
+                            )}
+                        />
+                    </Box>
+
                     <LoadingButton
                         variant="contained"
                         loading={loadingButton}
