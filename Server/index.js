@@ -118,7 +118,6 @@ app.post("/createProject", verifyJWT, (req, res) => {
         description: req.body.description,
         creator: req.userId.email,
     };
-    console.log(req.userId.email);
     ProjectsModel.create(project).then((docs) => {
         res.json("Succesfully Added a New Project");
     });
@@ -135,6 +134,24 @@ app.get("/getAllProjects", verifyJWT, (req, res) => {
                 res.json(docs);
             }
         }
+    });
+});
+
+app.post("/createTicket", verifyJWT, (req, res) => {
+    var ticket = {
+        project: req.body.project,
+        title: req.body.title,
+        description: req.body.description,
+        ticketAuthor: req.userId.email,
+        priority: req.body.priority,
+        status: "new",
+        type: req.body.type,
+        estimatedTime: req.body.estimatedTime,
+        assignedDevs: [],
+        comments: [],
+    };
+    TicketsModel.create(ticket).then((docs) => {
+        res.json("uccesfully Added a New Ticket");
     });
 });
 
