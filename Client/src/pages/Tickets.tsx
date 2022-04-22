@@ -132,14 +132,18 @@ const Tickets = () => {
 
     useEffect(() => {
         getProjects();
-        const userTicketsFilter = allTickets.filter(
-            (tickets) => tickets.ticketAuthor == cookies.Email
-        );
-        const projectTicketsFilter = allTickets.filter(
-            (tickets) => tickets.project == selectedProject
-        );
-        setUserTickets(userTicketsFilter);
-        console.log(projectTicketsFilter);
+
+        if (selectedProject) {
+            const projectTicketsFilter = allTickets.filter(
+                (tickets) => tickets.project == selectedProject
+            );
+            setFilteredTickets(projectTicketsFilter);
+        } else {
+            const userTicketsFilter = allTickets.filter(
+                (tickets) => tickets.ticketAuthor == cookies.Email
+            );
+            setFilteredTickets(userTicketsFilter);
+        }
     }, [allTickets, selectedProject]);
 
     // Modal Controllers
@@ -200,8 +204,7 @@ const Tickets = () => {
     const [newTicketErr, setNewTicketErr] = useState<String>("");
 
     // Filtered Ticket State
-    const [userTickets, setUserTickets] = useState([{}]);
-    const [projectTickets, setProjectTickets] = useState<[TicketsModel]>([{}]);
+    const [filteredTickets, setFilteredTickets] = useState([{}]);
 
     return (
         <Box>
@@ -247,7 +250,7 @@ const Tickets = () => {
                         <p>Creator</p>
                     </Box>
                 </Box>
-                {allProjects.map((project, index) => (
+                {filteredTickets.map((ticket: any, index) => (
                     <Box
                         key={index}
                         sx={{
@@ -260,7 +263,7 @@ const Tickets = () => {
                             },
                         }}
                     >
-                        <p style={{ flex: "1" }}>{project.title}</p>
+                        <p style={{ flex: "1" }}>{ticket.title}</p>
                         <Box
                             sx={{
                                 flex: "4",
@@ -269,9 +272,9 @@ const Tickets = () => {
                             }}
                         >
                             <p style={{ wordBreak: "break-word" }}>
-                                {project.description}
+                                {ticket.description}
                             </p>
-                            <p>{project.creator}</p>
+                            <p>{ticket.ticketAuthor}</p>
                         </Box>
                     </Box>
                 ))}
