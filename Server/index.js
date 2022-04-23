@@ -190,6 +190,24 @@ app.post("/updateStatus", verifyJWT, (req, res) => {
     );
 });
 
+app.post("/addDevs", verifyJWT, (req, res) => {
+    console.log(req.body.newDev);
+    TicketsModel.updateOne(
+        {
+            _id: req.body.id,
+        },
+        { $push: { assignedDevs: req.body.newDev } },
+        (err, doc) => {
+            if (err) {
+                console.log(`Error: ` + err);
+            } else {
+                res.json("Succesfully Added Devs to Ticket");
+                console.log("Succesfully Added Devs to Ticket");
+            }
+        }
+    );
+});
+
 app.listen(3001, () => {
     console.log("App listening on port 3000!");
 });

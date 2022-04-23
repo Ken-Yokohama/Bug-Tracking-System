@@ -147,6 +147,7 @@ const Tickets = () => {
             );
             setFilteredTickets(userTicketsFilter);
         }
+        console.log("check infinite loop");
     }, [allTickets, selectedProject]);
 
     // Modal Controllers
@@ -235,17 +236,39 @@ const Tickets = () => {
         };
         setSelectedFilteredTicket(updatedStatusObj);
 
-        // Update Ticket Obj Collection
-        const collectionWithoutObj = filteredTickets?.filter((obj: any) => {
-            return obj.title != updatedStatusObj.title;
-        });
-        const updatedTicketsCollection = [
-            updatedStatusObj,
-            ...collectionWithoutObj,
-        ];
-        setFilteredTickets(updatedTicketsCollection);
+        getTickets();
 
         // console.log(response?.data);
+    };
+
+    const [newDev, setNewDev] = useState<any>("");
+
+    const addNewDev = async () => {
+        if (selectedFilteredTicket?.assignedDevs?.includes(newDev)) return;
+
+        const response = await axios.post(
+            "http://localhost:3001/addDevs",
+            {
+                id: selectedFilteredTicket?._id,
+                newDev: newDev,
+            },
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
+        // Update Ticket Obj State
+        const updatedStatusObj = {
+            ...selectedFilteredTicket,
+            assignedDevs: [selectedFilteredTicket?.assignedDevs, newDev],
+        };
+        setSelectedFilteredTicket(updatedStatusObj);
+
+        getTickets();
+
+        console.log(response?.data);
     };
 
     return (
@@ -431,8 +454,21 @@ const Tickets = () => {
                                     {selectedFilteredTicket?.estimatedTime}
                                 </Box>
                             </Box>
-                            <Box sx={{ display: "flex", flex: "1" }}>
-                                <p>Assigned Devs</p>
+                            <Box sx={{ flex: "1" }}>
+                                <Box sx={{ display: "flex", gap: "1rem" }}>
+                                    <p>Assigned Devs:</p>
+                                    <Box sx={{ display: "flex" }}>
+                                        <input
+                                            type="text"
+                                            placeholder="Add Dev"
+                                            style={{ width: "100%" }}
+                                            onChange={(e) => {
+                                                setNewDev(e.target.value);
+                                            }}
+                                        />
+                                        <button onClick={addNewDev}>Add</button>
+                                    </Box>
+                                </Box>
                                 {selectedFilteredTicket?.assignedDevs?.map(
                                     (devs: string, index: number) => (
                                         <p key={index}>{devs}</p>
