@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { UserProfile } from "../components";
 
 const Administration = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -20,6 +21,7 @@ const Administration = () => {
         if (response.data != "Not Admin") {
             setUsers(response.data);
             setIsAdmin(true);
+            console.log(response.data);
         } else {
             setUsers(null);
             setIsAdmin(false);
@@ -27,7 +29,7 @@ const Administration = () => {
     };
 
     useEffect(() => {
-        // verifyAdmin();
+        verifyAdmin();
     }, []);
 
     return (
@@ -43,7 +45,20 @@ const Administration = () => {
             {isAdmin == "checking" ? (
                 <p>Verifying Admin...</p>
             ) : isAdmin ? (
-                <p>You are an Admin</p>
+                <Box
+                    sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}
+                >
+                    {users?.map((user: any, index: number) => {
+                        return (
+                            <UserProfile
+                                key={index}
+                                id={user?._id}
+                                email={user?.email}
+                                role={user?.role}
+                            />
+                        );
+                    })}
+                </Box>
             ) : (
                 <p>Access Denied, Please Use an Admin Account</p>
             )}

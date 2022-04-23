@@ -33,7 +33,6 @@ app.post("/register", async (req, res) => {
             };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
-                console.log(docs);
                 const token = jwt.sign(docs.toJSON(), process.env.JWTSECRET, {
                     expiresIn: "24hrs",
                 });
@@ -72,7 +71,6 @@ app.post("/login", async (req, res) => {
     }
 
     if (user && correctPassword) {
-        console.log(user);
         const token = jwt.sign(user.toJSON(), process.env.JWTSECRET, {
             expiresIn: "24h",
             // expiresIn: "120",
@@ -104,7 +102,7 @@ const verifyJWT = (req, res, next) => {
 };
 
 app.get("/isUserAuth", verifyJWT, (req, res) => {
-    console.log(req.userId);
+    console.log("Logging In");
     res.send("Yo, u are authenticated. Congrats!");
 });
 
@@ -231,6 +229,29 @@ app.post("/addComment", verifyJWT, (req, res) => {
             }
         }
     );
+});
+
+// req.userId.role;
+
+app.get("/getUsers", verifyJWT, (req, res) => {
+    if (req.userId.role != "admin") {
+        res.json("Not Admin");
+        console.log("Not Admin");
+        return;
+    }
+    console.log("Admin Verified");
+
+    UsersModel.find({}, (err, docs) => {
+        if (err) {
+            console.log(`Error: ` + err);
+        } else {
+            if (docs.length === 0) {
+                res.json("No Documents Found");
+            } else {
+                res.json(docs);
+            }
+        }
+    });
 });
 
 app.listen(3001, () => {
