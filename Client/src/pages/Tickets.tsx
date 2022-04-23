@@ -278,19 +278,19 @@ const Tickets = () => {
         if (!selectedFilteredTicket._id) return;
         console.log(selectedFilteredTicket?.comments);
 
-        // const response = await axios.post(
-        //     "http://localhost:3001/addComment",
-        //     {
-        //         id: selectedFilteredTicket?._id,
-        //         comment: newComment,
-        //     },
-        //     {
-        //         headers: {
-        //             "x-access-token": cookies.AuthToken,
-        //             email: cookies.Email,
-        //         },
-        //     }
-        // );
+        const response = await axios.post(
+            "http://localhost:3001/addComment",
+            {
+                id: selectedFilteredTicket?._id,
+                comment: newComment,
+            },
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
         // Update Ticket Obj State
         const updatedStatusObj = {
             ...selectedFilteredTicket,
@@ -542,7 +542,6 @@ const Tickets = () => {
                         <Box
                             sx={{
                                 flex: "1 1 1px",
-                                backgroundColor: "red",
                                 overflowY: "scroll",
                             }}
                         >

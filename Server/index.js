@@ -208,6 +208,31 @@ app.post("/addDevs", verifyJWT, (req, res) => {
     );
 });
 
+app.post("/addComment", verifyJWT, (req, res) => {
+    console.log(req.body.comment);
+    TicketsModel.updateOne(
+        {
+            _id: req.body.id,
+        },
+        {
+            $push: {
+                comments: {
+                    author: req.userId.email,
+                    comment: req.body.comment,
+                },
+            },
+        },
+        (err, doc) => {
+            if (err) {
+                console.log(`Error: ` + err);
+            } else {
+                res.json("Succesfully Added Devs to Ticket");
+                console.log("Succesfully Added Devs to Ticket");
+            }
+        }
+    );
+});
+
 app.listen(3001, () => {
     console.log("App listening on port 3000!");
 });
