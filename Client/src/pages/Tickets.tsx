@@ -564,9 +564,10 @@ const Tickets = () => {
                                     },
                                     index: number
                                 ) => (
-                                    <Box key={index}>
-                                        <p>{comment.author}</p>
-                                        <p>{comment.comment}</p>
+                                    <Box key={index} sx={{ p: "1rem" }}>
+                                        <p>
+                                            {comment.author} - {comment.comment}
+                                        </p>
                                     </Box>
                                 )
                             )}
