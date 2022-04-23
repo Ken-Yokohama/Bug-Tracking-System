@@ -245,6 +245,7 @@ const Tickets = () => {
 
     const addNewDev = async () => {
         if (selectedFilteredTicket?.assignedDevs?.includes(newDev)) return;
+        if (!selectedFilteredTicket._id) return;
 
         const response = await axios.post(
             "http://localhost:3001/addDevs",
@@ -271,6 +272,40 @@ const Tickets = () => {
         console.log(response?.data);
     };
 
+    const [newComment, setNewComment] = useState<any>("");
+
+    const addNewComment = async () => {
+        if (!selectedFilteredTicket._id) return;
+        console.log(selectedFilteredTicket?.comments);
+
+        // const response = await axios.post(
+        //     "http://localhost:3001/addComment",
+        //     {
+        //         id: selectedFilteredTicket?._id,
+        //         comment: newComment,
+        //     },
+        //     {
+        //         headers: {
+        //             "x-access-token": cookies.AuthToken,
+        //             email: cookies.Email,
+        //         },
+        //     }
+        // );
+        // Update Ticket Obj State
+        const updatedStatusObj = {
+            ...selectedFilteredTicket,
+            comments: [
+                ...selectedFilteredTicket?.comments,
+                { author: cookies.Email, comment: newComment },
+            ],
+        };
+        setSelectedFilteredTicket(updatedStatusObj);
+
+        getTickets();
+
+        // console.log(response?.data);
+    };
+
     return (
         <Box>
             <Box
@@ -290,7 +325,16 @@ const Tickets = () => {
                     },
                 }}
             >
-                <Paper sx={{ margin: "1rem", flex: "1" }} elevation={3}>
+                <Paper
+                    sx={{
+                        margin: "1rem",
+                        flex: "1",
+                        maxHeight: "390px",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                    elevation={3}
+                >
                     <Box
                         sx={{
                             display: "flex",
@@ -324,7 +368,7 @@ const Tickets = () => {
                             <p>Creator</p>
                         </Box>
                     </Box>
-                    <Box sx={{ maxHeight: "280px", overflowY: "scroll" }}>
+                    <Box sx={{ height: "100%", overflowY: "scroll" }}>
                         {filteredTickets.map((ticket: any, index) => (
                             <Box
                                 key={index}
@@ -497,10 +541,22 @@ const Tickets = () => {
                         </Box>
                         <Box
                             sx={{
-                                flex: "1",
+                                flex: "1 1 1px",
+                                backgroundColor: "red",
                                 overflowY: "scroll",
                             }}
                         >
+                            <Box sx={{ display: "flex", padding: "1rem" }}>
+                                <input
+                                    type="text"
+                                    placeholder="Add Comment"
+                                    style={{ width: "100%" }}
+                                    onChange={(e) => {
+                                        setNewComment(e.target.value);
+                                    }}
+                                />
+                                <button onClick={addNewComment}>Post</button>
+                            </Box>
                             {selectedFilteredTicket?.comments?.map(
                                 (
                                     comment: {
