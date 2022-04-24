@@ -543,6 +543,9 @@ const Tickets = () => {
                             sx={{
                                 flex: "1 1 1px",
                                 overflowY: "scroll",
+                                "@media(max-width: 700px)": {
+                                    flex: "1 1 300px",
+                                },
                             }}
                         >
                             <Box sx={{ display: "flex", padding: "1rem" }}>
