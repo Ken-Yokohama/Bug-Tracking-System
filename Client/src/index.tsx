@@ -25,7 +25,7 @@ const store = configureStore({
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <Router>
+            <Router basename="/Bug-Tracking-System">
                 <App />
             </Router>
         </Provider>
