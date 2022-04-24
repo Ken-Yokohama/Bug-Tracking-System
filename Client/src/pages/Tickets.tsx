@@ -1,4 +1,4 @@
-import { Box, Button, Paper, TextField } from "@mui/material";
+import { Box, Button, Checkbox, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -306,6 +306,21 @@ const Tickets = () => {
         // console.log(response?.data);
     };
 
+    const [resolvedFilterOn, setResolvedFilterOn] = useState<Boolean>(false);
+
+    const handleResolvedFilter = () => {
+        setResolvedFilterOn((prevValue) => !prevValue);
+    };
+
+    const [unresolvedTickets, setUnresolvedTickets] = useState<any>([]);
+
+    useEffect(() => {
+        const onlyUnresolved = filteredTickets?.filter((ticket: any) => {
+            return ticket?.status != "resolved";
+        });
+        setUnresolvedTickets(onlyUnresolved);
+    }, [filteredTickets]);
+
     return (
         <Box>
             <Box
@@ -342,11 +357,30 @@ const Tickets = () => {
                             justifyContent: "space-between",
                             padding: "1rem",
                         }}
+                        onChange={handleResolvedFilter}
                     >
                         <h3>Tickets</h3>
-                        <Button size="small" onClick={handleOpen}>
-                            Add Ticket
-                        </Button>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "1rem",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "0.25rem",
+                                }}
+                            >
+                                <Checkbox size="small" sx={{ padding: "0" }} />
+                                <p>Show Unresolved</p>
+                            </Box>
+                            <Button size="small" onClick={handleOpen}>
+                                Add Ticket
+                            </Button>
+                        </Box>
                     </Box>
                     <Box
                         sx={{
@@ -369,37 +403,87 @@ const Tickets = () => {
                         </Box>
                     </Box>
                     <Box sx={{ height: "100%", overflowY: "scroll" }}>
-                        {filteredTickets.map((ticket: any, index) => (
-                            <Box
-                                key={index}
-                                onClick={() => {
-                                    setSelectedFilteredTicket(ticket);
-                                }}
-                                sx={{
-                                    padding: "1rem",
-                                    display: "flex",
-                                    gap: "1rem",
-                                    ":hover": {
-                                        backgroundColor: "#F0F0F0",
-                                        cursor: "pointer",
-                                    },
-                                }}
-                            >
-                                <p style={{ flex: "1" }}>{ticket.title}</p>
-                                <Box
-                                    sx={{
-                                        flex: "4",
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <p style={{ wordBreak: "break-word" }}>
-                                        {ticket.description}
-                                    </p>
-                                    <p>{ticket.ticketAuthor}</p>
-                                </Box>
-                            </Box>
-                        ))}
+                        {resolvedFilterOn
+                            ? unresolvedTickets.map(
+                                  (ticket: any, index: number) => (
+                                      <Box
+                                          key={index}
+                                          onClick={() => {
+                                              setSelectedFilteredTicket(ticket);
+                                          }}
+                                          sx={{
+                                              padding: "1rem",
+                                              display: "flex",
+                                              gap: "1rem",
+                                              ":hover": {
+                                                  backgroundColor: "#F0F0F0",
+                                                  cursor: "pointer",
+                                              },
+                                          }}
+                                      >
+                                          <p style={{ flex: "1" }}>
+                                              {ticket.title}
+                                          </p>
+                                          <Box
+                                              sx={{
+                                                  flex: "4",
+                                                  display: "flex",
+                                                  justifyContent:
+                                                      "space-between",
+                                              }}
+                                          >
+                                              <p
+                                                  style={{
+                                                      wordBreak: "break-word",
+                                                  }}
+                                              >
+                                                  {ticket.description}
+                                              </p>
+                                              <p>{ticket.ticketAuthor}</p>
+                                          </Box>
+                                      </Box>
+                                  )
+                              )
+                            : filteredTickets.map(
+                                  (ticket: any, index: number) => (
+                                      <Box
+                                          key={index}
+                                          onClick={() => {
+                                              setSelectedFilteredTicket(ticket);
+                                          }}
+                                          sx={{
+                                              padding: "1rem",
+                                              display: "flex",
+                                              gap: "1rem",
+                                              ":hover": {
+                                                  backgroundColor: "#F0F0F0",
+                                                  cursor: "pointer",
+                                              },
+                                          }}
+                                      >
+                                          <p style={{ flex: "1" }}>
+                                              {ticket.title}
+                                          </p>
+                                          <Box
+                                              sx={{
+                                                  flex: "4",
+                                                  display: "flex",
+                                                  justifyContent:
+                                                      "space-between",
+                                              }}
+                                          >
+                                              <p
+                                                  style={{
+                                                      wordBreak: "break-word",
+                                                  }}
+                                              >
+                                                  {ticket.description}
+                                              </p>
+                                              <p>{ticket.ticketAuthor}</p>
+                                          </Box>
+                                      </Box>
+                                  )
+                              )}
                     </Box>
                 </Paper>
                 <Box
