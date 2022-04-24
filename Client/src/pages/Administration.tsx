@@ -46,7 +46,16 @@ const Administration = () => {
                 <p>Verifying Admin...</p>
             ) : isAdmin ? (
                 <Box
-                    sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        "@media (max-width: 1000px)": {
+                            gridTemplateColumns: "1fr 1fr",
+                        },
+                        "@media (max-width: 700px)": {
+                            gridTemplateColumns: "1fr",
+                        },
+                    }}
                 >
                     {users?.map((user: any, index: number) => {
                         return (

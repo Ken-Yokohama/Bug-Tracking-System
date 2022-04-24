@@ -147,7 +147,6 @@ const Tickets = () => {
             );
             setFilteredTickets(userTicketsFilter);
         }
-        console.log("check infinite loop");
     }, [allTickets, selectedProject]);
 
     // Modal Controllers
