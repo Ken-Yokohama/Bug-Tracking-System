@@ -39,16 +39,6 @@ interface TicketsModel {
 const Tickets = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
-    // const checkAuthenticated = async () => {
-    //     const response = await axios.get("http://localhost:3001/isUserAuth", {
-    //         headers: {
-    //             "x-access-token": cookies.AuthToken,
-    //             email: cookies.Email,
-    //         },
-    //     });
-    //     console.log(response.data);
-    // };
-
     const dispatch = useDispatch();
 
     const allProjects = useSelector(
@@ -67,7 +57,7 @@ const Tickets = () => {
 
     const getTickets = async () => {
         const response = await axios.get(
-            "http://localhost:3001/getAllTickets",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getAllTickets",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -83,7 +73,7 @@ const Tickets = () => {
         setLoadingButton(true);
         try {
             const response = await axios.post(
-                "http://localhost:3001/createTicket",
+                "https://ken-yokohama-mern-bug-tracker.herokuapp.com/createTicket",
                 {
                     title: ticketTitle,
                     description: ticketDescription,
@@ -116,7 +106,7 @@ const Tickets = () => {
 
     const getProjects = async () => {
         const response = await axios.get(
-            "http://localhost:3001/getAllProjects",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getAllProjects",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -216,7 +206,7 @@ const Tickets = () => {
 
     const handleChangeStatus = async (e: any) => {
         const response = await axios.post(
-            "http://localhost:3001/updateStatus",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/updateStatus",
             {
                 id: selectedFilteredTicket?._id,
                 status: e.target.value,
@@ -247,7 +237,7 @@ const Tickets = () => {
         if (!selectedFilteredTicket._id) return;
 
         const response = await axios.post(
-            "http://localhost:3001/addDevs",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/addDevs",
             {
                 id: selectedFilteredTicket?._id,
                 newDev: newDev,
@@ -278,7 +268,7 @@ const Tickets = () => {
         console.log(selectedFilteredTicket?.comments);
 
         const response = await axios.post(
-            "http://localhost:3001/addComment",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/addComment",
             {
                 id: selectedFilteredTicket?._id,
                 comment: newComment,

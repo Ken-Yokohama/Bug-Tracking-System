@@ -12,16 +12,18 @@ const Administration = () => {
     const [isAdmin, setIsAdmin] = useState<any>("checking");
 
     const verifyAdmin = async () => {
-        const response = await axios.get("http://localhost:3001/getUsers", {
-            headers: {
-                "x-access-token": cookies.AuthToken,
-                email: cookies.Email,
-            },
-        });
+        const response = await axios.get(
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getUsers",
+            {
+                headers: {
+                    "x-access-token": cookies.AuthToken,
+                    email: cookies.Email,
+                },
+            }
+        );
         if (response.data != "Not Admin") {
             setUsers(response.data);
             setIsAdmin(true);
-            console.log(response.data);
         } else {
             setUsers(null);
             setIsAdmin(false);

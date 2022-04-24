@@ -23,7 +23,7 @@ const Login = () => {
     const handleRegister = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:3001/register",
+                "https://ken-yokohama-mern-bug-tracker.herokuapp.com/register",
                 {
                     email: registerEmail,
                     password: registerPassword,
@@ -45,10 +45,13 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/login", {
-                email: loginEmail,
-                password: loginPassword,
-            });
+            const response = await axios.post(
+                "https://ken-yokohama-mern-bug-tracker.herokuapp.com/login",
+                {
+                    email: loginEmail,
+                    password: loginPassword,
+                }
+            );
 
             setCookie("Email", response.data.email);
             setCookie("AuthToken", response.data.token);

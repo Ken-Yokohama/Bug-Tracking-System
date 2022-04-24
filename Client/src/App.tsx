@@ -16,7 +16,7 @@ function App() {
 
     const getTickets = async () => {
         const response = await axios.get(
-            "http://localhost:3001/getAllTickets",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getAllTickets",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -33,7 +33,7 @@ function App() {
         const pingServer = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:3001/pingServer"
+                    "https://ken-yokohama-mern-bug-tracker.herokuapp.com/pingServer"
                 );
                 if (response) {
                     setServerIsDown(false);

@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuOptions from "./MenuOptions";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
@@ -14,9 +14,12 @@ import { setSelectedProject } from "../features/selectedProjectSlice";
 const SideNav = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
+    const navigate = useNavigate();
+
     const logout = () => {
         removeCookie("Email", cookies.Email);
         removeCookie("AuthToken", cookies.AuthToken);
+        navigate("/tickets");
         window.location.reload();
     };
 

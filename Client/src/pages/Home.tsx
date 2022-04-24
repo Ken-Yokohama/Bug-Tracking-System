@@ -19,16 +19,6 @@ interface ProjectsModel {
 const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
-    // const checkAuthenticated = async () => {
-    //     const response = await axios.get("http://localhost:3001/isUserAuth", {
-    //         headers: {
-    //             "x-access-token": cookies.AuthToken,
-    //             email: cookies.Email,
-    //         },
-    //     });
-    //     console.log(response.data);
-    // };
-
     const dispatch = useDispatch();
 
     const allProjects = useSelector(
@@ -41,7 +31,7 @@ const Home = () => {
         setLoadingButton(true);
         try {
             const response = await axios.post(
-                "http://localhost:3001/createProject",
+                "https://ken-yokohama-mern-bug-tracker.herokuapp.com/createProject",
                 {
                     title: newProjectTitle,
                     description: newProjectDescription,
@@ -70,7 +60,7 @@ const Home = () => {
 
     const getProjects = async () => {
         const response = await axios.get(
-            "http://localhost:3001/getAllProjects",
+            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getAllProjects",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
