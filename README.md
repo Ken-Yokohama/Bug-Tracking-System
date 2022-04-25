@@ -1,13 +1,15 @@
 # Bug-Tracking-System
 Full Stack Software Bug Tracking System using MongoDB, Express, React and NodeJS
 
-![But Tracker Cover](https://github.com/Ken-Yokohama/Bug-Tracking-System/blob/master/cover.JPG?raw=true)
+![Bug Tracker Cover](https://www.softwaresuggest.com/blog/wp-content/uploads/2019/08/s-blog-3-01.jpg)
 
 ### Brief Summary
 This Bug Tracking System is a full-stack software issue management web application that allows developers to create tickets for their projects and admins to manage the progress of each project using NodeJS & Express in the back end, MongoDB as the database and React in the front end
 
 ### Links:
 - [Live Preview](https://ken-yokohama.github.io/Bug-Tracking-System)
+
+![Bug Tracker Sample](https://github.com/Ken-Yokohama/Bug-Tracking-System/blob/master/cover.JPG?raw=true)
 
 ### Features:
 - User Authentication and Password Encryption using Bcrypt
