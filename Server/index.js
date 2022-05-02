@@ -84,7 +84,6 @@ app.post("/login", async (req, res) => {
 // Middleware
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"];
-    const email = req.headers["email"];
     if (!token) {
         res.send("No Token Found!");
     } else {
