@@ -1,7 +1,13 @@
 import { Box, Paper } from "@mui/material";
 import React from "react";
 
-const UserProfile = ({ id, email, role }: any) => {
+interface props {
+    id: string;
+    email: string;
+    role: string;
+}
+
+const UserProfile = ({ id, email, role }: props) => {
     return (
         <Box>
             <Paper sx={{ padding: "1rem", margin: "1rem" }} elevation={3}>
