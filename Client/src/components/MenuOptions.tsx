@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import React from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface props {
     link: string;
     label: string;
     Icon: any;
-    setToggleMenu: any;
+    setToggleMenu: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
 const MenuOptions = ({ link, label, Icon, setToggleMenu }: props) => {
