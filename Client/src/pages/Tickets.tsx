@@ -204,7 +204,7 @@ const Tickets = () => {
         {}
     );
 
-    const handleChangeStatus = async (e: any) => {
+    const handleChangeStatus = async (e: { target: { value: string } }) => {
         const response = await axios.post(
             "https://ken-yokohama-mern-bug-tracker.herokuapp.com/updateStatus",
             {
