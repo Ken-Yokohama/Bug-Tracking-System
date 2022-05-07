@@ -17,6 +17,8 @@ const SideNav = () => {
     const navigate = useNavigate();
 
     const logout = () => {
+        // removeCookie("Email", { path: "/" });
+        // removeCookie("AuthToken", { path: "/" });
         removeCookie("Email", cookies.Email);
         removeCookie("AuthToken", cookies.AuthToken);
         navigate("/tickets");

@@ -9,7 +9,7 @@ const Administration = () => {
 
     const [users, setUsers] = useState<any>([{}]);
 
-    const [isAdmin, setIsAdmin] = useState<any>("checking");
+    const [isAdmin, setIsAdmin] = useState<Boolean | string>("checking");
 
     const verifyAdmin = async () => {
         const response = await axios.get(
