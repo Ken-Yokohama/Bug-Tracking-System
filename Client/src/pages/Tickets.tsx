@@ -230,7 +230,7 @@ const Tickets = () => {
         // console.log(response?.data);
     };
 
-    const [newDev, setNewDev] = useState<any>("");
+    const [newDev, setNewDev] = useState<string>("");
 
     const addNewDev = async () => {
         if (selectedFilteredTicket?.assignedDevs?.includes(newDev)) return;
