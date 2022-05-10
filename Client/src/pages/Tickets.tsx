@@ -261,7 +261,7 @@ const Tickets = () => {
         console.log(response?.data);
     };
 
-    const [newComment, setNewComment] = useState<any>("");
+    const [newComment, setNewComment] = useState<string>("");
 
     const addNewComment = async () => {
         if (!selectedFilteredTicket._id) return;
