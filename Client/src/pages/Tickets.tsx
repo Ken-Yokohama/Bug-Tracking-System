@@ -304,9 +304,11 @@ const Tickets = () => {
     const [unresolvedTickets, setUnresolvedTickets] = useState<any>([]);
 
     useEffect(() => {
-        const onlyUnresolved = filteredTickets?.filter((ticket: any) => {
-            return ticket?.status != "resolved";
-        });
+        const onlyUnresolved = filteredTickets?.filter(
+            (ticket: { status?: any }) => {
+                return ticket?.status != "resolved";
+            }
+        );
         setUnresolvedTickets(onlyUnresolved);
     }, [filteredTickets]);
 
