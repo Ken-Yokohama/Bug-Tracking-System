@@ -305,7 +305,7 @@ const Tickets = () => {
 
     useEffect(() => {
         const onlyUnresolved = filteredTickets?.filter(
-            (ticket: { status?: any }) => {
+            (ticket: { status?: string }) => {
                 return ticket?.status != "resolved";
             }
         );
