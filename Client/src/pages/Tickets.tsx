@@ -396,7 +396,7 @@ const Tickets = () => {
                     <Box sx={{ height: "100%", overflowY: "scroll" }}>
                         {resolvedFilterOn
                             ? unresolvedTickets.map(
-                                  (ticket: any, index: number) => (
+                                  (ticket: TicketsModel, index: number) => (
                                       <Box
                                           key={index}
                                           onClick={() => {
