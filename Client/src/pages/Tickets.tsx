@@ -710,8 +710,10 @@ const Tickets = () => {
                             id="combo-box-demo"
                             size="small"
                             options={projectOptions}
-                            onChange={(e: any, value: any) => {
-                                setTicketProject(value);
+                            onChange={(e: any, value: null | string) => {
+                                if (value) {
+                                    setTicketProject(value);
+                                }
                             }}
                             renderInput={(params: any) => (
                                 <TextField {...params} label="Choose Project" />
