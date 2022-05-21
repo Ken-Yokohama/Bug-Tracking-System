@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, Paper, TextField } from "@mui/material";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import { useCookies } from "react-cookie";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -710,7 +710,10 @@ const Tickets = () => {
                             id="combo-box-demo"
                             size="small"
                             options={projectOptions}
-                            onChange={(e: any, value: null | string) => {
+                            onChange={(
+                                e: SyntheticEvent,
+                                value: null | string
+                            ) => {
                                 if (value) {
                                     setTicketProject(value);
                                 }
