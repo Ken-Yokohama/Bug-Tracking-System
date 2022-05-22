@@ -728,8 +728,10 @@ const Tickets = () => {
                             id="combo-box-demo"
                             options={priorityOptions}
                             size="small"
-                            onChange={(e: any, value: any) => {
-                                setPriority(value);
+                            onChange={(e: any, value: string | null) => {
+                                if (value) {
+                                    setPriority(value);
+                                }
                             }}
                             renderInput={(params: any) => (
                                 <TextField
