@@ -301,7 +301,9 @@ const Tickets = () => {
         setResolvedFilterOn((prevValue) => !prevValue);
     };
 
-    const [unresolvedTickets, setUnresolvedTickets] = useState<any>([]);
+    const [unresolvedTickets, setUnresolvedTickets] = useState<TicketsModel[]>(
+        []
+    );
 
     useEffect(() => {
         const onlyUnresolved = filteredTickets?.filter(
