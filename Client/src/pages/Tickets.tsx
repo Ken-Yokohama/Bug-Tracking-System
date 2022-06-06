@@ -438,7 +438,7 @@ const Tickets = () => {
                                   )
                               )
                             : filteredTickets.map(
-                                  (ticket: any, index: number) => (
+                                  (ticket: TicketsModel, index: number) => (
                                       <Box
                                           key={index}
                                           onClick={() => {
