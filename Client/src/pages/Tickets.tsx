@@ -720,7 +720,7 @@ const Tickets = () => {
                                     setTicketProject(value);
                                 }
                             }}
-                            renderInput={(params: any) => (
+                            renderInput={(params: object) => (
                                 <TextField {...params} label="Choose Project" />
                             )}
                         />
