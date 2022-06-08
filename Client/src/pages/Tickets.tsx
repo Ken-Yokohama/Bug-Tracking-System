@@ -730,7 +730,10 @@ const Tickets = () => {
                             id="combo-box-demo"
                             options={priorityOptions}
                             size="small"
-                            onChange={(e: any, value: string | null) => {
+                            onChange={(
+                                e: React.SyntheticEvent<Element, Event>,
+                                value: string | null
+                            ) => {
                                 if (value) {
                                     setPriority(value);
                                 }
