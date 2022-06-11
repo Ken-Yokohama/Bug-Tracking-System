@@ -738,7 +738,7 @@ const Tickets = () => {
                                     setPriority(value);
                                 }
                             }}
-                            renderInput={(params: any) => (
+                            renderInput={(params: object) => (
                                 <TextField
                                     {...params}
                                     label="Choose Priority"
