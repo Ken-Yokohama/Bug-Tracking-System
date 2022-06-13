@@ -16,8 +16,9 @@ describe("UserProfile", () => {
         expect(id).toBeInTheDocument();
     });
 
-    // it("Check if User Name Exists", () => {
-    //     render(<UserProfile id="" email="" role="" />);
-    //     const name = screen.getByRole("")
-    // });
+    it("Check if User Email Exists", () => {
+        render(<UserProfile id="" email="" role="" />);
+        const name = screen.getByText(/Name/);
+        expect(name).toBeInTheDocument();
+    });
 });
