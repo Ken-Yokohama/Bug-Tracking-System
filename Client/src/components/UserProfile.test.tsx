@@ -21,4 +21,11 @@ describe("UserProfile", () => {
         const name = screen.getByText(/Name/);
         expect(name).toBeInTheDocument();
     });
+
+    it("Should Render the same Name passed into email prop", () => {
+        const myEmail = "My Name";
+        render(<UserProfile id="" email={myEmail} role="" />);
+        const name = screen.getByText("Name: " + myEmail);
+        expect(name).toBeInTheDocument();
+    });
 });
