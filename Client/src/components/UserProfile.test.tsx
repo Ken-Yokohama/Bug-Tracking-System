@@ -28,4 +28,10 @@ describe("UserProfile", () => {
         const name = screen.getByText("Name: " + myEmail);
         expect(name).toBeInTheDocument();
     });
+
+    it("Check if User Role Exists", () => {
+        render(<UserProfile id="" email="" role="" />);
+        const role = screen.getByText(/Role/);
+        expect(role).toBeInTheDocument();
+    });
 });
