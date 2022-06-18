@@ -34,4 +34,11 @@ describe("UserProfile", () => {
         const role = screen.getByText(/Role/);
         expect(role).toBeInTheDocument();
     });
+
+    it("Should Render the same Role passed into role prop", () => {
+        const myRole = "My Role";
+        render(<UserProfile id="" email="" role={myRole} />);
+        const role = screen.getByText("Role: " + myRole);
+        expect(role).toBeInTheDocument();
+    });
 });
