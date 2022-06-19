@@ -34,7 +34,7 @@ describe("MenuOptions", () => {
                 setToggleMenu={() => {}}
             />
         );
-        const label = screen.getByRole("heading");
+        const label = screen.getByRole("heading", { level: 3, name: "" });
         expect(label).toBeInTheDocument();
     });
 });
