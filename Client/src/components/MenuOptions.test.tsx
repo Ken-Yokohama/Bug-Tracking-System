@@ -25,7 +25,7 @@ const MockMenuOptions = ({ link, label, Icon, setToggleMenu }: props) => {
 };
 
 describe("MenuOptions", () => {
-    it("Check if User Id Exists", () => {
+    it("Check if H3 Exists", () => {
         render(
             <MockMenuOptions
                 Icon={HomeTwoToneIcon}
