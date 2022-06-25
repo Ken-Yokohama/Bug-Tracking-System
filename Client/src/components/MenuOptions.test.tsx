@@ -35,6 +35,20 @@ describe("MenuOptions", () => {
             />
         );
         const label = screen.getByRole("heading", { level: 3, name: "" });
+        // screen.debug(label);
         expect(label).toBeInTheDocument();
+    });
+
+    it("Check if Icon Exists", () => {
+        render(
+            <MockMenuOptions
+                Icon={HomeTwoToneIcon}
+                label=""
+                link=""
+                setToggleMenu={() => {}}
+            />
+        );
+        const icon = screen.getByTestId("icon");
+        expect(icon).toBeInTheDocument();
     });
 });

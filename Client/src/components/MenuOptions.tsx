@@ -29,7 +29,7 @@ const MenuOptions = ({ link, label, Icon, setToggleMenu }: props) => {
                 setToggleMenu(false);
             }}
         >
-            <Icon />
+            <Icon data-testid="icon" />
             <h3 style={{ fontWeight: "100" }}>{label}</h3>
         </Box>
     );
