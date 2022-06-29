@@ -39,6 +39,20 @@ describe("MenuOptions", () => {
         expect(label).toBeInTheDocument();
     });
 
+    it("Should Render the same label passed into label prop", () => {
+        const labelProp = "TestLabel1";
+        render(
+            <MockMenuOptions
+                Icon={HomeTwoToneIcon}
+                label={labelProp}
+                link=""
+                setToggleMenu={() => {}}
+            />
+        );
+        const label = screen.getByText(labelProp);
+        expect(label).toBeInTheDocument();
+    });
+
     it("Check if Icon Exists", () => {
         render(
             <MockMenuOptions
