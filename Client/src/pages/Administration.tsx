@@ -13,7 +13,7 @@ const Administration = () => {
 
     const verifyAdmin = async () => {
         const response = await axios.get(
-            "https://ken-yokohama-mern-bug-tracker.herokuapp.com/getUsers",
+            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.herokuapp.com/") + "getUsers",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
