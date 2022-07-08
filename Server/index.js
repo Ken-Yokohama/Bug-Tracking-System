@@ -254,5 +254,5 @@ app.get("/getUsers", verifyJWT, (req, res) => {
 });
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log("App listening on port 3000!");
+    console.log("App listening on port " + (process.env.PORT || "3001") + "!");
 });
