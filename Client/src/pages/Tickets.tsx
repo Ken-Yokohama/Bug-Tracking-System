@@ -295,7 +295,7 @@ const Tickets = () => {
         // console.log(response?.data);
     };
 
-    const [resolvedFilterOn, setResolvedFilterOn] = useState<Boolean>(false);
+    const [resolvedFilterOn, setResolvedFilterOn] = useState<Boolean>(true);
 
     const handleResolvedFilter = () => {
         setResolvedFilterOn((prevValue) => !prevValue);
@@ -368,7 +368,7 @@ const Tickets = () => {
                                 }}
                             >
                                 <Checkbox size="small" sx={{ padding: "0" }} />
-                                <p>Show Unresolved</p>
+                                <p>Show Resolved Tickets</p>
                             </Box>
                             <Button size="small" onClick={handleOpen}>
                                 Add Ticket
