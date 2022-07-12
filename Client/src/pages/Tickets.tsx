@@ -352,7 +352,7 @@ const Tickets = () => {
                         }}
                         onChange={handleResolvedFilter}
                     >
-                        <h3>Tickets</h3>
+                        <h3>My Tickets</h3>
                         <Box
                             sx={{
                                 display: "flex",
