@@ -8,6 +8,7 @@ import { setTickets } from "./features/ticketsSlice";
 import { Loading, Login } from "./pages";
 
 function App() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const [serverIsDown, setServerIsDown] = useState<Boolean>(true);
@@ -24,7 +25,7 @@ function App() {
                 },
             }
         );
-        if (response.data != "No Documents Found") {
+        if (response.data !== "No Documents Found") {
             dispatch(setTickets(response.data));
         }
     };
@@ -44,6 +45,7 @@ function App() {
         };
         pingServer();
         getTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
