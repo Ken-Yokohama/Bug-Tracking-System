@@ -31,7 +31,7 @@ const Home = () => {
         setLoadingButton(true);
         try {
             const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.herokuapp.com/") + "createProject",
+                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "createProject",
                 {
                     title: newProjectTitle,
                     description: newProjectDescription,
@@ -60,7 +60,7 @@ const Home = () => {
 
     const getProjects = async () => {
         const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.herokuapp.com/") + "getAllProjects",
+            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "getAllProjects",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,

@@ -23,7 +23,7 @@ const Login = () => {
     const handleRegister = async () => {
         try {
             const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.herokuapp.com/") + "register",
+                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "register",
                 {
                     email: registerEmail,
                     password: registerPassword,
@@ -46,7 +46,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.herokuapp.com/") + "login",
+                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "login",
                 {
                     email: loginEmail,
                     password: loginPassword,
