@@ -13,7 +13,9 @@ const Administration = () => {
 
     const verifyAdmin = async () => {
         const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "getUsers",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "getUsers",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,

@@ -17,7 +17,9 @@ function App() {
 
     const getTickets = async () => {
         const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "getAllTickets",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "getAllTickets",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -34,7 +36,9 @@ function App() {
         const pingServer = async () => {
             try {
                 const response = await axios.get(
-                    (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "pingServer"
+                    (process.env.REACT_APP_LOCAL_API_URL ||
+                        "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                        "pingServer"
                 );
                 if (response) {
                     setServerIsDown(false);
@@ -45,7 +49,7 @@ function App() {
         };
         pingServer();
         getTickets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

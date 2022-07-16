@@ -57,7 +57,9 @@ const Tickets = () => {
 
     const getTickets = async () => {
         const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "getAllTickets",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "getAllTickets",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -73,7 +75,9 @@ const Tickets = () => {
         setLoadingButton(true);
         try {
             const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "createTicket",
+                (process.env.REACT_APP_LOCAL_API_URL ||
+                    "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                    "createTicket",
                 {
                     title: ticketTitle,
                     description: ticketDescription,
@@ -106,7 +110,9 @@ const Tickets = () => {
 
     const getProjects = async () => {
         const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "getAllProjects",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "getAllProjects",
             {
                 headers: {
                     "x-access-token": cookies.AuthToken,
@@ -206,7 +212,9 @@ const Tickets = () => {
 
     const handleChangeStatus = async (e: { target: { value: string } }) => {
         const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "updateStatus",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "updateStatus",
             {
                 id: selectedFilteredTicket?._id,
                 status: e.target.value,
@@ -237,7 +245,9 @@ const Tickets = () => {
         if (!selectedFilteredTicket._id) return;
 
         const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "addDevs",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "addDevs",
             {
                 id: selectedFilteredTicket?._id,
                 newDev: newDev,
@@ -268,7 +278,9 @@ const Tickets = () => {
         console.log(selectedFilteredTicket?.comments);
 
         const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL || "https://ken-yokohama-mern-bug-tracker.onrender.com/") + "addComment",
+            (process.env.REACT_APP_LOCAL_API_URL ||
+                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
+                "addComment",
             {
                 id: selectedFilteredTicket?._id,
                 comment: newComment,
