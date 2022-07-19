@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Button, Checkbox, Paper, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState, useEffect, SyntheticEvent } from "react";
@@ -120,7 +121,7 @@ const Tickets = () => {
                 },
             }
         );
-        if (response.data != "No Documents Found") {
+        if (response.data !== "No Documents Found") {
             dispatch(setProjects(response.data));
             setProjectOptions(
                 response.data.map((project: { title: string }) => {
@@ -134,15 +135,16 @@ const Tickets = () => {
         getProjects();
         if (selectedProject) {
             const projectTicketsFilter = allTickets?.filter(
-                (tickets) => tickets.project == selectedProject
+                (tickets) => tickets.project === selectedProject
             );
             setFilteredTickets(projectTicketsFilter);
         } else {
             const userTicketsFilter = allTickets?.filter(
-                (tickets) => tickets.ticketAuthor == cookies.Email
+                (tickets) => tickets.ticketAuthor === cookies.Email
             );
             setFilteredTickets(userTicketsFilter);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allTickets, selectedProject]);
 
     // Modal Controllers
@@ -320,7 +322,7 @@ const Tickets = () => {
     useEffect(() => {
         const onlyUnresolved = filteredTickets?.filter(
             (ticket: { status?: string }) => {
-                return ticket?.status != "resolved";
+                return ticket?.status !== "resolved";
             }
         );
         setUnresolvedTickets(onlyUnresolved);

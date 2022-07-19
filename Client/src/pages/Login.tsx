@@ -18,6 +18,7 @@ const Login = () => {
     const [registerPassword, setRegisterPassword] = useState<string>("");
     const [registerError, setRegisterError] = useState<string>("");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const handleRegister = async () => {

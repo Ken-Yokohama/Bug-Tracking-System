@@ -17,6 +17,7 @@ interface ProjectsModel {
 }
 
 const Home = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const dispatch = useDispatch();
@@ -72,13 +73,14 @@ const Home = () => {
                 },
             }
         );
-        if (response.data != "No Documents Found") {
+        if (response.data !== "No Documents Found") {
             dispatch(setProjects(response.data));
         }
     };
 
     useEffect(() => {
         getProjects();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Modal Controllers

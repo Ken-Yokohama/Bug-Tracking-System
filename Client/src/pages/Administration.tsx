@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { UserProfile } from "../components";
 
 const Administration = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const [users, setUsers] = useState<any>([{}]);
@@ -23,7 +24,7 @@ const Administration = () => {
                 },
             }
         );
-        if (response.data != "Not Admin") {
+        if (response.data !== "Not Admin") {
             setUsers(response.data);
             setIsAdmin(true);
         } else {
@@ -34,6 +35,7 @@ const Administration = () => {
 
     useEffect(() => {
         verifyAdmin();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -46,7 +48,7 @@ const Administration = () => {
                     },
                 }}
             ></Box>
-            {isAdmin == "checking" ? (
+            {isAdmin === "checking" ? (
                 <p>Verifying Admin...</p>
             ) : isAdmin ? (
                 <Box
