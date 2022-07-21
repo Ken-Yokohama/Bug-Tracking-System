@@ -14,6 +14,9 @@ var userSchema = new mongoose.Schema({
     role: {
         type: String,
     },
+    dateRegistered: {
+        type: String,
+    },
     // projects: [String],
 });
 
