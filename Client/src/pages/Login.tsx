@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Button, Link, Paper, TextField, FormHelperText } from "@mui/material";
-import { useCookies } from "react-cookie";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Button, Link, Paper, TextField, FormHelperText } from '@mui/material';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 const Login = () => {
     const [toggleLogin, setToggleLogin] = useState<Boolean>(true);
@@ -10,31 +10,37 @@ const Login = () => {
         setToggleLogin((prevValue) => !prevValue);
     };
 
-    const [loginEmail, setLoginEmail] = useState<string>("");
-    const [loginPassword, setLoginPassword] = useState<string>("");
-    const [loginError, setLoginError] = useState<string>("");
+    const [loginEmail, setLoginEmail] = useState<string>('');
+    const [loginPassword, setLoginPassword] = useState<string>('');
+    const [loginError, setLoginError] = useState<string>('');
 
-    const [registerEmail, setRegisterEmail] = useState<string>("");
-    const [registerPassword, setRegisterPassword] = useState<string>("");
-    const [registerError, setRegisterError] = useState<string>("");
+    const [registerEmail, setRegisterEmail] = useState<string>('');
+    const [registerPassword, setRegisterPassword] = useState<string>('');
+    const [registerError, setRegisterError] = useState<string>('');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
+    const [cookies, setCookie, removeCookie] = useCookies<any>(['user']);
 
     const handleRegister = async () => {
         try {
+            // Get IP Address
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+
+            // Register User
             const response = await axios.post(
                 (process.env.REACT_APP_LOCAL_API_URL ||
-                    "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                    "register",
+                    'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
+                    'register',
                 {
                     email: registerEmail,
                     password: registerPassword,
+                    ipAddress: ipData,
                 }
             );
 
-            setCookie("Email", response.data.email);
-            setCookie("AuthToken", response.data.token);
+            setCookie('Email', response.data.email);
+            setCookie('AuthToken', response.data.token);
 
             window.location.reload();
         } catch (err: any) {
@@ -50,16 +56,16 @@ const Login = () => {
         try {
             const response = await axios.post(
                 (process.env.REACT_APP_LOCAL_API_URL ||
-                    "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                    "login",
+                    'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
+                    'login',
                 {
                     email: loginEmail,
                     password: loginPassword,
                 }
             );
 
-            setCookie("Email", response.data.email);
-            setCookie("AuthToken", response.data.token);
+            setCookie('Email', response.data.email);
+            setCookie('AuthToken', response.data.token);
 
             window.location.reload();
         } catch (err: any) {
@@ -74,31 +80,31 @@ const Login = () => {
     return (
         <div
             style={{
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 backgroundImage:
-                    "url(https://media.istockphoto.com/photos/colorful-background-red-blue-and-yellow-orange-colors-abstract-modern-picture-id1332601848?b=1&k=20&m=1332601848&s=170667a&w=0&h=_zrnj0NBLjjuMfPvSqxEHn2-oVlExHhOPXP9HsOO_eI=)",
-                backgroundSize: "cover",
+                    'url(https://media.istockphoto.com/photos/colorful-background-red-blue-and-yellow-orange-colors-abstract-modern-picture-id1332601848?b=1&k=20&m=1332601848&s=170667a&w=0&h=_zrnj0NBLjjuMfPvSqxEHn2-oVlExHhOPXP9HsOO_eI=)',
+                backgroundSize: 'cover',
             }}
         >
             {toggleLogin && (
                 <Paper
                     elevation={3}
                     sx={{
-                        width: "70vw",
-                        maxWidth: "300px",
-                        height: "60vh",
-                        maxHeight: "350px",
-                        display: "flex",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        padding: "3rem",
-                        gap: "1rem",
+                        width: '70vw',
+                        maxWidth: '300px',
+                        height: '60vh',
+                        maxHeight: '350px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        padding: '3rem',
+                        gap: '1rem',
                     }}
                 >
-                    <h3 style={{ fontWeight: "100" }}>Login User</h3>
+                    <h3 style={{ fontWeight: '100' }}>Login User</h3>
                     <TextField
                         label="Email / Username"
                         variant="outlined"
@@ -110,7 +116,7 @@ const Login = () => {
                     <TextField
                         label="Password"
                         variant="outlined"
-                        type={"password"}
+                        type={'password'}
                         fullWidth
                         onChange={(e) => {
                             setLoginPassword(e.target.value);
@@ -120,7 +126,7 @@ const Login = () => {
                         Login
                     </Button>
                     <Link
-                        sx={{ cursor: "pointer", textAlign: "center" }}
+                        sx={{ cursor: 'pointer', textAlign: 'center' }}
                         onClick={handleToggleLogin}
                     >
                         Don't yet have an account? Register
@@ -134,18 +140,18 @@ const Login = () => {
                 <Paper
                     elevation={3}
                     sx={{
-                        width: "70vw",
-                        maxWidth: "300px",
-                        height: "60vh",
-                        maxHeight: "350px",
-                        display: "flex",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        padding: "3rem",
-                        gap: "1rem",
+                        width: '70vw',
+                        maxWidth: '300px',
+                        height: '60vh',
+                        maxHeight: '350px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        padding: '3rem',
+                        gap: '1rem',
                     }}
                 >
-                    <h3 style={{ fontWeight: "100" }}>Register User</h3>
+                    <h3 style={{ fontWeight: '100' }}>Register User</h3>
                     <TextField
                         label="Email / Username"
                         variant="outlined"
@@ -156,7 +162,7 @@ const Login = () => {
                     />
                     <TextField
                         label="Password"
-                        type={"password"}
+                        type={'password'}
                         variant="outlined"
                         fullWidth
                         onChange={(e) => {
@@ -167,7 +173,7 @@ const Login = () => {
                         Register
                     </Button>
                     <Link
-                        sx={{ cursor: "pointer", textAlign: "center" }}
+                        sx={{ cursor: 'pointer', textAlign: 'center' }}
                         onClick={handleToggleLogin}
                     >
                         Already have an account? Login
