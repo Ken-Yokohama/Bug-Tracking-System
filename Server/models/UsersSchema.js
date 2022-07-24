@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); // Erase if already required
+const mongoose = require('mongoose'); // Erase if already required
 
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema({
@@ -17,10 +17,13 @@ var userSchema = new mongoose.Schema({
     dateRegistered: {
         type: String,
     },
+    ipAddress: {
+        type: String,
+    },
     // projects: [String],
 });
 
 //Export the model
-UsersModel = mongoose.model("usersCollection", userSchema);
+UsersModel = mongoose.model('usersCollection', userSchema);
 
 module.exports = UsersModel;

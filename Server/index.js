@@ -16,7 +16,7 @@ const TicketsModel = require('./models/TicketsSchema');
 mongoose.connect(process.env.MONGODBURI);
 
 app.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, ipAddress } = req.body;
     const sanitizedEmail = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -44,6 +44,7 @@ app.post('/register', async (req, res) => {
                 password: hashedPassword,
                 role: 'developer',
                 dateRegistered: today,
+                ipAddress,
             };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token

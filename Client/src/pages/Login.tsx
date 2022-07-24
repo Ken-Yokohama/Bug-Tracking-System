@@ -35,7 +35,7 @@ const Login = () => {
                 {
                     email: registerEmail,
                     password: registerPassword,
-                    ipAddress: ipData,
+                    ipAddress: ipData.ip,
                 }
             );
 
