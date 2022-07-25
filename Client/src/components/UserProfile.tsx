@@ -6,9 +6,10 @@ interface props {
     email: string;
     role: string;
     dateRegistered?: string;
+    ipAddress?: string;
 }
 
-const UserProfile = ({ id, email, role, dateRegistered }: props) => {
+const UserProfile = ({ id, email, role, dateRegistered, ipAddress }: props) => {
     return (
         <Box>
             <Paper sx={{ padding: '1rem', margin: '1rem' }} elevation={3}>
@@ -19,8 +20,11 @@ const UserProfile = ({ id, email, role, dateRegistered }: props) => {
                 <p>
                     Registered:{' '}
                     <span style={{ color: 'orange' }}>
-                        {dateRegistered ? dateRegistered : 'No Date Saved'}
+                        {dateRegistered ? dateRegistered : 'No Date Found'}
                     </span>
+                </p>
+                <p>
+                    Ip: <b>{ipAddress ? ipAddress : 'No Address Found'}</b>
                 </p>
             </Paper>
         </Box>

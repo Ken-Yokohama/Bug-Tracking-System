@@ -71,6 +71,7 @@ const Administration = () => {
                                 email={user?.email}
                                 role={user?.role}
                                 dateRegistered={user?.dateRegistered}
+                                ipAddress={user?.ipAddress}
                             />
                         );
                     })}
