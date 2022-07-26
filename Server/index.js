@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 const UsersModel = require('./models/UsersSchema');
 const ProjectsModel = require('./models/ProjectsSchema');
 const TicketsModel = require('./models/TicketsSchema');
+const BannedIPsModel = require('./models/BannedIPSchema');
 
 mongoose.connect(process.env.MONGODBURI);
 
@@ -122,6 +123,23 @@ app.get('/isUserAuth', verifyJWT, (req, res) => {
 
 app.get('/pingServer', (req, res) => {
     res.send('Server Is Up!');
+});
+
+app.post('/userSecurity', async (req, res) => {
+    const bannedUser = await BannedIPsModel.findOne({
+        ip: req.body.ip,
+    });
+
+    if (bannedUser) {
+        console.log('Banned User Detected');
+        res.status(400).send('Invalid Credentials, You are Banned');
+        return;
+    }
+
+    if (!bannedUser) {
+        res.status(201).send('Valid Credentials');
+        return;
+    }
 });
 
 app.post('/createProject', verifyJWT, (req, res) => {
