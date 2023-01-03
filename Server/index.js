@@ -271,7 +271,7 @@ app.get('/getUsers', verifyJWT, (req, res) => {
         console.log('Not Admin');
         return;
     }
-    console.log('Admin Verified');
+    console.log('Admin Verified, Fetching Users');
 
     UsersModel.find({}, (err, docs) => {
         if (err) {
@@ -283,6 +283,21 @@ app.get('/getUsers', verifyJWT, (req, res) => {
                 res.json(docs);
             }
         }
+    });
+});
+
+app.post('/banUsers', verifyJWT, (req, res) => {
+    if (req.userId.role != 'admin') {
+        res.json('Not Admin');
+        console.log('Not Admin');
+        return;
+    }
+    console.log('Admin Verified, Banning User...');
+
+    const { ip } = req.body;
+
+    BannedIPsModel.create({ ip }).then((docs) => {
+        res.json('Succesfully Banned User');
     });
 });
 
