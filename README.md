@@ -36,3 +36,19 @@ This Bug Tracking System is a full-stack software issue management web applicati
 | Redux| State Management|
 | Typescript | Compiler and Error Detection |
 | Npm GH-Pages | Web Hosting |
+
+
+### How to run client locally
+  1. After cloning the repository... Navigate to the Client directory and Install the dependencies in the package.json using `npm i`
+  2. Add the environment variables found in [here](https://github.com/Ken-Yokohama/environment-variables) to your .env.development.local file at the root of the Client directory
+  3. Start the app using the script `npm start`
+  4. Note: Root of page is http://localhost:3000/Bug-Tracking-System
+  
+### How to run server locally
+  1. After cloning the repository... Navigate to the Client directory and Install the dependencies in the package.json using `npm i`
+  2. Add the environment variables found in [here](https://github.com/Ken-Yokohama/environment-variables) to your .env file at the root of the Client directory
+  3. Start the server using the script `npm run server`
+
+### Deploying the Client & Server
+  - Deploy the client by navigating to the client directory and use the script `npm run deploy`
+  - Server is automatically re-deployed when pushing a change on the Server directory
