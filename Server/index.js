@@ -286,7 +286,7 @@ app.get('/getUsers', verifyJWT, (req, res) => {
     });
 });
 
-app.post('/banUsers', verifyJWT, (req, res) => {
+app.post('/banUser', verifyJWT, (req, res) => {
     if (req.userId.role != 'admin') {
         res.json('Not Admin');
         console.log('Not Admin');
