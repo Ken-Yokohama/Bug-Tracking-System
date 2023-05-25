@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuOptions from "./MenuOptions";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedProject } from "../features/selectedProjectSlice";
 
 const SideNav = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const navigate = useNavigate();

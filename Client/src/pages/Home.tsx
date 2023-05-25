@@ -29,6 +29,12 @@ const Home = () => {
 
     // Add New Project
     const addNewProject = async () => {
+        if (!newProjectTitle || !newProjectDescription) {
+            setNewProjectErr("Please Complete All Fields");
+            return;
+        } else {
+            setNewProjectErr("");
+        }
         setLoadingButton(true);
         try {
             const response = await axios.post(
@@ -88,6 +94,8 @@ const Home = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
+        setNewProjectTitle("");
+        setNewProjectDescription("");
         setNewProjectErr("");
     };
 
@@ -206,6 +214,7 @@ const Home = () => {
                 >
                     <h3 style={{ fontWeight: "100" }}>Create New Project:</h3>
                     <TextField
+                        error={newProjectErr && !newProjectTitle}
                         id="standard-basic"
                         label="Title"
                         variant="standard"
@@ -214,6 +223,7 @@ const Home = () => {
                         }}
                     />
                     <TextField
+                        error={newProjectErr && !newProjectDescription}
                         id="standard-basic"
                         label="Description"
                         variant="standard"
