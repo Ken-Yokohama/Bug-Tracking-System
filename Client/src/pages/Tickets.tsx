@@ -533,11 +533,15 @@ const Tickets = () => {
                         <Box
                             sx={{
                                 padding: "1rem",
-                                backgroundColor: "orange",
+                                backgroundColor: "#F0781E",
                                 color: "white",
                             }}
                         >
-                            <h3>Ticket Info</h3>
+                            <h3>
+                                {selectedFilteredTicket?.title
+                                    ? selectedFilteredTicket?.title
+                                    : "Ticket Info"}
+                            </h3>
                         </Box>
                         <Box
                             sx={{
@@ -545,6 +549,7 @@ const Tickets = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: "1rem",
+                                padding: "1rem",
                             }}
                         >
                             <Box
@@ -552,17 +557,41 @@ const Tickets = () => {
                                     flex: "1",
                                     display: "grid",
                                     gridTemplateColumns: "1fr 1fr 2fr",
+                                    gap: "0.5rem",
                                 }}
                             >
                                 <Box>
-                                    <p>Title</p>
-                                    {selectedFilteredTicket?.title}
+                                    <p>Priority</p>
+                                    <b
+                                        style={{
+                                            color:
+                                                selectedFilteredTicket?.priority ===
+                                                "Low"
+                                                    ? "Green"
+                                                    : selectedFilteredTicket?.priority ===
+                                                      "Medium"
+                                                    ? "Orange"
+                                                    : "Red",
+                                        }}
+                                    >
+                                        {selectedFilteredTicket?.priority}
+                                    </b>
                                 </Box>
-                                <Box>
+                                <Box
+                                    sx={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
                                     <p>Author</p>
                                     {selectedFilteredTicket?.ticketAuthor}
                                 </Box>
-                                <Box>
+                                <Box
+                                    sx={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
                                     <p>Description</p>
                                     {selectedFilteredTicket?.description}
                                 </Box>
@@ -571,12 +600,22 @@ const Tickets = () => {
                                 sx={{
                                     flex: "1",
                                     display: "grid",
-                                    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                                    gridTemplateColumns: "1fr 1fr 2fr",
+                                    gap: "0.5rem",
                                 }}
                             >
                                 <Box>
+                                    <p>Type</p>
+                                    {selectedFilteredTicket?.type}
+                                </Box>
+                                <Box>
+                                    <p>Time (hrs)</p>
+                                    {selectedFilteredTicket?.estimatedTime}
+                                </Box>
+                                <Box>
                                     <p>Status</p>
                                     <Select
+                                        sx={{ width: "100%", height: "2rem" }}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         value={
@@ -595,18 +634,6 @@ const Tickets = () => {
                                         </MenuItem>
                                     </Select>
                                     {/* {selectedFilteredTicket?.status} */}
-                                </Box>
-                                <Box>
-                                    <p>Priority</p>
-                                    {selectedFilteredTicket?.priority}
-                                </Box>
-                                <Box>
-                                    <p>Type</p>
-                                    {selectedFilteredTicket?.type}
-                                </Box>
-                                <Box>
-                                    <p>Time (hrs)</p>
-                                    {selectedFilteredTicket?.estimatedTime}
                                 </Box>
                             </Box>
                             <Box sx={{ flex: "1" }}>
@@ -644,7 +671,7 @@ const Tickets = () => {
                         <Box
                             sx={{
                                 padding: "1rem",
-                                backgroundColor: "#0A95FF",
+                                backgroundColor: "#005096",
                                 color: "white",
                             }}
                         >
@@ -705,14 +732,13 @@ const Tickets = () => {
                 <Box
                     sx={{
                         bgcolor: "background.paper",
-                        border: "2px solid #000",
                         boxShadow: 24,
                         p: 4,
                         display: "flex",
                         flexDirection: "column",
                     }}
                 >
-                    <h3 style={{ fontWeight: "100" }}>Create New Ticket:</h3>
+                    <h3 style={{ color: "#005096" }}>Create New Ticket:</h3>
                     <Box
                         sx={{
                             display: "flex",
@@ -729,6 +755,7 @@ const Tickets = () => {
                             id="standard-basic"
                             label="Ticket Title"
                             variant="standard"
+                            inputProps={{ maxLength: 20 }}
                             onChange={(e) => {
                                 setTicketTitle(e.target.value);
                             }}
@@ -825,10 +852,26 @@ const Tickets = () => {
                     <LoadingButton
                         variant="contained"
                         loading={loadingButton}
-                        sx={{ marginTop: "0.5rem" }}
+                        sx={{
+                            marginTop: "0.5rem",
+                            backgroundColor: "#005096",
+                            ":hover": {
+                                backgroundColor: "#01447D",
+                            },
+                            borderRadius: "0",
+                            textTransform: "capitalize",
+                            width: "100%",
+                            "@media(min-width: 700px)": {
+                                alignSelf: "flex-end",
+                                marginTop: "1rem",
+                                // width: "166px",
+                                // width: "50%",
+                                height: "50px",
+                            },
+                        }}
                         onClick={addNewTicket}
                     >
-                        Add Ticket
+                        + Add Ticket
                     </LoadingButton>
                     {newTicketErr && (
                         <FormHelperText error>{newTicketErr}</FormHelperText>

@@ -223,6 +223,7 @@ const Home = () => {
                         id="standard-basic"
                         placeholder="Title"
                         variant="standard"
+                        inputProps={{ maxLength: 20 }}
                         onChange={(e) => {
                             setNewProjectTitle(e.target.value);
                         }}
