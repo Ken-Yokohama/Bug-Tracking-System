@@ -205,41 +205,93 @@ const Home = () => {
                 <Box
                     sx={{
                         bgcolor: "background.paper",
-                        border: "2px solid #000",
                         boxShadow: 24,
                         p: 4,
                         display: "flex",
                         flexDirection: "column",
+                        "@media(min-width: 700px)": {
+                            width: "60%",
+                            zIndex: "1",
+                        },
                     }}
                 >
-                    <h3 style={{ fontWeight: "100" }}>Create New Project:</h3>
+                    <h3 style={{ color: "#005096" }}>Create New Project:</h3>
                     <TextField
+                        sx={{ marginTop: "1rem" }}
                         error={newProjectErr && !newProjectTitle}
                         id="standard-basic"
-                        label="Title"
+                        placeholder="Title"
                         variant="standard"
                         onChange={(e) => {
                             setNewProjectTitle(e.target.value);
                         }}
                     />
                     <TextField
+                        sx={{ marginTop: "1rem" }}
                         error={newProjectErr && !newProjectDescription}
                         id="standard-basic"
-                        label="Description"
-                        variant="standard"
+                        placeholder="Description"
+                        variant="outlined"
+                        minRows={3}
                         multiline
                         onChange={(e) => {
                             setNewProjectDescription(e.target.value);
                         }}
                     />
-                    <LoadingButton
-                        variant="contained"
-                        loading={loadingButton}
-                        sx={{ marginTop: "0.5rem" }}
-                        onClick={addNewProject}
+                    <Box
+                        sx={{
+                            marginTop: "0.5rem",
+                            "@media(min-width: 700px)": {
+                                marginTop: "1rem",
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                gap: "1rem",
+                            },
+                        }}
                     >
-                        Add Project
-                    </LoadingButton>
+                        <Button
+                            variant="outlined"
+                            sx={{
+                                ":hover": {
+                                    backgroundColor: "#F0781E",
+                                    color: "white",
+                                    borderColor: "#F0781E",
+                                },
+                                color: "#F0781E",
+                                borderRadius: "0",
+                                textTransform: "capitalize",
+                                borderColor: "#F0781E",
+                                width: "166px",
+                                height: "50px",
+                                "@media(max-width: 700px)": {
+                                    display: "none",
+                                },
+                            }}
+                            onClick={handleClose}
+                        >
+                            Cancel
+                        </Button>
+                        <LoadingButton
+                            variant="contained"
+                            loading={loadingButton}
+                            sx={{
+                                backgroundColor: "#005096",
+                                ":hover": {
+                                    backgroundColor: "#01447D",
+                                },
+                                borderRadius: "0",
+                                textTransform: "capitalize",
+                                width: "100%",
+                                "@media(min-width: 700px)": {
+                                    width: "166px",
+                                    height: "50px",
+                                },
+                            }}
+                            onClick={addNewProject}
+                        >
+                            + Add Project
+                        </LoadingButton>
+                    </Box>
                     {newProjectErr && (
                         <FormHelperText error>{newProjectErr}</FormHelperText>
                     )}
