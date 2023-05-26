@@ -29,6 +29,7 @@ const Home = () => {
 
     // Add New Project
     const addNewProject = async () => {
+        // Validate All Fields
         if (!newProjectTitle || !newProjectDescription) {
             setNewProjectErr("Please Complete All Fields");
             return;

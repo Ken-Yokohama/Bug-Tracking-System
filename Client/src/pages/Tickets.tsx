@@ -73,6 +73,20 @@ const Tickets = () => {
 
     // Add New Project
     const addNewTicket = async () => {
+        // Validate All Fields
+        if (
+            !ticketTitle ||
+            !ticketDescription ||
+            !ticketProject ||
+            !priority ||
+            !type ||
+            !estimatedTime
+        ) {
+            setNewTicketErr("Please Complete All Fields");
+            return;
+        } else {
+            setNewTicketErr("");
+        }
         setLoadingButton(true);
         try {
             const response = await axios.post(
@@ -152,6 +166,12 @@ const Tickets = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
+        setTicketProject("");
+        setTicketTitle("");
+        setTicketDescription("");
+        setPriority("");
+        setType("");
+        setEstimatedTime(0);
         setNewTicketErr("");
     };
 
@@ -705,6 +725,7 @@ const Tickets = () => {
                         }}
                     >
                         <TextField
+                            error={newTicketErr && !ticketTitle}
                             id="standard-basic"
                             label="Ticket Title"
                             variant="standard"
@@ -713,6 +734,7 @@ const Tickets = () => {
                             }}
                         />
                         <TextField
+                            error={newTicketErr && !ticketDescription}
                             id="standard-basic"
                             label="Ticket Description"
                             variant="standard"
@@ -735,7 +757,11 @@ const Tickets = () => {
                                 }
                             }}
                             renderInput={(params: object) => (
-                                <TextField {...params} label="Choose Project" />
+                                <TextField
+                                    {...params}
+                                    label="Choose Project"
+                                    error={newTicketErr && !ticketProject}
+                                />
                             )}
                         />
                         <Autocomplete
@@ -756,6 +782,7 @@ const Tickets = () => {
                                 <TextField
                                     {...params}
                                     label="Choose Priority"
+                                    error={newTicketErr && !priority}
                                 />
                             )}
                         />
@@ -769,7 +796,11 @@ const Tickets = () => {
                                 setType(value);
                             }}
                             renderInput={(params: any) => (
-                                <TextField {...params} label="Type" />
+                                <TextField
+                                    {...params}
+                                    label="Type"
+                                    error={newTicketErr && !type}
+                                />
                             )}
                         />
                         <Autocomplete
@@ -782,7 +813,11 @@ const Tickets = () => {
                                 setEstimatedTime(value);
                             }}
                             renderInput={(params: any) => (
-                                <TextField {...params} label="Time Hrs" />
+                                <TextField
+                                    {...params}
+                                    label="Time Hrs"
+                                    error={newTicketErr && !estimatedTime}
+                                />
                             )}
                         />
                     </Box>
