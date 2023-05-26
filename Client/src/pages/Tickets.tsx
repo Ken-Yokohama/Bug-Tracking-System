@@ -281,16 +281,12 @@ const Tickets = () => {
                 },
             }
         );
+
         // Update Ticket Obj State
-        const updatedStatusObj = {
-            ...selectedFilteredTicket,
-            assignedDevs: [selectedFilteredTicket?.assignedDevs, newDev],
-        };
-        setSelectedFilteredTicket(updatedStatusObj);
-
-        getTickets();
-
-        console.log(response?.data);
+        setSelectedFilteredTicket((prevValue: any) => ({
+            ...prevValue,
+            assignedDevs: [...prevValue?.assignedDevs, newDev],
+        }));
     };
 
     const [newComment, setNewComment] = useState<string>("");
