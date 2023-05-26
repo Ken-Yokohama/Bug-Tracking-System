@@ -318,8 +318,9 @@ const Tickets = () => {
                 { author: cookies.Email, comment: newComment },
             ],
         };
-        setSelectedFilteredTicket(updatedStatusObj);
 
+        setSelectedFilteredTicket(updatedStatusObj);
+        setNewComment("");
         getTickets();
 
         // console.log(response?.data);
@@ -687,6 +688,7 @@ const Tickets = () => {
                                     type="text"
                                     placeholder="Add Comment"
                                     style={{ width: "100%" }}
+                                    value={newComment}
                                     onChange={(e) => {
                                         setNewComment(e.target.value);
                                     }}
