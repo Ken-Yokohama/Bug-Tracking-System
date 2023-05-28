@@ -1,61 +1,39 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Main } from './containers';
-import { setTickets } from './features/ticketsSlice';
-import { Loading, Login } from './pages';
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Main } from "./containers";
+import { setTickets } from "./features/ticketsSlice";
+import { Loading, Login } from "./pages";
+import { getAllTickets, pingServer, userSecurity, verifyIp } from "./service";
 
 function App() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(['user']);
+    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const [serverIsDown, setServerIsDown] = useState<Boolean>(true);
 
     const dispatch = useDispatch();
 
     const getTickets = async () => {
-        const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
-                'getAllTickets',
-            {
-                headers: {
-                    'x-access-token': cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
-        if (response.data !== 'No Documents Found') {
-            dispatch(setTickets(response.data));
+        const response = await getAllTickets();
+        if (response !== "No Documents Found") {
+            dispatch(setTickets(response));
         }
     };
 
     useEffect(() => {
-        const pingServer = async () => {
+        const checkServer = async () => {
             try {
                 // Check if Server is Up
-                const response = await axios.get(
-                    (process.env.REACT_APP_LOCAL_API_URL ||
-                        'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
-                        'pingServer'
-                );
+                const response = await pingServer();
                 if (response) {
                     // Check if User Is Banned
-                    const ipResponse = await fetch(
-                        'https://api.ipify.org?format=json'
-                    );
-                    const ipData = await ipResponse.json();
-                    const response = await axios.post(
-                        (process.env.REACT_APP_LOCAL_API_URL ||
-                            'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
-                            'userSecurity',
-                        {
-                            ip: ipData.ip,
-                        }
-                    );
-                    if (response.data === 'Valid Credentials') {
+                    const ipData = await verifyIp();
+                    const credentials = await userSecurity({
+                        ip: ipData.ip,
+                    });
+                    if (credentials === "Valid Credentials") {
                         // If User is Not Banned, Show the Page
                         setServerIsDown(false);
                     } else {
@@ -64,16 +42,16 @@ function App() {
                     }
                 }
             } catch (err) {
-                console.log('Server is Down try refreshing');
+                console.log("Server is Down try refreshing");
             }
         };
-        pingServer();
+        checkServer();
         getTickets();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="App" style={{ height: '100%' }}>
+        <div className="App" style={{ height: "100%" }}>
             <Routes>
                 <Route
                     path="/*"

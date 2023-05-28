@@ -1,25 +1,16 @@
 import { Box, Button, Paper, TextField } from "@mui/material";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useDispatch, useSelector } from "react-redux";
-import { setProjects } from "../features/allProjectsSlice";
-import { setSelectedProject } from "../features/selectedProjectSlice";
+import { setProjects } from "../../features/allProjectsSlice";
+import { setSelectedProject } from "../../features/selectedProjectSlice";
 import { useNavigate } from "react-router-dom";
-
-interface ProjectsModel {
-    title?: String;
-    description?: String;
-    creator?: String;
-}
+import { ProjectsModel } from "./interface";
+import { createProject, getAllProjects } from "./service";
 
 const Home = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
-
     const dispatch = useDispatch();
 
     const allProjects = useSelector(
@@ -37,23 +28,14 @@ const Home = () => {
             setNewProjectErr("");
         }
         setLoadingButton(true);
+        // Do Request
+
         try {
-            const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL ||
-                    "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                    "createProject",
-                {
-                    title: newProjectTitle,
-                    description: newProjectDescription,
-                },
-                {
-                    headers: {
-                        "x-access-token": cookies.AuthToken,
-                        email: cookies.Email,
-                    },
-                }
-            );
-            console.log(response?.data);
+            const response = await createProject({
+                title: newProjectTitle,
+                description: newProjectDescription,
+            });
+            console.log(response);
             setLoadingButton(false);
             getProjects();
             handleClose();
@@ -69,19 +51,9 @@ const Home = () => {
     };
 
     const getProjects = async () => {
-        const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "getAllProjects",
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
-        if (response.data !== "No Documents Found") {
-            dispatch(setProjects(response.data));
+        const response = await getAllProjects();
+        if (response !== "No Documents Found") {
+            dispatch(setProjects(response));
         }
     };
 

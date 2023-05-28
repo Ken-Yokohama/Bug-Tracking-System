@@ -7,35 +7,16 @@ import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useDispatch, useSelector } from "react-redux";
-import { setProjects } from "../features/allProjectsSlice";
+import { setProjects } from "../../features/allProjectsSlice";
 import Autocomplete from "@mui/material/Autocomplete";
-import { setTickets } from "../features/ticketsSlice";
+import { setTickets } from "../../features/ticketsSlice";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-
-interface ProjectsModel {
-    title?: String;
-    description?: String;
-    creator?: String;
-}
-
-interface TicketsModel {
-    project?: String;
-    title?: String;
-    description?: String;
-    ticketAuthor?: String;
-    priority?: String;
-    status?: String;
-    type?: String;
-    estimatedTime?: Number;
-    assignedDevs?: [String];
-    comments?: [
-        {
-            author: String;
-            comment: String;
-        }
-    ];
-}
+import { ProjectsModel } from "../dashboard/interface";
+import { TicketsModel } from "./interface";
+import { getAllTickets } from "../../service";
+import { addComment, addDevs, createTicket, updateStatus } from "./service";
+import { getAllProjects } from "../dashboard/service";
 
 const Tickets = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -57,21 +38,11 @@ const Tickets = () => {
     );
 
     const getTickets = async () => {
-        const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "getAllTickets",
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
-        dispatch(setTickets(response.data));
+        const response = await getAllTickets();
+        dispatch(setTickets(response));
     };
 
-    // Add New Project
+    // Add new Ticket
     const addNewTicket = async () => {
         // Validate All Fields
         if (
@@ -89,26 +60,15 @@ const Tickets = () => {
         }
         setLoadingButton(true);
         try {
-            const response = await axios.post(
-                (process.env.REACT_APP_LOCAL_API_URL ||
-                    "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                    "createTicket",
-                {
-                    title: ticketTitle,
-                    description: ticketDescription,
-                    project: ticketProject,
-                    priority: priority,
-                    type: type,
-                    estimatedTime: estimatedTime,
-                },
-                {
-                    headers: {
-                        "x-access-token": cookies.AuthToken,
-                        email: cookies.Email,
-                    },
-                }
-            );
-            console.log(response?.data);
+            const response = await createTicket({
+                title: ticketTitle,
+                description: ticketDescription,
+                project: ticketProject,
+                priority: priority,
+                type: type,
+                estimatedTime: estimatedTime,
+            });
+            console.log(response);
             setLoadingButton(false);
             getTickets();
             handleClose();
@@ -124,19 +84,9 @@ const Tickets = () => {
     };
 
     const getProjects = async () => {
-        const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "getAllProjects",
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
-        if (response.data !== "No Documents Found") {
-            dispatch(setProjects(response.data));
+        const response = await getAllProjects();
+        if (response !== "No Documents Found") {
+            dispatch(setProjects(response));
             setProjectOptions(
                 response.data.map((project: { title: string }) => {
                     return project.title;
@@ -233,21 +183,10 @@ const Tickets = () => {
     );
 
     const handleChangeStatus = async (e: { target: { value: string } }) => {
-        const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "updateStatus",
-            {
-                id: selectedFilteredTicket?._id,
-                status: e.target.value,
-            },
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
+        const response = await updateStatus({
+            id: selectedFilteredTicket?._id,
+            status: e.target.value,
+        });
         // Update Ticket Obj State
         const updatedStatusObj = {
             ...selectedFilteredTicket,
@@ -257,7 +196,7 @@ const Tickets = () => {
 
         getTickets();
 
-        // console.log(response?.data);
+        // console.log(response);
     };
 
     const [newDev, setNewDev] = useState<string>("");
@@ -266,27 +205,18 @@ const Tickets = () => {
         if (selectedFilteredTicket?.assignedDevs?.includes(newDev)) return;
         if (!selectedFilteredTicket._id) return;
 
-        const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "addDevs",
-            {
-                id: selectedFilteredTicket?._id,
-                newDev: newDev,
-            },
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
+        const response = await addDevs({
+            id: selectedFilteredTicket?._id,
+            newDev: newDev,
+        });
 
         // Update Ticket Obj State
         setSelectedFilteredTicket((prevValue: any) => ({
             ...prevValue,
             assignedDevs: [...prevValue?.assignedDevs, newDev],
         }));
+
+        setNewDev("");
     };
 
     const [newComment, setNewComment] = useState<string>("");
@@ -295,21 +225,10 @@ const Tickets = () => {
         if (!selectedFilteredTicket._id) return;
         console.log(selectedFilteredTicket?.comments);
 
-        const response = await axios.post(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                "https://ken-yokohama-mern-bug-tracker.onrender.com/") +
-                "addComment",
-            {
-                id: selectedFilteredTicket?._id,
-                comment: newComment,
-            },
-            {
-                headers: {
-                    "x-access-token": cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
+        const response = await addComment({
+            id: selectedFilteredTicket?._id,
+            comment: newComment,
+        });
         // Update Ticket Obj State
         const updatedStatusObj = {
             ...selectedFilteredTicket,
@@ -318,11 +237,12 @@ const Tickets = () => {
                 { author: cookies.Email, comment: newComment },
             ],
         };
-        setSelectedFilteredTicket(updatedStatusObj);
 
+        setSelectedFilteredTicket(updatedStatusObj);
+        setNewComment("");
         getTickets();
 
-        // console.log(response?.data);
+        // console.log(response);
     };
 
     const [resolvedFilterOn, setResolvedFilterOn] = useState<Boolean>(true);
@@ -637,6 +557,7 @@ const Tickets = () => {
                                     <p>Assigned Devs:</p>
                                     <Box sx={{ display: "flex" }}>
                                         <input
+                                            value={newDev}
                                             type="text"
                                             placeholder="Add Dev"
                                             style={{ width: "100%" }}
@@ -687,6 +608,7 @@ const Tickets = () => {
                                     type="text"
                                     placeholder="Add Comment"
                                     style={{ width: "100%" }}
+                                    value={newComment}
                                     onChange={(e) => {
                                         setNewComment(e.target.value);
                                     }}

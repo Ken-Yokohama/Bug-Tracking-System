@@ -1,31 +1,17 @@
-import { Box } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { UserProfile } from '../components';
+import { Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { UserProfile } from "../../components";
+import { getUsers } from "./service";
 
 const Administration = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(['user']);
-
     const [users, setUsers] = useState<any>([{}]);
 
-    const [isAdmin, setIsAdmin] = useState<Boolean | string>('checking');
+    const [isAdmin, setIsAdmin] = useState<Boolean | string>("checking");
 
     const verifyAdmin = async () => {
-        const response = await axios.get(
-            (process.env.REACT_APP_LOCAL_API_URL ||
-                'https://ken-yokohama-mern-bug-tracker.onrender.com/') +
-                'getUsers',
-            {
-                headers: {
-                    'x-access-token': cookies.AuthToken,
-                    email: cookies.Email,
-                },
-            }
-        );
-        if (response.data !== 'Not Admin') {
-            setUsers(response.data);
+        const response = await getUsers();
+        if (response !== "Not Admin") {
+            setUsers(response);
             setIsAdmin(true);
         } else {
             setUsers(null);
@@ -43,23 +29,23 @@ const Administration = () => {
             <Box
                 id="Padding for Menu"
                 sx={{
-                    '@media(max-width: 700px)': {
-                        height: '3.1rem',
+                    "@media(max-width: 700px)": {
+                        height: "3.1rem",
                     },
                 }}
             ></Box>
-            {isAdmin === 'checking' ? (
+            {isAdmin === "checking" ? (
                 <p>Verifying Admin...</p>
             ) : isAdmin ? (
                 <Box
                     sx={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr 1fr',
-                        '@media (max-width: 1000px)': {
-                            gridTemplateColumns: '1fr 1fr',
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        "@media (max-width: 1000px)": {
+                            gridTemplateColumns: "1fr 1fr",
                         },
-                        '@media (max-width: 700px)': {
-                            gridTemplateColumns: '1fr',
+                        "@media (max-width: 700px)": {
+                            gridTemplateColumns: "1fr",
                         },
                     }}
                 >
