@@ -215,6 +215,8 @@ const Tickets = () => {
             ...prevValue,
             assignedDevs: [...prevValue?.assignedDevs, newDev],
         }));
+
+        setNewDev("");
     };
 
     const [newComment, setNewComment] = useState<string>("");
@@ -555,6 +557,7 @@ const Tickets = () => {
                                     <p>Assigned Devs:</p>
                                     <Box sx={{ display: "flex" }}>
                                         <input
+                                            value={newDev}
                                             type="text"
                                             placeholder="Add Dev"
                                             style={{ width: "100%" }}
