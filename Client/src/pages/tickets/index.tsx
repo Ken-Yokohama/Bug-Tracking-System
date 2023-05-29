@@ -278,7 +278,7 @@ const Tickets = () => {
         useState<boolean>(false);
     const renderDescription = () => {
         if (
-            selectedFilteredTicket?.description.length > 35 &&
+            selectedFilteredTicket?.description.length > 45 &&
             !showFullDescription
         ) {
             return (
