@@ -101,12 +101,18 @@ const Login = () => {
                     }}
                 >
                     <h3 style={{ fontWeight: "100" }}>Login User</h3>
+
                     <TextField
                         label="Email / Username"
                         variant="outlined"
                         fullWidth
                         onChange={(e) => {
                             setLoginEmail(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleLogin();
+                            }
                         }}
                     />
                     <TextField
@@ -116,6 +122,11 @@ const Login = () => {
                         fullWidth
                         onChange={(e) => {
                             setLoginPassword(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleLogin();
+                            }
                         }}
                     />
                     <LoadingButton
@@ -170,6 +181,11 @@ const Login = () => {
                         onChange={(e) => {
                             setRegisterEmail(e.target.value);
                         }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleRegister();
+                            }
+                        }}
                     />
                     <TextField
                         label="Password"
@@ -178,6 +194,11 @@ const Login = () => {
                         fullWidth
                         onChange={(e) => {
                             setRegisterPassword(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleRegister();
+                            }
                         }}
                     />
                     <LoadingButton
