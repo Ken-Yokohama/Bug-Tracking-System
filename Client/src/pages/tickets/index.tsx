@@ -98,7 +98,7 @@ const Tickets = () => {
         if (response !== "No Documents Found") {
             dispatch(setProjects(response));
             setProjectOptions(
-                response.data.map((project: { title: string }) => {
+                response.map((project: { title: string }) => {
                     return project.title;
                 })
             );
