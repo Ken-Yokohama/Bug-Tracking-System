@@ -615,21 +615,25 @@ const Tickets = () => {
                                 />
                                 <button onClick={addNewComment}>Post</button>
                             </Box>
-                            {selectedFilteredTicket?.comments?.map(
-                                (
-                                    comment: {
-                                        author: string;
-                                        comment: string;
-                                    },
-                                    index: number
-                                ) => (
-                                    <Box key={index} sx={{ p: "1rem" }}>
-                                        <p>
-                                            {comment.author} - {comment.comment}
-                                        </p>
-                                    </Box>
-                                )
-                            )}
+                            {selectedFilteredTicket?.comments
+                                ?.slice(0)
+                                ?.reverse()
+                                ?.map(
+                                    (
+                                        comment: {
+                                            author: string;
+                                            comment: string;
+                                        },
+                                        index: number
+                                    ) => (
+                                        <Box key={index} sx={{ p: "1rem" }}>
+                                            <p>
+                                                {comment.author} -{" "}
+                                                {comment.comment}
+                                            </p>
+                                        </Box>
+                                    )
+                                )}
                         </Box>
                     </Paper>
                 </Box>

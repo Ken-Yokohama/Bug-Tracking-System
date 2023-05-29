@@ -13,7 +13,6 @@ const Loading = () => {
     const [complete1Minute, setComplete1Minute] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("Use Effect In Loading");
         const delay5Sec = setTimeout(() => {
             setComplete5Seconds(true);
         }, 5000);
