@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, Button, Checkbox, Paper, TextField } from "@mui/material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    InputAdornment,
+    Paper,
+    TextField,
+} from "@mui/material";
 import axios from "axios";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import { useCookies } from "react-cookie";
@@ -17,6 +24,9 @@ import { TicketsModel } from "./interface";
 import { getAllTickets } from "../../service";
 import { addComment, addDevs, createTicket, updateStatus } from "./service";
 import { getAllProjects } from "../dashboard/service";
+import PestControlIcon from "@mui/icons-material/PestControl";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import HardwareIcon from "@mui/icons-material/Hardware";
 
 const Tickets = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -264,6 +274,34 @@ const Tickets = () => {
         setUnresolvedTickets(onlyUnresolved);
     }, [filteredTickets]);
 
+    const [showFullDescription, setShowFullDescription] =
+        useState<boolean>(false);
+    const renderDescription = () => {
+        if (
+            selectedFilteredTicket?.description.length > 35 &&
+            !showFullDescription
+        ) {
+            return (
+                <>
+                    {selectedFilteredTicket?.description.substring(0, 30)}...
+                    <span
+                        onClick={() => {
+                            setShowFullDescription(true);
+                        }}
+                        style={{
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                        }}
+                    >
+                        See More
+                    </span>
+                </>
+            );
+        } else {
+            return selectedFilteredTicket?.description;
+        }
+    };
+
     return (
         <Box>
             <Box
@@ -353,6 +391,7 @@ const Tickets = () => {
                                           key={index}
                                           onClick={() => {
                                               setSelectedFilteredTicket(ticket);
+                                              setShowFullDescription(false);
                                           }}
                                           sx={{
                                               padding: "1rem",
@@ -454,127 +493,214 @@ const Tickets = () => {
                             }}
                         >
                             <h3>
-                                {selectedFilteredTicket?.title
-                                    ? selectedFilteredTicket?.title
-                                    : "Ticket Info"}
+                                Ticket Info
+                                {selectedFilteredTicket?.title &&
+                                    ` -  "${selectedFilteredTicket?.title}"`}
                             </h3>
                         </Box>
-                        <Box
-                            sx={{
-                                flex: "1",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "1rem",
-                                padding: "1rem",
-                            }}
-                        >
+                        {selectedFilteredTicket?.title && (
                             <Box
                                 sx={{
                                     flex: "1",
-                                    display: "grid",
-                                    gridTemplateColumns: "1fr 1fr 2fr",
-                                    gap: "0.5rem",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "1rem",
+                                    padding: "1rem",
                                 }}
                             >
-                                <Box>
-                                    <p>Priority</p>
-                                    <b
-                                        style={{
-                                            color:
-                                                selectedFilteredTicket?.priority ===
-                                                "Low"
-                                                    ? "Green"
-                                                    : selectedFilteredTicket?.priority ===
-                                                      "Medium"
-                                                    ? "Orange"
-                                                    : "Red",
+                                <Box
+                                    sx={{
+                                        flex: "1",
+                                        display: "grid",
+                                        gridTemplateColumns: "1fr 1fr 1fr",
+                                        gap: "0.5rem",
+                                    }}
+                                >
+                                    <Box>
+                                        <p>Priority</p>
+                                        <TextField
+                                            disabled={true}
+                                            sx={{
+                                                "& input:disabled": {
+                                                    height: "1rem",
+                                                    // backgroundColor: "#edeceb",
+                                                    WebkitTextFillColor:
+                                                        selectedFilteredTicket?.priority ===
+                                                        "Low"
+                                                            ? "Green"
+                                                            : selectedFilteredTicket?.priority ===
+                                                              "Medium"
+                                                            ? "Orange"
+                                                            : "Red",
+                                                    borderRadius: "4px",
+                                                    fontWeight: "bold",
+                                                },
+                                            }}
+                                            size={"small"}
+                                            value={
+                                                selectedFilteredTicket?.priority
+                                            }
+                                        />
+                                        {/* <b
+                                            style={{
+                                                color:
+                                                    selectedFilteredTicket?.priority ===
+                                                    "Low"
+                                                        ? "Green"
+                                                        : selectedFilteredTicket?.priority ===
+                                                          "Medium"
+                                                        ? "Orange"
+                                                        : "Red",
+                                            }}
+                                        >
+                                            {selectedFilteredTicket?.priority}
+                                        </b> */}
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
                                         }}
                                     >
-                                        {selectedFilteredTicket?.priority}
-                                    </b>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                    }}
-                                >
-                                    <p>Author</p>
-                                    {selectedFilteredTicket?.ticketAuthor}
-                                </Box>
-                                <Box
-                                    sx={{
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                    }}
-                                >
-                                    <p>Description</p>
-                                    {selectedFilteredTicket?.description}
-                                </Box>
-                            </Box>
-                            <Box
-                                sx={{
-                                    flex: "1",
-                                    display: "grid",
-                                    gridTemplateColumns: "1fr 1fr 2fr",
-                                    gap: "0.5rem",
-                                }}
-                            >
-                                <Box>
-                                    <p>Type</p>
-                                    {selectedFilteredTicket?.type}
-                                </Box>
-                                <Box>
-                                    <p>Time (hrs)</p>
-                                    {selectedFilteredTicket?.estimatedTime}
-                                </Box>
-                                <Box>
-                                    <p>Status</p>
-                                    <Select
-                                        sx={{ width: "100%", height: "2rem" }}
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={
-                                            selectedFilteredTicket?.status || ""
-                                        }
-                                        label="Age"
-                                        size="small"
-                                        onChange={handleChangeStatus}
-                                    >
-                                        <MenuItem value="new">new</MenuItem>
-                                        <MenuItem value={"in progress"}>
-                                            in progress
-                                        </MenuItem>
-                                        <MenuItem value={"resolved"}>
-                                            resolved
-                                        </MenuItem>
-                                    </Select>
-                                    {/* {selectedFilteredTicket?.status} */}
-                                </Box>
-                            </Box>
-                            <Box sx={{ flex: "1" }}>
-                                <Box sx={{ display: "flex", gap: "1rem" }}>
-                                    <p>Assigned Devs:</p>
-                                    <Box sx={{ display: "flex" }}>
-                                        <input
-                                            value={newDev}
-                                            type="text"
-                                            placeholder="Add Dev"
-                                            style={{ width: "100%" }}
-                                            onChange={(e) => {
-                                                setNewDev(e.target.value);
+                                        <p>Author</p>
+                                        <TextField
+                                            disabled={true}
+                                            sx={{
+                                                "& input:disabled": {
+                                                    height: "1rem",
+                                                    // backgroundColor: "#edeceb",
+                                                    WebkitTextFillColor: "grey",
+                                                    borderRadius: "4px",
+                                                },
                                             }}
+                                            size={"small"}
+                                            value={
+                                                selectedFilteredTicket?.ticketAuthor
+                                            }
                                         />
-                                        <button onClick={addNewDev}>Add</button>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                        }}
+                                    >
+                                        <p>Description</p>
+                                        {renderDescription()}
                                     </Box>
                                 </Box>
-                                {selectedFilteredTicket?.assignedDevs?.map(
-                                    (devs: string, index: number) => (
-                                        <p key={index}>{devs}</p>
-                                    )
-                                )}
+                                <Box
+                                    sx={{
+                                        flex: "1",
+                                        display: "grid",
+                                        gridTemplateColumns: "1fr 1fr 1fr",
+                                        gap: "0.5rem",
+                                    }}
+                                >
+                                    <Box>
+                                        <p>Type</p>
+                                        <TextField
+                                            disabled={true}
+                                            sx={{
+                                                "& input:disabled": {
+                                                    height: "1rem",
+                                                    // backgroundColor: "#edeceb",
+                                                    WebkitTextFillColor: "grey",
+                                                    borderRadius: "4px",
+                                                },
+                                            }}
+                                            size={"small"}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        {selectedFilteredTicket?.type ===
+                                                        "Issue" ? (
+                                                            <ConstructionIcon />
+                                                        ) : selectedFilteredTicket?.type ===
+                                                          "Bug Fix" ? (
+                                                            <PestControlIcon />
+                                                        ) : (
+                                                            <HardwareIcon fontSize="small" />
+                                                            // <></>
+                                                        )}
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                            value={selectedFilteredTicket?.type}
+                                        />
+                                    </Box>
+                                    <Box>
+                                        <p>Time (hrs)</p>
+                                        <TextField
+                                            disabled={true}
+                                            sx={{
+                                                "& input:disabled": {
+                                                    height: "1rem",
+                                                    // backgroundColor: "#edeceb",
+                                                    WebkitTextFillColor: "grey",
+                                                    borderRadius: "4px",
+                                                },
+                                            }}
+                                            size={"small"}
+                                            value={
+                                                selectedFilteredTicket?.estimatedTime
+                                            }
+                                        />
+                                    </Box>
+                                    <Box>
+                                        <p>Status</p>
+                                        <Select
+                                            sx={{
+                                                width: "100%",
+                                                height: "2rem",
+                                            }}
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={
+                                                selectedFilteredTicket?.status ||
+                                                ""
+                                            }
+                                            label="Age"
+                                            size="small"
+                                            onChange={handleChangeStatus}
+                                        >
+                                            <MenuItem value="new">new</MenuItem>
+                                            <MenuItem value={"in progress"}>
+                                                in progress
+                                            </MenuItem>
+                                            <MenuItem value={"resolved"}>
+                                                resolved
+                                            </MenuItem>
+                                        </Select>
+                                        {/* {selectedFilteredTicket?.status} */}
+                                    </Box>
+                                </Box>
+                                <Box sx={{ flex: "1" }}>
+                                    <Box sx={{ display: "flex", gap: "1rem" }}>
+                                        <p>Assigned Devs:</p>
+                                        <Box sx={{ display: "flex" }}>
+                                            <input
+                                                value={newDev}
+                                                type="text"
+                                                placeholder="Add Dev"
+                                                style={{ width: "100%" }}
+                                                onChange={(e) => {
+                                                    setNewDev(e.target.value);
+                                                }}
+                                            />
+                                            <button onClick={addNewDev}>
+                                                Add
+                                            </button>
+                                        </Box>
+                                    </Box>
+                                    {selectedFilteredTicket?.assignedDevs?.map(
+                                        (devs: string, index: number) => (
+                                            <p key={index}>{devs}</p>
+                                        )
+                                    )}
+                                </Box>
                             </Box>
-                        </Box>
+                        )}
                     </Paper>
                     <Paper
                         sx={{
@@ -594,47 +720,51 @@ const Tickets = () => {
                         >
                             <h3>Comments</h3>
                         </Box>
-                        <Box
-                            sx={{
-                                flex: "1 1 1px",
-                                overflowY: "scroll",
-                                "@media(max-width: 700px)": {
-                                    flex: "1 1 300px",
-                                },
-                            }}
-                        >
-                            <Box sx={{ display: "flex", padding: "1rem" }}>
-                                <input
-                                    type="text"
-                                    placeholder="Add Comment"
-                                    style={{ width: "100%" }}
-                                    value={newComment}
-                                    onChange={(e) => {
-                                        setNewComment(e.target.value);
-                                    }}
-                                />
-                                <button onClick={addNewComment}>Post</button>
+                        {selectedFilteredTicket?.title && (
+                            <Box
+                                sx={{
+                                    flex: "1 1 1px",
+                                    overflowY: "scroll",
+                                    "@media(max-width: 700px)": {
+                                        flex: "1 1 300px",
+                                    },
+                                }}
+                            >
+                                <Box sx={{ display: "flex", padding: "1rem" }}>
+                                    <input
+                                        type="text"
+                                        placeholder="Add Comment"
+                                        style={{ width: "100%" }}
+                                        value={newComment}
+                                        onChange={(e) => {
+                                            setNewComment(e.target.value);
+                                        }}
+                                    />
+                                    <button onClick={addNewComment}>
+                                        Post
+                                    </button>
+                                </Box>
+                                {selectedFilteredTicket?.comments
+                                    ?.slice(0)
+                                    ?.reverse()
+                                    ?.map(
+                                        (
+                                            comment: {
+                                                author: string;
+                                                comment: string;
+                                            },
+                                            index: number
+                                        ) => (
+                                            <Box key={index} sx={{ p: "1rem" }}>
+                                                <p>
+                                                    {comment.author} -{" "}
+                                                    {comment.comment}
+                                                </p>
+                                            </Box>
+                                        )
+                                    )}
                             </Box>
-                            {selectedFilteredTicket?.comments
-                                ?.slice(0)
-                                ?.reverse()
-                                ?.map(
-                                    (
-                                        comment: {
-                                            author: string;
-                                            comment: string;
-                                        },
-                                        index: number
-                                    ) => (
-                                        <Box key={index} sx={{ p: "1rem" }}>
-                                            <p>
-                                                {comment.author} -{" "}
-                                                {comment.comment}
-                                            </p>
-                                        </Box>
-                                    )
-                                )}
-                        </Box>
+                        )}
                     </Paper>
                 </Box>
             </Box>
