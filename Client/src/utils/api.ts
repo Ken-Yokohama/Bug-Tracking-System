@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getCookie = (name: string) => {
+export const getCookie = (name: string) => {
     var nameEQ = name + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
@@ -69,4 +69,30 @@ export const request: RequestFunction = async (url: string, options = {}) => {
         }
         throw JSON.parse(err);
     }
+};
+
+const clearCacheData = () => {
+    caches.keys().then((names) => {
+        names.forEach((name) => {
+            caches.delete(name);
+        });
+    });
+};
+
+const deleteAllCookies = () => {
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+};
+
+export const clearAllStorage = () => {
+    clearCacheData();
+    deleteAllCookies();
+    localStorage.clear();
+    sessionStorage.clear();
 };

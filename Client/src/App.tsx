@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Main } from "./containers";
 import { setTickets } from "./features/ticketsSlice";
 import { Loading, Login } from "./pages";
 import { getAllTickets, pingServer, userSecurity, verifyIp } from "./service";
+import { getCookie } from "./utils/api";
 
 function App() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
-
     const [serverIsDown, setServerIsDown] = useState<Boolean>(true);
 
     const dispatch = useDispatch();
@@ -58,7 +55,7 @@ function App() {
                     element={
                         serverIsDown ? (
                             <Loading />
-                        ) : cookies?.AuthToken ? (
+                        ) : getCookie("AuthToken") ? (
                             <Main />
                         ) : (
                             <Navigate to="/login" />
@@ -70,7 +67,7 @@ function App() {
                     element={
                         serverIsDown ? (
                             <Loading />
-                        ) : !cookies?.AuthToken ? (
+                        ) : !getCookie("AuthToken") ? (
                             <Login />
                         ) : (
                             <Navigate to="/" />

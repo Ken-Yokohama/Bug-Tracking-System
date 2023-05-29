@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { clearAllStorage } from "../../utils/api";
 import WaveBackground from "./wave-background";
 
 const Loading = () => {
@@ -18,6 +19,7 @@ const Loading = () => {
         }, 5000);
         const delay10Sec = setTimeout(() => {
             setComplete10Seconds(true);
+            clearAllStorage();
         }, 10000);
         const delay20Sec = setTimeout(() => {
             setComplete20Seconds(true);
@@ -31,6 +33,7 @@ const Loading = () => {
             clearTimeout(delay20Sec);
             clearTimeout(delay1Min);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
