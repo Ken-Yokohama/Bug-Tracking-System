@@ -731,15 +731,23 @@ const Tickets = () => {
                                 }}
                             >
                                 <Box sx={{ display: "flex", padding: "1rem" }}>
-                                    <input
-                                        type="text"
-                                        placeholder="Add Comment"
+                                    <form
                                         style={{ width: "100%" }}
-                                        value={newComment}
-                                        onChange={(e) => {
-                                            setNewComment(e.target.value);
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            addNewComment();
                                         }}
-                                    />
+                                    >
+                                        <input
+                                            type="text"
+                                            placeholder="Add Comment"
+                                            style={{ width: "100%" }}
+                                            value={newComment}
+                                            onChange={(e) => {
+                                                setNewComment(e.target.value);
+                                            }}
+                                        />
+                                    </form>
                                     <button onClick={addNewComment}>
                                         Post
                                     </button>
