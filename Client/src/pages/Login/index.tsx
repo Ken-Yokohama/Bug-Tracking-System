@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, Link, Paper, TextField, FormHelperText } from "@mui/material";
+import { Link, Paper, TextField, FormHelperText } from "@mui/material";
 import { useCookies } from "react-cookie";
 import { verifyIp } from "../../service";
 import { login, register } from "./service";
+import { LoadingButton } from "@mui/lab";
 
 const Login = () => {
     const [toggleLogin, setToggleLogin] = useState<Boolean>(true);
@@ -10,6 +11,8 @@ const Login = () => {
     const handleToggleLogin = () => {
         setToggleLogin((prevValue) => !prevValue);
     };
+
+    const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
 
     const [loginEmail, setLoginEmail] = useState<string>("");
     const [loginPassword, setLoginPassword] = useState<string>("");
@@ -23,6 +26,7 @@ const Login = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
 
     const handleRegister = async () => {
+        setIsButtonLoading(true);
         try {
             const ipData = await verifyIp();
 
@@ -44,9 +48,11 @@ const Login = () => {
                 setRegisterEmail(err.message);
             }
         }
+        setIsButtonLoading(false);
     };
 
     const handleLogin = async () => {
+        setIsButtonLoading(true);
         try {
             const response = await login({
                 email: loginEmail,
@@ -64,6 +70,7 @@ const Login = () => {
                 setLoginError(err.message);
             }
         }
+        setIsButtonLoading(false);
     };
 
     return (
@@ -111,9 +118,24 @@ const Login = () => {
                             setLoginPassword(e.target.value);
                         }}
                     />
-                    <Button variant="contained" onClick={handleLogin}>
-                        Login
-                    </Button>
+                    <LoadingButton
+                        variant="contained"
+                        loading={isButtonLoading}
+                        sx={{
+                            marginTop: "0.5rem",
+                            backgroundColor: "#005096",
+                            ":hover": {
+                                backgroundColor: "#01447D",
+                            },
+                            borderRadius: "0",
+                            textTransform: "capitalize",
+                            width: "100%",
+                            height: "50px",
+                        }}
+                        onClick={handleLogin}
+                    >
+                        LOGIN
+                    </LoadingButton>
                     <Link
                         sx={{ cursor: "pointer", textAlign: "center" }}
                         onClick={handleToggleLogin}
@@ -158,9 +180,24 @@ const Login = () => {
                             setRegisterPassword(e.target.value);
                         }}
                     />
-                    <Button variant="contained" onClick={handleRegister}>
-                        Register
-                    </Button>
+                    <LoadingButton
+                        variant="contained"
+                        loading={isButtonLoading}
+                        sx={{
+                            marginTop: "0.5rem",
+                            backgroundColor: "#F0781E",
+                            ":hover": {
+                                backgroundColor: "#d96d1c",
+                            },
+                            borderRadius: "0",
+                            textTransform: "capitalize",
+                            width: "100%",
+                            height: "50px",
+                        }}
+                        onClick={handleRegister}
+                    >
+                        REGISTER
+                    </LoadingButton>
                     <Link
                         sx={{ cursor: "pointer", textAlign: "center" }}
                         onClick={handleToggleLogin}
