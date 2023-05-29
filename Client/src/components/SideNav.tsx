@@ -1,7 +1,5 @@
 import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 import MenuOptions from "./MenuOptions";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
@@ -10,19 +8,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { setSelectedProject } from "../features/selectedProjectSlice";
+import { clearAllStorage } from "../utils/api";
 
 const SideNav = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
-
-    const navigate = useNavigate();
-
     const logout = () => {
-        // removeCookie("Email", { path: "/" });
-        // removeCookie("AuthToken", { path: "/" });
-        removeCookie("Email", cookies.Email);
-        removeCookie("AuthToken", cookies.AuthToken);
-        navigate("/tickets");
+        clearAllStorage();
         window.location.reload();
     };
 
