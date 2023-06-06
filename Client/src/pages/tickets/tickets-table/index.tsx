@@ -1,19 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, Button, Checkbox, Paper, TextField } from "@mui/material";
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import {
+    Box,
+    Button,
+    Checkbox,
+    Paper,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableContainer,
+    TablePagination,
+} from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import Modal from "@mui/material/Modal";
-import LoadingButton from "@mui/lab/LoadingButton";
-import FormHelperText from "@mui/material/FormHelperText";
-import { useDispatch, useSelector } from "react-redux";
-import Autocomplete from "@mui/material/Autocomplete";
+import { useSelector } from "react-redux";
 import { ProjectsModel } from "../../dashboard/interface";
 import { TicketsModel } from "../interface";
-import { getAllTickets } from "../../../service";
-import { createTicket } from "../service";
-import { setProjects } from "../../../features/allProjectsSlice";
-import { setTickets } from "../../../features/ticketsSlice";
-import { getAllProjects } from "../../dashboard/service";
+
 import AddTicketModal from "./add-ticket-modal";
 
 const TicketTable = ({
@@ -22,8 +25,7 @@ const TicketTable = ({
 }: any) => {
     const [cookies] = useCookies<any>(["user"]);
 
-    const dispatch = useDispatch();
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const allProjects = useSelector(
         (state: { allProjects: { value: [ProjectsModel] } }) =>
             state.allProjects.value
@@ -63,6 +65,7 @@ const TicketTable = ({
     const [resolvedFilterOn, setResolvedFilterOn] = useState<Boolean>(true);
 
     const handleResolvedFilter = () => {
+        setPage(0);
         setResolvedFilterOn((prevValue) => !prevValue);
     };
 
@@ -79,6 +82,21 @@ const TicketTable = ({
         setUnresolvedTickets(onlyUnresolved);
     }, [filteredTickets]);
 
+    // Pagination Controls
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     return (
         <>
             <Paper
@@ -91,6 +109,7 @@ const TicketTable = ({
                 }}
                 elevation={3}
             >
+                {/* Header */}
                 <Box
                     sx={{
                         display: "flex",
@@ -123,111 +142,138 @@ const TicketTable = ({
                         </Button>
                     </Box>
                 </Box>
-                <Box
+                {/* Table */}
+                <TableContainer>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow
+                                sx={{
+                                    th: {
+                                        backgroundColor: "#D3D3D3",
+                                        fontWeight: "bold",
+                                    },
+                                }}
+                            >
+                                <TableCell width={100}>Ticket Title</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell width={100} align="right">
+                                    Status
+                                </TableCell>
+                                <TableCell align="right">Date</TableCell>
+                                <TableCell align="right">Author</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody sx={{ overflowY: "scroll" }}>
+                            {resolvedFilterOn
+                                ? unresolvedTickets
+                                      .slice(
+                                          page * rowsPerPage,
+                                          page * rowsPerPage + rowsPerPage
+                                      )
+                                      .map(
+                                          (
+                                              ticket: TicketsModel,
+                                              index: number
+                                          ) => (
+                                              <TableRow
+                                                  hover
+                                                  key={index}
+                                                  style={{ cursor: "pointer" }}
+                                                  onClick={() => {
+                                                      setSelectedFilteredTicket(
+                                                          ticket
+                                                      );
+                                                      setShowFullDescription(
+                                                          false
+                                                      );
+                                                  }}
+                                              >
+                                                  <TableCell>
+                                                      {ticket.title}
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      {/* {ticket.description &&
+                                                  ticket.description?.length <
+                                                      999
+                                                      ? ticket.description
+                                                      : "long"} */}
+                                                      {ticket.description}
+                                                  </TableCell>
+                                                  <TableCell align="right">
+                                                      {ticket.status}
+                                                  </TableCell>
+                                                  <TableCell align="right">
+                                                      DD/MM
+                                                  </TableCell>
+                                                  <TableCell align="right">
+                                                      {ticket.ticketAuthor}
+                                                  </TableCell>
+                                              </TableRow>
+                                          )
+                                      )
+                                : filteredTickets
+                                      .slice(
+                                          page * rowsPerPage,
+                                          page * rowsPerPage + rowsPerPage
+                                      )
+                                      .map(
+                                          (
+                                              ticket: TicketsModel,
+                                              index: number
+                                          ) => (
+                                              <TableRow
+                                                  hover
+                                                  key={index}
+                                                  style={{ cursor: "pointer" }}
+                                                  onClick={() => {
+                                                      setSelectedFilteredTicket(
+                                                          ticket
+                                                      );
+                                                      setShowFullDescription(
+                                                          false
+                                                      );
+                                                  }}
+                                              >
+                                                  <TableCell>
+                                                      {ticket.title}
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      {ticket.description}
+                                                  </TableCell>
+                                                  <TableCell>
+                                                      {ticket.status}
+                                                  </TableCell>
+                                                  <TableCell>DD/MM</TableCell>
+                                                  <TableCell>
+                                                      {ticket.ticketAuthor}
+                                                  </TableCell>
+                                              </TableRow>
+                                          )
+                                      )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {/* Pagination */}
+                <TablePagination
                     sx={{
-                        padding: "1rem",
-                        backgroundColor: "#D3D3D3",
-                        display: "flex",
-                        gap: "1rem",
+                        minHeight: "3.3rem",
+                        marginTop: "auto",
                     }}
-                >
-                    <p style={{ flex: "1" }}>Ticket Title</p>
-                    <Box
-                        sx={{
-                            flex: "4",
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <p>Description</p>
-                        <p>Creator</p>
-                    </Box>
-                </Box>
-                <Box sx={{ height: "100%", overflowY: "scroll" }}>
-                    {resolvedFilterOn
-                        ? unresolvedTickets.map(
-                              (ticket: TicketsModel, index: number) => (
-                                  <Box
-                                      key={index}
-                                      onClick={() => {
-                                          setSelectedFilteredTicket(ticket);
-                                          setShowFullDescription(false);
-                                      }}
-                                      sx={{
-                                          padding: "1rem",
-                                          display: "flex",
-                                          gap: "1rem",
-                                          ":hover": {
-                                              backgroundColor: "#F0F0F0",
-                                              cursor: "pointer",
-                                          },
-                                      }}
-                                  >
-                                      <p style={{ flex: "1" }}>
-                                          {ticket.title}
-                                      </p>
-                                      <Box
-                                          sx={{
-                                              flex: "4",
-                                              display: "flex",
-                                              justifyContent: "space-between",
-                                          }}
-                                      >
-                                          <p
-                                              style={{
-                                                  wordBreak: "break-word",
-                                              }}
-                                          >
-                                              {ticket.description}
-                                          </p>
-                                          <p>{ticket.ticketAuthor}</p>
-                                      </Box>
-                                  </Box>
-                              )
-                          )
-                        : filteredTickets.map(
-                              (ticket: TicketsModel, index: number) => (
-                                  <Box
-                                      key={index}
-                                      onClick={() => {
-                                          setSelectedFilteredTicket(ticket);
-                                      }}
-                                      sx={{
-                                          padding: "1rem",
-                                          display: "flex",
-                                          gap: "1rem",
-                                          ":hover": {
-                                              backgroundColor: "#F0F0F0",
-                                              cursor: "pointer",
-                                          },
-                                      }}
-                                  >
-                                      <p style={{ flex: "1" }}>
-                                          {ticket.title}
-                                      </p>
-                                      <Box
-                                          sx={{
-                                              flex: "4",
-                                              display: "flex",
-                                              justifyContent: "space-between",
-                                          }}
-                                      >
-                                          <p
-                                              style={{
-                                                  wordBreak: "break-word",
-                                              }}
-                                          >
-                                              {ticket.description}
-                                          </p>
-                                          <p>{ticket.ticketAuthor}</p>
-                                      </Box>
-                                  </Box>
-                              )
-                          )}
-                </Box>
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={
+                        resolvedFilterOn
+                            ? unresolvedTickets.length
+                            : filteredTickets.length
+                    }
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </Paper>
-            {/* Modal */}
 
+            {/* Modal */}
             <AddTicketModal open={open} setOpen={setOpen} />
         </>
     );
