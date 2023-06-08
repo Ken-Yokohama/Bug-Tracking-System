@@ -35,7 +35,7 @@ const SideNav = () => {
                     position: "fixed",
                     backgroundColor: toggleMenu ? "white" : "none",
                     width: "100%",
-                    zIndex: "1",
+                    zIndex: "3",
                 },
             }}
         >
