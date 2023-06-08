@@ -106,6 +106,7 @@ const TicketTable = ({
                     maxHeight: "390px",
                     display: "flex",
                     flexDirection: "column",
+                    maxWidth: "calc(100vw - 2rem)",
                 }}
                 elevation={3}
             >
