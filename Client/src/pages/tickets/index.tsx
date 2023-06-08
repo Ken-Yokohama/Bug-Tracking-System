@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, InputAdornment, Paper, TextField } from "@mui/material";
+import { Box, InputAdornment, Paper, TextField, Button } from "@mui/material";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import HardwareIcon from "@mui/icons-material/Hardware";
 import TicketTable from "./tickets-table";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import AddTicketModal from "./tickets-table/add-ticket-modal";
 
 const Tickets = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -122,6 +123,9 @@ const Tickets = () => {
         }
     };
 
+    // Modal Controllers
+    const [open, setOpen] = React.useState(false);
+
     return (
         <Box>
             <Box
@@ -148,7 +152,8 @@ const Tickets = () => {
                         backgroundColor: "white",
                         display: "flex",
                         alignItems: "center",
-                        paddingLeft: "1rem",
+                        padding: "0 1rem",
+                        justifyContent: "space-between",
                         "@media(max-width: 700px)": {
                             height: "5rem",
                         },
@@ -164,6 +169,23 @@ const Tickets = () => {
                         <ConfirmationNumberIcon sx={{ marginRight: "1rem" }} />
                         My Tickets
                     </h2>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            marginTop: "0.5rem",
+                            backgroundColor: "#005096",
+                            ":hover": {
+                                backgroundColor: "#01447D",
+                            },
+                            borderRadius: "0",
+                            textTransform: "capitalize",
+                        }}
+                        onClick={() => {
+                            setOpen(true);
+                        }}
+                    >
+                        + Add Ticket
+                    </Button>
                 </Box>
                 <TicketTable
                     setSelectedFilteredTicket={setSelectedFilteredTicket}
@@ -243,20 +265,6 @@ const Tickets = () => {
                                                 selectedFilteredTicket?.priority
                                             }
                                         />
-                                        {/* <b
-                                            style={{
-                                                color:
-                                                    selectedFilteredTicket?.priority ===
-                                                    "Low"
-                                                        ? "Green"
-                                                        : selectedFilteredTicket?.priority ===
-                                                          "Medium"
-                                                        ? "Orange"
-                                                        : "Red",
-                                            }}
-                                        >
-                                            {selectedFilteredTicket?.priority}
-                                        </b> */}
                                     </Box>
                                     <Box
                                         sx={{
@@ -478,7 +486,7 @@ const Tickets = () => {
                     </Paper>
                 </Box>
             </Box>
-            {/* <button onClick={checkAuthenticated}>Test JWT</button> */}
+            <AddTicketModal open={open} setOpen={setOpen} />
         </Box>
     );
 };

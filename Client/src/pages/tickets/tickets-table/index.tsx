@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     Checkbox,
     Paper,
     Table,
@@ -16,8 +15,6 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { ProjectsModel } from "../../dashboard/interface";
 import { TicketsModel } from "../interface";
-
-import AddTicketModal from "./add-ticket-modal";
 
 const TicketTable = ({
     setSelectedFilteredTicket,
@@ -54,10 +51,6 @@ const TicketTable = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allTickets, selectedProject]);
-
-    // Modal Controllers
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
 
     // Filtered Ticket State
     const [filteredTickets, setFilteredTickets] = useState([{}]);
@@ -110,39 +103,6 @@ const TicketTable = ({
                 }}
                 elevation={3}
             >
-                {/* Header */}
-                {/* <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "1rem",
-                    }}
-                    onChange={handleResolvedFilter}
-                >
-                    <h3>My Tickets</h3>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1rem",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.25rem",
-                            }}
-                        >
-                            <Checkbox size="small" sx={{ padding: "0" }} />
-                            <p>Show Resolved Tickets</p>
-                        </Box>
-                        <Button size="small" onClick={handleOpen}>
-                            Add Ticket
-                        </Button>
-                    </Box>
-                </Box> */}
                 {/* Table */}
                 <TableContainer>
                     <Table stickyHeader>
@@ -243,11 +203,13 @@ const TicketTable = ({
                                                   <TableCell>
                                                       {ticket.description}
                                                   </TableCell>
-                                                  <TableCell>
+                                                  <TableCell align="right">
                                                       {ticket.status}
                                                   </TableCell>
-                                                  <TableCell>DD/MM</TableCell>
-                                                  <TableCell>
+                                                  <TableCell align="right">
+                                                      DD/MM
+                                                  </TableCell>
+                                                  <TableCell align="right">
                                                       {ticket.ticketAuthor}
                                                   </TableCell>
                                               </TableRow>
@@ -256,28 +218,66 @@ const TicketTable = ({
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* Pagination */}
-                <TablePagination
-                    sx={{
+                {/* Pagination Container */}
+                <div
+                    style={{
                         minHeight: "3.3rem",
                         marginTop: "auto",
+                        display: "flex",
+                        justifyContent: "flex-end",
                     }}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={
-                        resolvedFilterOn
-                            ? unresolvedTickets.length
-                            : filteredTickets.length
-                    }
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "1rem",
+                        }}
+                        onChange={handleResolvedFilter}
+                    >
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "1rem",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "0.25rem",
+                                }}
+                            >
+                                <p
+                                    style={{
+                                        fontSize: "14px",
+                                        fontFamily:
+                                            '"Roboto","Helvetica","Arial",sans-serif',
+                                    }}
+                                >
+                                    Show Resolved Tickets:
+                                </p>
+                                <Checkbox size="small" sx={{ padding: "0" }} />
+                            </Box>
+                        </Box>
+                    </Box>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={
+                            resolvedFilterOn
+                                ? unresolvedTickets.length
+                                : filteredTickets.length
+                        }
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </div>
             </Paper>
-
-            {/* Modal */}
-            <AddTicketModal open={open} setOpen={setOpen} />
         </>
     );
 };
