@@ -124,7 +124,7 @@ const Tickets = () => {
     return (
         <Box>
             <Box
-                id="Padding for Menu"
+                id="Padding for mobile menu-bar"
                 sx={{
                     "@media(max-width: 700px)": {
                         height: "3.1rem",
