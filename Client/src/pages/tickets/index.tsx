@@ -58,6 +58,8 @@ const Tickets = () => {
             newDev: newDev,
         });
 
+        await getTickets();
+
         // Update Ticket Obj State
         setSelectedFilteredTicket((prevValue: any) => ({
             ...prevValue,
@@ -385,7 +387,15 @@ const Tickets = () => {
                                         {/* {selectedFilteredTicket?.status} */}
                                     </Box>
                                 </Box>
-                                <Box sx={{ flex: "1" }}>
+                                <Box
+                                    sx={{
+                                        flex: "1",
+                                        "@media(min-width: 700px)": {
+                                            flex: "1 1 0",
+                                            overflowY: "scroll",
+                                        },
+                                    }}
+                                >
                                     <Box sx={{ display: "flex", gap: "1rem" }}>
                                         <p>Assigned Devs:</p>
                                         <Box sx={{ display: "flex" }}>
@@ -403,11 +413,19 @@ const Tickets = () => {
                                             </button>
                                         </Box>
                                     </Box>
-                                    {selectedFilteredTicket?.assignedDevs?.map(
-                                        (devs: string, index: number) => (
-                                            <p key={index}>{devs}</p>
-                                        )
-                                    )}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: "1rem",
+                                            flexWrap: "wrap",
+                                        }}
+                                    >
+                                        {selectedFilteredTicket?.assignedDevs?.map(
+                                            (devs: string, index: number) => (
+                                                <p key={index}>{devs}</p>
+                                            )
+                                        )}
+                                    </div>
                                 </Box>
                             </Box>
                         )}
