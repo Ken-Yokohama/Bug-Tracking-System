@@ -1,4 +1,16 @@
-import { Box, Button, Paper, TextField } from "@mui/material";
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
+    TextField,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -8,6 +20,7 @@ import { setProjects } from "../../features/allProjectsSlice";
 import { setSelectedProject } from "../../features/selectedProjectSlice";
 import { useNavigate } from "react-router-dom";
 import { ProjectsModel } from "./interface";
+import HomeIcon from "@mui/icons-material/Home";
 import { createProject, getAllProjects } from "./service";
 
 const Home = () => {
@@ -64,7 +77,6 @@ const Home = () => {
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
         setNewProjectTitle("");
@@ -86,8 +98,27 @@ const Home = () => {
         navigate("/tickets");
     };
 
+    // Pagination Controls
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     return (
-        <Box>
+        <Box
+            sx={{
+                backgroundColor: "#EFEFEF",
+            }}
+        >
             <Box
                 id="Padding for mobile menu-bar"
                 sx={{
@@ -96,8 +127,122 @@ const Home = () => {
                     },
                 }}
             ></Box>
-            <Paper sx={{ margin: "1rem" }} elevation={3}>
-                <Box
+            <Box
+                sx={{
+                    height: "6rem",
+                    backgroundColor: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "0 1rem",
+                    justifyContent: "space-between",
+                    "@media(max-width: 700px)": {
+                        height: "5rem",
+                    },
+                }}
+            >
+                <h2
+                    style={{
+                        color: "#005096",
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <HomeIcon sx={{ marginRight: "1rem" }} />
+                    Projects
+                </h2>
+                <Button
+                    variant="contained"
+                    sx={{
+                        marginTop: "0.5rem",
+                        backgroundColor: "#005096",
+                        ":hover": {
+                            backgroundColor: "#01447D",
+                        },
+                        borderRadius: "0",
+                        textTransform: "capitalize",
+                    }}
+                    onClick={() => {
+                        setOpen(true);
+                    }}
+                >
+                    + Add Project
+                </Button>
+            </Box>
+
+            <Paper
+                sx={{
+                    margin: "1rem",
+                    maxWidth: "calc(100vw - 2rem)",
+                }}
+                elevation={3}
+            >
+                <TableContainer
+                    sx={{
+                        height: "calc(100vh - 12rem)",
+                        "@media(max-width: 700px)": {
+                            height: "calc(100vh - 14rem)",
+                        },
+                    }}
+                >
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow
+                                sx={{
+                                    th: {
+                                        backgroundColor: "#01447D",
+                                        fontWeight: "bold",
+                                        fontSize: "1rem",
+                                        color: "white",
+                                    },
+                                }}
+                            >
+                                <TableCell width={100}>Project Title</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell align="right">Author</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {allProjects
+                                .slice(
+                                    page * rowsPerPage,
+                                    page * rowsPerPage + rowsPerPage
+                                )
+                                .map((project, index) => (
+                                    <TableRow
+                                        hover
+                                        key={index}
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => {
+                                            handleSelectedProject(
+                                                project.title
+                                            );
+                                        }}
+                                    >
+                                        <TableCell width={100}>
+                                            {project.title}
+                                        </TableCell>
+                                        <TableCell>
+                                            {project.description}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {project.creator}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={allProjects.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+
+                {/* <Box
                     sx={{
                         display: "flex",
                         alignItems: "center",
@@ -160,9 +305,8 @@ const Home = () => {
                             <p>{project.creator}</p>
                         </Box>
                     </Box>
-                ))}
+                ))} */}
             </Paper>
-            {/* <button onClick={checkAuthenticated}>Test JWT</button> */}
             {/* Modal */}
             <Modal
                 open={open}
@@ -263,7 +407,7 @@ const Home = () => {
                             }}
                             onClick={addNewProject}
                         >
-                            + Add Project
+                            Submit
                         </LoadingButton>
                     </Box>
                     {newProjectErr && (

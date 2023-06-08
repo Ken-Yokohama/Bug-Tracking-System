@@ -100,6 +100,9 @@ const TicketTable = ({
                     display: "flex",
                     flexDirection: "column",
                     maxWidth: "calc(100vw - 2rem)",
+                    "@media(max-width: 700px)": {
+                        maxHeight: "70vh",
+                    },
                 }}
                 elevation={3}
             >
@@ -248,6 +251,9 @@ const TicketTable = ({
                                     display: "flex",
                                     alignItems: "center",
                                     gap: "0.25rem",
+                                    "@media(max-width: 700px)": {
+                                        display: "none",
+                                    },
                                 }}
                             >
                                 <p

@@ -289,7 +289,7 @@ const AddTicketModal = ({ open, setOpen }: any) => {
                     }}
                     onClick={addNewTicket}
                 >
-                    + Add Ticket
+                    Submit
                 </LoadingButton>
                 {newTicketErr && (
                     <FormHelperText error>{newTicketErr}</FormHelperText>
