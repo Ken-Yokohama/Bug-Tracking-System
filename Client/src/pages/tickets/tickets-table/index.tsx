@@ -103,7 +103,7 @@ const TicketTable = ({
                 sx={{
                     margin: "1rem",
                     flex: "1",
-                    maxHeight: "390px",
+                    maxHeight: "40vh",
                     display: "flex",
                     flexDirection: "column",
                     maxWidth: "calc(100vw - 2rem)",
@@ -111,7 +111,7 @@ const TicketTable = ({
                 elevation={3}
             >
                 {/* Header */}
-                <Box
+                {/* <Box
                     sx={{
                         display: "flex",
                         alignItems: "center",
@@ -142,7 +142,7 @@ const TicketTable = ({
                             Add Ticket
                         </Button>
                     </Box>
-                </Box>
+                </Box> */}
                 {/* Table */}
                 <TableContainer>
                     <Table stickyHeader>
@@ -150,8 +150,10 @@ const TicketTable = ({
                             <TableRow
                                 sx={{
                                     th: {
-                                        backgroundColor: "#D3D3D3",
+                                        backgroundColor: "#01447D",
                                         fontWeight: "bold",
+                                        fontSize: "1rem",
+                                        color: "white",
                                     },
                                 }}
                             >

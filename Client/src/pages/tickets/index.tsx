@@ -12,6 +12,7 @@ import PestControlIcon from "@mui/icons-material/PestControl";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import HardwareIcon from "@mui/icons-material/Hardware";
 import TicketTable from "./tickets-table";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
 const Tickets = () => {
     const [cookies, setCookie, removeCookie] = useCookies<any>(["user"]);
@@ -138,8 +139,32 @@ const Tickets = () => {
                         flexDirection: "column",
                         height: "100%",
                     },
+                    backgroundColor: "#EFEFEF",
                 }}
             >
+                <Box
+                    sx={{
+                        height: "6rem",
+                        backgroundColor: "white",
+                        display: "flex",
+                        alignItems: "center",
+                        paddingLeft: "1rem",
+                        "@media(max-width: 700px)": {
+                            height: "5rem",
+                        },
+                    }}
+                >
+                    <h2
+                        style={{
+                            color: "#005096",
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <ConfirmationNumberIcon sx={{ marginRight: "1rem" }} />
+                        My Tickets
+                    </h2>
+                </Box>
                 <TicketTable
                     setSelectedFilteredTicket={setSelectedFilteredTicket}
                     setShowFullDescription={setShowFullDescription}
@@ -391,7 +416,7 @@ const Tickets = () => {
                         <Box
                             sx={{
                                 padding: "1rem",
-                                backgroundColor: "#005096",
+                                backgroundColor: "#E8AA42",
                                 color: "white",
                             }}
                         >
