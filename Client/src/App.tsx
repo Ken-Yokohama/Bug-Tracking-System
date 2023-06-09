@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Main } from "./containers";
 import { setTickets } from "./features/ticketsSlice";
 import { Loading, Login } from "./pages";
-import { getAllTickets, pingServer, userSecurity, verifyIp } from "./service";
+import { getAllTickets, pingServer, userSecurity } from "./service";
 import { getCookie } from "./utils/api";
 
 function App() {
@@ -26,10 +26,7 @@ function App() {
                 const response = await pingServer();
                 if (response) {
                     // Check if User Is Banned
-                    const ipData = await verifyIp();
-                    const credentials = await userSecurity({
-                        ip: ipData.ip,
-                    });
+                    const credentials = await userSecurity();
                     if (credentials === "Valid Credentials") {
                         // If User is Not Banned, Show the Page
                         setServerIsDown(false);

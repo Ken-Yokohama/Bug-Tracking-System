@@ -1,23 +1,24 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const { default: mongoose } = require('mongoose');
+const cors = require("cors");
+const { default: mongoose } = require("mongoose");
 app.use(express.json());
 app.use(cors());
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Models
-const UsersModel = require('./models/UsersSchema');
-const ProjectsModel = require('./models/ProjectsSchema');
-const TicketsModel = require('./models/TicketsSchema');
-const BannedIPsModel = require('./models/BannedIPSchema');
+const UsersModel = require("./models/UsersSchema");
+const ProjectsModel = require("./models/ProjectsSchema");
+const TicketsModel = require("./models/TicketsSchema");
+const BannedIPsModel = require("./models/BannedIPSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
-app.post('/register', async (req, res) => {
-    const { email, password, ipAddress } = req.body;
+app.post("/register", async (req, res) => {
+    const { email, password } = req.body;
+    const ipAddress = req.ip || req.connection.remoteAddress;
     const sanitizedEmail = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -25,46 +26,46 @@ app.post('/register', async (req, res) => {
         email: sanitizedEmail,
     }).then((doc) => {
         if (!doc) {
-            console.log('No User Found, Registering User...');
+            console.log("No User Found, Registering User...");
             // Get Current Date
             var today = new Date();
-            const dd = String(today.getDate()).padStart(2, '0');
-            const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            const dd = String(today.getDate()).padStart(2, "0");
+            const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
             const yyyy = today.getFullYear();
             const time =
                 today.getHours() +
-                ':' +
+                ":" +
                 today.getMinutes() +
-                ':' +
+                ":" +
                 today.getSeconds();
-            today = mm + '/' + dd + '/' + yyyy + ' - ' + time;
+            today = mm + "/" + dd + "/" + yyyy + " - " + time;
 
             // Create a User in MongoDb
             var user = {
                 email: sanitizedEmail,
                 password: hashedPassword,
-                role: 'developer',
+                role: "developer",
                 dateRegistered: today,
                 ipAddress,
             };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
                 const token = jwt.sign(docs.toJSON(), process.env.JWTSECRET, {
-                    expiresIn: '24hrs',
+                    expiresIn: "24hrs",
                 });
                 // Send Token + Email Object
                 res.status(201).json({ token, email: sanitizedEmail });
             });
         } else {
-            console.log('User Found');
+            console.log("User Found");
             return res
                 .status(409)
-                .send('User Already Registered, Please Login');
+                .send("User Already Registered, Please Login");
         }
     });
 });
 
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const sanitizedEmail = email.toLowerCase();
 
@@ -73,9 +74,9 @@ app.post('/login', async (req, res) => {
     });
 
     if (!user) {
-        console.log('No User Found');
+        console.log("No User Found");
         res.status(400).send(
-            'Invalid Credentials, Check Username and Password'
+            "Invalid Credentials, Check Username and Password"
         );
         return;
     }
@@ -83,31 +84,31 @@ app.post('/login', async (req, res) => {
     const correctPassword = await bcrypt.compare(password, user.password);
 
     if (!correctPassword) {
-        console.log('Wrong Password');
+        console.log("Wrong Password");
     }
 
     if (user && correctPassword) {
         const token = jwt.sign(user.toJSON(), process.env.JWTSECRET, {
-            expiresIn: '24h',
+            expiresIn: "24h",
             // expiresIn: "120",
         });
         res.status(201).json({ token, email: sanitizedEmail });
         return;
     }
-    res.status(400).send('Invalid Credentials, Check Username and Password');
+    res.status(400).send("Invalid Credentials, Check Username and Password");
 });
 
 // Middleware
 const verifyJWT = (req, res, next) => {
-    const token = req.headers['x-access-token'];
+    const token = req.headers["x-access-token"];
     if (!token) {
-        res.send('No Token Found!');
+        res.send("No Token Found!");
     } else {
         // When using a JWT Secret, just place it inside a process.env inside the server
         // Basically The authorization server verifies whether the JWT was issued by this authorization server
         jwt.verify(token, process.env.JWTSECRET, (err, decodedUser) => {
             if (err) {
-                res.json({ auth: false, message: 'U failed to authenticate' });
+                res.json({ auth: false, message: "U failed to authenticate" });
             } else {
                 req.userId = decodedUser;
                 next();
@@ -116,50 +117,53 @@ const verifyJWT = (req, res, next) => {
     }
 };
 
-app.get('/isUserAuth', verifyJWT, (req, res) => {
-    console.log('Logging In');
-    res.send('Yo, u are authenticated. Congrats!');
+app.get("/isUserAuth", verifyJWT, (req, res) => {
+    console.log("Logging In");
+    res.send("Yo, u are authenticated. Congrats!");
 });
 
-app.get('/pingServer', (req, res) => {
-    res.send('Server Is Up!');
+app.get("/pingServer", (req, res) => {
+    res.send("Server Is Up!");
 });
 
-app.post('/userSecurity', async (req, res) => {
+app.get("/userSecurity", async (req, res) => {
+    // Running Locally, the ip should return ::1
+    const ip = req.ip || req.connection.remoteAddress;
+
     const bannedUser = await BannedIPsModel.findOne({
-        ip: req.body.ip,
+        ip,
     });
 
     if (bannedUser) {
-        console.log('Banned User Detected');
-        res.status(400).send('Invalid Credentials, You are Banned');
+        console.log("Banned User Detected");
+        res.status(400).send("Invalid Credentials, You are Banned");
         return;
     }
 
     if (!bannedUser) {
-        res.status(201).send('Valid Credentials');
+        res.status(201).send("Valid Credentials");
         return;
     }
 });
 
-app.post('/createProject', verifyJWT, (req, res) => {
+app.post("/createProject", verifyJWT, (req, res) => {
     var project = {
         title: req.body.title,
         description: req.body.description,
         creator: req.userId.email,
     };
     ProjectsModel.create(project).then((docs) => {
-        res.json('Succesfully Added a New Project');
+        res.json("Succesfully Added a New Project");
     });
 });
 
-app.get('/getAllProjects', verifyJWT, (req, res) => {
+app.get("/getAllProjects", verifyJWT, (req, res) => {
     ProjectsModel.find({}, (err, docs) => {
         if (err) {
             console.log(`Error: ` + err);
         } else {
             if (docs.length === 0) {
-                res.json('No Documents Found');
+                res.json("No Documents Found");
             } else {
                 res.json(docs);
             }
@@ -167,40 +171,40 @@ app.get('/getAllProjects', verifyJWT, (req, res) => {
     });
 });
 
-app.post('/createTicket', verifyJWT, (req, res) => {
+app.post("/createTicket", verifyJWT, (req, res) => {
     var ticket = {
         title: req.body.title,
         description: req.body.description,
         project: req.body.project,
         ticketAuthor: req.userId.email,
         priority: req.body.priority,
-        status: 'new',
+        status: "new",
         type: req.body.type,
         estimatedTime: req.body.estimatedTime,
         assignedDevs: [],
         comments: [],
     };
     TicketsModel.create(ticket).then((docs) => {
-        res.json('Succesfully Added a New Ticket');
+        res.json("Succesfully Added a New Ticket");
     });
 });
 
-app.get('/getAllTickets', verifyJWT, (req, res) => {
+app.get("/getAllTickets", verifyJWT, (req, res) => {
     TicketsModel.find({}, (err, docs) => {
         if (err) {
             console.log(`Error: ` + err);
         } else {
             if (docs.length === 0) {
-                res.json('No Documents Found');
+                res.json("No Documents Found");
             } else {
-                console.log('Sending Tickets');
+                console.log("Sending Tickets");
                 res.json(docs);
             }
         }
     });
 });
 
-app.post('/updateStatus', verifyJWT, (req, res) => {
+app.post("/updateStatus", verifyJWT, (req, res) => {
     console.log(req.body.status);
     TicketsModel.updateOne(
         {
@@ -213,14 +217,14 @@ app.post('/updateStatus', verifyJWT, (req, res) => {
             if (err) {
                 console.log(`Error: ` + err);
             } else {
-                res.json('Succesfully Updated Status');
-                console.log('Succesfully Updated Status');
+                res.json("Succesfully Updated Status");
+                console.log("Succesfully Updated Status");
             }
         }
     );
 });
 
-app.post('/addDevs', verifyJWT, (req, res) => {
+app.post("/addDevs", verifyJWT, (req, res) => {
     console.log(req.body.newDev);
     TicketsModel.updateOne(
         {
@@ -231,14 +235,14 @@ app.post('/addDevs', verifyJWT, (req, res) => {
             if (err) {
                 console.log(`Error: ` + err);
             } else {
-                res.json('Succesfully Added Devs to Ticket');
-                console.log('Succesfully Added Devs to Ticket');
+                res.json("Succesfully Added Devs to Ticket");
+                console.log("Succesfully Added Devs to Ticket");
             }
         }
     );
 });
 
-app.post('/addComment', verifyJWT, (req, res) => {
+app.post("/addComment", verifyJWT, (req, res) => {
     console.log(req.body.comment);
     TicketsModel.updateOne(
         {
@@ -256,8 +260,8 @@ app.post('/addComment', verifyJWT, (req, res) => {
             if (err) {
                 console.log(`Error: ` + err);
             } else {
-                res.json('Succesfully Added Devs to Ticket');
-                console.log('Succesfully Added Devs to Ticket');
+                res.json("Succesfully Added Devs to Ticket");
+                console.log("Succesfully Added Devs to Ticket");
             }
         }
     );
@@ -265,20 +269,20 @@ app.post('/addComment', verifyJWT, (req, res) => {
 
 // req.userId.role;
 
-app.get('/getUsers', verifyJWT, (req, res) => {
-    if (req.userId.role != 'admin') {
-        res.json('Not Admin');
-        console.log('Not Admin');
+app.get("/getUsers", verifyJWT, (req, res) => {
+    if (req.userId.role != "admin") {
+        res.json("Not Admin");
+        console.log("Not Admin");
         return;
     }
-    console.log('Admin Verified, Fetching Users');
+    console.log("Admin Verified, Fetching Users");
 
     UsersModel.find({}, (err, docs) => {
         if (err) {
             console.log(`Error: ` + err);
         } else {
             if (docs.length === 0) {
-                res.json('No Documents Found');
+                res.json("No Documents Found");
             } else {
                 res.json(docs);
             }
@@ -286,21 +290,21 @@ app.get('/getUsers', verifyJWT, (req, res) => {
     });
 });
 
-app.post('/banUser', verifyJWT, (req, res) => {
-    if (req.userId.role != 'admin') {
-        res.json('Not Admin');
-        console.log('Not Admin');
+app.post("/banUser", verifyJWT, (req, res) => {
+    if (req.userId.role != "admin") {
+        res.json("Not Admin");
+        console.log("Not Admin");
         return;
     }
-    console.log('Admin Verified, Banning User...');
+    console.log("Admin Verified, Banning User...");
 
     const { ip } = req.body;
 
     BannedIPsModel.create({ ip }).then((docs) => {
-        res.json('Succesfully Banned User');
+        res.json("Succesfully Banned User");
     });
 });
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log('App listening on port ' + (process.env.PORT || '3001') + '!');
+    console.log("App listening on port " + (process.env.PORT || "3001") + "!");
 });

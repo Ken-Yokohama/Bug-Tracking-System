@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, Paper, TextField, FormHelperText } from "@mui/material";
 import { useCookies } from "react-cookie";
-import { verifyIp } from "../../service";
 import { login, register } from "./service";
 import { LoadingButton } from "@mui/lab";
 
@@ -28,13 +27,10 @@ const Login = () => {
     const handleRegister = async () => {
         setIsButtonLoading(true);
         try {
-            const ipData = await verifyIp();
-
             // Register User
             const response = await register({
                 email: registerEmail,
                 password: registerPassword,
-                ipAddress: ipData.ip,
             });
 
             setCookie("Email", response.email);
