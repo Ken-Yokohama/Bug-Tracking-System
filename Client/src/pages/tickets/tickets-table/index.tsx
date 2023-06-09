@@ -15,6 +15,7 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { ProjectsModel } from "../../dashboard/interface";
 import { TicketsModel } from "../interface";
+import { formatDate } from "../../../utils/api";
 
 const TicketTable = ({
     setSelectedFilteredTicket,
@@ -168,8 +169,15 @@ const TicketTable = ({
                                                   <TableCell align="right">
                                                       {ticket.status}
                                                   </TableCell>
-                                                  <TableCell align="right">
-                                                      DD/MM
+                                                  <TableCell
+                                                      width={75}
+                                                      align="right"
+                                                  >
+                                                      {ticket?.createdAt
+                                                          ? formatDate(
+                                                                ticket?.createdAt
+                                                            )
+                                                          : "--"}
                                                   </TableCell>
                                                   <TableCell align="right">
                                                       {ticket.ticketAuthor}
@@ -209,8 +217,15 @@ const TicketTable = ({
                                                   <TableCell align="right">
                                                       {ticket.status}
                                                   </TableCell>
-                                                  <TableCell align="right">
-                                                      DD/MM
+                                                  <TableCell
+                                                      width={75}
+                                                      align="right"
+                                                  >
+                                                      {ticket?.createdAt
+                                                          ? formatDate(
+                                                                ticket?.createdAt
+                                                            )
+                                                          : "--"}
                                                   </TableCell>
                                                   <TableCell align="right">
                                                       {ticket.ticketAuthor}
