@@ -153,7 +153,13 @@ app.get("/userSecurity", async (req, res) => {
     }
 });
 
-app.post("/createProject", verifyJWT, (req, res) => {
+const createProjectLimiter = rateLimit({
+    windowMs: 30 * 60 * 1000, // 30 Min
+    max: 5, // Max 5 Request Per 30 Min
+    message: "Too many projects created, please wait 30 minutes",
+});
+
+app.post("/createProject", verifyJWT, createProjectLimiter, (req, res) => {
     var project = {
         title: req.body.title,
         description: req.body.description,

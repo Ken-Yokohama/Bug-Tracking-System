@@ -67,6 +67,12 @@ export const request: RequestFunction = async (url: string, options = {}) => {
                 throw new Error("Check Internet Connectivity");
             }
         }
+        if (err?.response?.data) {
+            throw err.response.data;
+        }
+        if (err?.message) {
+            throw err.message;
+        }
         throw JSON.parse(err);
     }
 };
