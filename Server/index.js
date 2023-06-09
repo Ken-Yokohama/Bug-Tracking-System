@@ -7,6 +7,7 @@ app.use(cors());
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const rateLimit = require("express-rate-limit");
 
 // Models
 const UsersModel = require("./models/UsersSchema");
@@ -16,7 +17,13 @@ const BannedIPsModel = require("./models/BannedIPSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
-app.post("/register", async (req, res) => {
+const registerLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 Hour
+    max: 5, // Max 5 Request Per 1 Hour
+    message: "Too many accounts created, please try again after an hour",
+});
+
+app.post("/register", registerLimiter, async (req, res) => {
     const { email, password } = req.body;
     const ipAddress = req.ip || req.connection.remoteAddress;
     const sanitizedEmail = email.toLowerCase();
