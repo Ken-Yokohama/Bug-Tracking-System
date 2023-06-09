@@ -14,4 +14,6 @@ export interface TicketsModel {
             comment: String;
         }
     ];
+    createdAt?: Date;
+    updatedAt?: Date;
 }

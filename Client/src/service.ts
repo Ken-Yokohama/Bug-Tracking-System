@@ -14,6 +14,6 @@ export const verifyIp = async () => {
     return data;
 };
 
-export const userSecurity = async (body: object) => {
-    return request("userSecurity", { method: "POST", body });
+export const userSecurity = async () => {
+    return request("userSecurity");
 };
