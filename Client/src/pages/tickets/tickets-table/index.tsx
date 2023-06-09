@@ -179,7 +179,10 @@ const TicketTable = ({
                                                             )
                                                           : "--"}
                                                   </TableCell>
-                                                  <TableCell align="right">
+                                                  <TableCell
+                                                      width={75}
+                                                      align="right"
+                                                  >
                                                       {ticket.ticketAuthor}
                                                   </TableCell>
                                               </TableRow>
