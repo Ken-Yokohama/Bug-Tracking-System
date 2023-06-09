@@ -8,6 +8,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const rateLimit = require("express-rate-limit");
+const ip = require("ip");
 
 // Models
 const UsersModel = require("./models/UsersSchema");
@@ -25,7 +26,7 @@ const registerLimiter = rateLimit({
 
 app.post("/register", registerLimiter, async (req, res) => {
     const { email, password } = req.body;
-    const ipAddress = req.ip || req.connection.remoteAddress;
+    const ipAddress = ip.address();
     const sanitizedEmail = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -134,11 +135,10 @@ app.get("/pingServer", (req, res) => {
 });
 
 app.get("/userSecurity", async (req, res) => {
-    // Running Locally, the ip should return ::1
-    const ip = req.ip || req.connection.remoteAddress;
+    const ipAddress = ip.address();
 
     const bannedUser = await BannedIPsModel.findOne({
-        ip,
+        ip: ipAddress,
     });
 
     if (bannedUser) {
