@@ -184,7 +184,13 @@ app.get("/getAllProjects", verifyJWT, (req, res) => {
     });
 });
 
-app.post("/createTicket", verifyJWT, (req, res) => {
+const createTicketLimiter = rateLimit({
+    windowMs: 30 * 60 * 1000, // 30 Min
+    max: 10, // Max 10 Request Per 30 Min
+    message: "Too many tickets created, please wait 30 minutes",
+});
+
+app.post("/createTicket", verifyJWT, createTicketLimiter, (req, res) => {
     var ticket = {
         title: req.body.title,
         description: req.body.description,
