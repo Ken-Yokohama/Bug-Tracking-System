@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { SideNav } from "../components";
-import { Administration, Projects, Tickets } from "../pages";
+import { Administration, Dashboard, Projects, Tickets } from "../pages";
 
 const Main = () => {
     return (
@@ -28,7 +28,7 @@ const Main = () => {
             >
                 <SideNav />
                 <Routes>
-                    <Route path="/" element={<Projects />} />
+                    <Route path="/" element={<Dashboard />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/tickets" element={<Tickets />} />
                     <Route
