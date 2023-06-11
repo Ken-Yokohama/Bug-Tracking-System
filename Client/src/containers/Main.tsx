@@ -54,15 +54,26 @@ const Main = () => {
                 }}
             >
                 <SideNav />
-                <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/projects" element={<Projects />} />
-                    <Route path="/tickets" element={<Tickets />} />
-                    <Route
-                        path="/administration"
-                        element={<Administration />}
-                    />
-                </Routes>
+                <Box>
+                    <Box
+                        id="Padding for mobile menu-bar"
+                        sx={{
+                            margin: 0,
+                            "@media(max-width: 700px)": {
+                                height: "3.1rem",
+                            },
+                        }}
+                    ></Box>
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/projects" element={<Projects />} />
+                        <Route path="/tickets" element={<Tickets />} />
+                        <Route
+                            path="/administration"
+                            element={<Administration />}
+                        />
+                    </Routes>
+                </Box>
             </Box>
         </Box>
     );

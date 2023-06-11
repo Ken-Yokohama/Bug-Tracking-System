@@ -115,14 +115,6 @@ const Projects = () => {
             }}
         >
             <Box
-                id="Padding for mobile menu-bar"
-                sx={{
-                    "@media(max-width: 700px)": {
-                        height: "3.1rem",
-                    },
-                }}
-            ></Box>
-            <Box
                 sx={{
                     height: "6rem",
                     backgroundColor: "white",
