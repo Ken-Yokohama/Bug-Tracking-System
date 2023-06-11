@@ -9,7 +9,7 @@ import { getAllTickets } from "../../../service";
 import { createTicket } from "../service";
 import { setProjects } from "../../../features/allProjectsSlice";
 import { setTickets } from "../../../features/ticketsSlice";
-import { getAllProjects } from "../../dashboard/service";
+import { getAllProjects } from "../../projects/service";
 
 const AddTicketModal = ({ open, setOpen }: any) => {
     const dispatch = useDispatch();

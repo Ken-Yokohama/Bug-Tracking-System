@@ -13,7 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
-import { ProjectsModel } from "../../dashboard/interface";
+import { ProjectsModel } from "../../projects/interface";
 import { TicketsModel } from "../interface";
 import { formatDate } from "../../../utils/api";
 

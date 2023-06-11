@@ -82,6 +82,12 @@ const SideNav = () => {
                     Icon={HomeTwoToneIcon}
                     setToggleMenu={setToggleMenu}
                 />
+                <MenuOptions
+                    label="Projects"
+                    link="/projects"
+                    Icon={HomeTwoToneIcon}
+                    setToggleMenu={setToggleMenu}
+                />
                 <Box onClick={handleTicketMenu}>
                     <MenuOptions
                         label="Tickets"

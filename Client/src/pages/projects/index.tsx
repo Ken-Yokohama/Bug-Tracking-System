@@ -23,7 +23,7 @@ import { ProjectsModel } from "./interface";
 import HomeIcon from "@mui/icons-material/Home";
 import { createProject, getAllProjects } from "./service";
 
-const Home = () => {
+const Projects = () => {
     const dispatch = useDispatch();
 
     const allProjects = useSelector(
@@ -419,4 +419,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Projects;
