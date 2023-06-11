@@ -96,8 +96,9 @@ const TicketTable = ({
             <Paper
                 sx={{
                     margin: "1rem",
+                    marginBottom: "0",
                     flex: "1",
-                    maxHeight: "40vh",
+                    maxHeight: "42vh",
                     display: "flex",
                     flexDirection: "column",
                     maxWidth: "calc(100vw - 2rem)",
