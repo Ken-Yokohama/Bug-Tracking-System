@@ -1,6 +1,7 @@
 import { Box, Paper } from "@mui/material";
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
+import RecentActivity from "./recent-activity";
 
 const Dashboard = () => {
     return (
@@ -40,26 +41,10 @@ const Dashboard = () => {
                 </h2>
             </Box>
             {/* Top Container */}
-            <Paper
-                sx={{
-                    margin: "1rem",
-                    // marginBottom: "0",
-                    flex: "1",
-                    display: "flex",
-                    flexDirection: "column",
-                    // maxHeight: "50vh",
-                    maxWidth: "calc(100vw - 2rem)",
-                    "@media(max-width: 700px)": {
-                        maxHeight: "70vh",
-                    },
-                }}
-                elevation={3}
-            >
-                <div style={{ height: "100%" }}>Container Top</div>
-            </Paper>
+            <RecentActivity />
             {/* Bottom Container */}
             {/* Dont forget to Adjust marginBottom & Max Height of Top Container */}
-            {/* <Box
+            <Box
                 sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -92,7 +77,7 @@ const Dashboard = () => {
                 >
                     Container Bottom Right
                 </Paper>
-            </Box> */}
+            </Box>
         </Box>
     );
 };

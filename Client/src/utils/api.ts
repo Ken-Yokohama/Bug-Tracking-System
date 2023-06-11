@@ -106,7 +106,8 @@ export const clearAllStorage = () => {
 export const formatDate = (rawDate: Date) => {
     const date = new Date(rawDate);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
+    // const month = String(date.getMonth() + 1).padStart(2, "0");
+    const month = date.toLocaleDateString(undefined, { month: "short" });
     const day = String(date.getDate()).padStart(2, "0");
-    return `${day}-${month}-${year}`;
+    return `${month} ${day} ${year}`;
 };

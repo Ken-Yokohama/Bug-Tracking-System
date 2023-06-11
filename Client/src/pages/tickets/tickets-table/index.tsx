@@ -171,7 +171,7 @@ const TicketTable = ({
                                                       {ticket.status}
                                                   </TableCell>
                                                   <TableCell
-                                                      width={75}
+                                                      width={100}
                                                       align="right"
                                                   >
                                                       {ticket?.createdAt
@@ -222,7 +222,7 @@ const TicketTable = ({
                                                       {ticket.status}
                                                   </TableCell>
                                                   <TableCell
-                                                      width={75}
+                                                      width={100}
                                                       align="right"
                                                   >
                                                       {ticket?.createdAt
@@ -231,7 +231,10 @@ const TicketTable = ({
                                                             )
                                                           : "--"}
                                                   </TableCell>
-                                                  <TableCell align="right">
+                                                  <TableCell
+                                                      width={75}
+                                                      align="right"
+                                                  >
                                                       {ticket.ticketAuthor}
                                                   </TableCell>
                                               </TableRow>

@@ -4,8 +4,8 @@ export interface TicketsModel {
     description?: String;
     ticketAuthor?: String;
     priority?: String;
-    status?: String;
-    type?: String;
+    status?: "new" | "in progress" | "resolved";
+    type?: "Issue" | "Bug Fix" | "Feature Request";
     estimatedTime?: Number;
     assignedDevs?: [String];
     comments?: [
