@@ -2,6 +2,7 @@ import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import MenuOptions from "./MenuOptions";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
+import AssignmentTwoToneIcon from "@mui/icons-material/AssignmentTwoTone";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
 import AdminPanelSettingsTwoToneIcon from "@mui/icons-material/AdminPanelSettingsTwoTone";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -85,7 +86,7 @@ const SideNav = () => {
                 <MenuOptions
                     label="Projects"
                     link="/projects"
-                    Icon={HomeTwoToneIcon}
+                    Icon={AssignmentTwoToneIcon}
                     setToggleMenu={setToggleMenu}
                 />
                 <Box onClick={handleTicketMenu}>

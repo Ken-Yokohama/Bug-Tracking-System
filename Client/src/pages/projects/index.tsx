@@ -20,7 +20,7 @@ import { setProjects } from "../../features/allProjectsSlice";
 import { setSelectedProject } from "../../features/selectedProjectSlice";
 import { useNavigate } from "react-router-dom";
 import { ProjectsModel } from "./interface";
-import HomeIcon from "@mui/icons-material/Home";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { createProject, getAllProjects } from "./service";
 
 const Projects = () => {
@@ -147,7 +147,7 @@ const Projects = () => {
                         alignItems: "center",
                     }}
                 >
-                    <HomeIcon sx={{ marginRight: "1rem" }} />
+                    <AssignmentIcon sx={{ marginRight: "1rem" }} />
                     Projects
                 </h2>
                 <Button
