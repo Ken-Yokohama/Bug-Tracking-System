@@ -11,7 +11,7 @@ import {
     TableRow,
     TextField,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -69,14 +69,6 @@ const Projects = () => {
             dispatch(setProjects(response));
         }
     };
-
-    useEffect(() => {
-        // Checks if first object is empty (DEFAULT)
-        if (Object.keys(allProjects[0]).length === 0) {
-            getProjects();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // Modal Controllers
     const [open, setOpen] = React.useState(false);

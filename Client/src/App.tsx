@@ -1,23 +1,12 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Main } from "./containers";
-import { setTickets } from "./features/ticketsSlice";
 import { Loading, Login } from "./pages";
-import { getAllTickets, pingServer, userSecurity } from "./service";
+import { pingServer, userSecurity } from "./service";
 import { getCookie } from "./utils/api";
 
 function App() {
     const [serverIsDown, setServerIsDown] = useState<Boolean>(true);
-
-    const dispatch = useDispatch();
-
-    const getTickets = async () => {
-        const response = await getAllTickets();
-        if (response !== "No Documents Found") {
-            dispatch(setTickets(response));
-        }
-    };
 
     useEffect(() => {
         const checkServer = async () => {
@@ -40,7 +29,6 @@ function App() {
             }
         };
         checkServer();
-        getTickets();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

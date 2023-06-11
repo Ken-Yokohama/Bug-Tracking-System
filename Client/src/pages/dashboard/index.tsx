@@ -52,11 +52,11 @@ const Dashboard = () => {
                 <Paper
                     sx={{
                         margin: "1rem",
-                        marginBottom: "0",
+                        // marginBottom: "0",
                         flex: "1",
                         display: "flex",
                         flexDirection: "column",
-                        maxHeight: "50vh",
+                        // maxHeight: "50vh",
                         maxWidth: "calc(100vw - 2rem)",
                         "@media(max-width: 700px)": {
                             maxHeight: "70vh",
@@ -64,10 +64,11 @@ const Dashboard = () => {
                     }}
                     elevation={3}
                 >
-                    <div style={{ height: "500px" }}>Container Top</div>
+                    <div style={{ height: "100%" }}>Container Top</div>
                 </Paper>
                 {/* Bottom Container */}
-                <Box
+                {/* Dont forget to Adjust marginBottom & Max Height of Top Container */}
+                {/* <Box
                     sx={{
                         "@media(min-width: 700px)": {
                             display: "flex",
@@ -97,7 +98,7 @@ const Dashboard = () => {
                     >
                         Container Bottom Right
                     </Paper>
-                </Box>
+                </Box> */}
             </Box>
         </Box>
     );

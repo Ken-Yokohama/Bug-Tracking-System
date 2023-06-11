@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material";
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent } from "react";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllTickets } from "../../../service";
 import { createTicket } from "../service";
-import { setProjects } from "../../../features/allProjectsSlice";
 import { setTickets } from "../../../features/ticketsSlice";
-import { getAllProjects } from "../../projects/service";
 import { ProjectsModel } from "../../projects/interface";
 
 const AddTicketModal = ({ open, setOpen }: any) => {
@@ -24,21 +22,6 @@ const AddTicketModal = ({ open, setOpen }: any) => {
     const projectOptions = allProjects.map((project: any) => {
         return project.title;
     });
-
-    const getProjects = async () => {
-        const response = await getAllProjects();
-        if (response !== "No Documents Found") {
-            dispatch(setProjects(response));
-        }
-    };
-
-    useEffect(() => {
-        // Checks if first project object is empty (DEFAULT)
-        if (Object.keys(allProjects[0]).length === 0) {
-            getProjects();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // Add new Ticket
     const addNewTicket = async () => {
