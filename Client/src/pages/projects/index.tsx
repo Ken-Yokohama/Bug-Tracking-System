@@ -71,7 +71,10 @@ const Projects = () => {
     };
 
     useEffect(() => {
-        getProjects();
+        // Checks if first object is empty (DEFAULT)
+        if (Object.keys(allProjects[0]).length === 0) {
+            getProjects();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -241,71 +244,6 @@ const Projects = () => {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-
-                {/* <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "1rem",
-                    }}
-                >
-                    <h3>Projects</h3>
-                    <Button size="small" onClick={handleOpen}>
-                        Add Project
-                    </Button>
-                </Box>
-                <Box
-                    sx={{
-                        padding: "1rem",
-                        backgroundColor: "#D3D3D3",
-                        display: "flex",
-                        gap: "1rem",
-                    }}
-                >
-                    <p style={{ minWidth: "83px" }}>Project Title</p>
-                    <Box
-                        sx={{
-                            flex: "1",
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <p>Description</p>
-                        <p>Creator</p>
-                    </Box>
-                </Box>
-                {allProjects.map((project, index) => (
-                    <Box
-                        key={index}
-                        sx={{
-                            padding: "1rem",
-                            display: "flex",
-                            gap: "1rem",
-                            ":hover": {
-                                backgroundColor: "#F0F0F0",
-                                cursor: "pointer",
-                            },
-                        }}
-                        onClick={() => {
-                            handleSelectedProject(project.title);
-                        }}
-                    >
-                        <p style={{ minWidth: "83px" }}>{project.title}</p>
-                        <Box
-                            sx={{
-                                flex: "1",
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <p style={{ wordBreak: "break-word" }}>
-                                {project.description}
-                            </p>
-                            <p>{project.creator}</p>
-                        </Box>
-                    </Box>
-                ))} */}
             </Paper>
             {/* Modal */}
             <Modal
