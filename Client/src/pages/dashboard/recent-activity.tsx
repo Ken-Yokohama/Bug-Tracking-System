@@ -60,11 +60,21 @@ const RecentActivity = () => {
                 }}
             >
                 <Box>
-                    <h1>Recent Activity</h1>
+                    <h1
+                        style={{
+                            color: "#005096",
+                        }}
+                    >
+                        Recent Activity
+                    </h1>
                     <span>
-                        <b>
+                        <b
+                            style={{
+                                color: "#005096",
+                            }}
+                        >
                             {resolvedTickets.length + inProgressTickets.length}{" "}
-                            Total,
+                            Active,
                         </b>{" "}
                         proceed to resolve them
                     </span>

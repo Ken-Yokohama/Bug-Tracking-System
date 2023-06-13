@@ -1,17 +1,17 @@
 export interface TicketsModel {
-    project?: String;
-    title?: String;
-    description?: String;
-    ticketAuthor?: String;
-    priority?: String;
+    project?: string;
+    title?: string;
+    description?: string;
+    ticketAuthor?: string;
+    priority?: string;
     status?: "new" | "in progress" | "resolved";
     type?: "Issue" | "Bug Fix" | "Feature Request";
     estimatedTime?: Number;
-    assignedDevs?: [String];
+    assignedDevs?: [string];
     comments?: [
         {
-            author: String;
-            comment: String;
+            author: string;
+            comment: string;
         }
     ];
     createdAt?: Date;

@@ -2,6 +2,7 @@ import { Box, Paper } from "@mui/material";
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import RecentActivity from "./recent-activity";
+import ProjectPerformance from "./project-performance";
 
 const Dashboard = () => {
     return (
@@ -57,16 +58,7 @@ const Dashboard = () => {
                     },
                 }}
             >
-                <Paper
-                    sx={{
-                        flex: "1",
-                        display: "flex",
-                        flexDirection: "column",
-                    }}
-                    elevation={3}
-                >
-                    Container Bottom Left
-                </Paper>
+                <ProjectPerformance />
                 <Paper
                     sx={{
                         flex: "1",
