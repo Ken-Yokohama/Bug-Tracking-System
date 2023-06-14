@@ -1,8 +1,9 @@
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import RecentActivity from "./recent-activity";
 import ProjectPerformance from "./project-performance";
+import TickeDistribution from "./ticket-distribution";
 
 const Dashboard = () => {
     return (
@@ -59,16 +60,7 @@ const Dashboard = () => {
                 }}
             >
                 <ProjectPerformance />
-                <Paper
-                    sx={{
-                        flex: "1",
-                        display: "flex",
-                        flexDirection: "column",
-                    }}
-                    elevation={3}
-                >
-                    Container Bottom Right
-                </Paper>
+                <TickeDistribution />
             </Box>
         </Box>
     );

@@ -173,3 +173,59 @@ export const countTicketsPerProject = (tickets: any) => {
 
     return result;
 };
+
+interface OutputObject {
+    id: string;
+    data: { x: string; y: number }[];
+}
+
+export const formatTicketDistribution = (input: any): OutputObject[] => {
+    const result: OutputObject[] = [];
+
+    // Group objects by project and type
+    const groupedData: { [type: string]: { [project: string]: number } } = {};
+
+    for (const obj of input) {
+        if (!(obj.type in groupedData)) {
+            groupedData[obj.type] = {};
+        }
+
+        if (!(obj.project in groupedData[obj.type])) {
+            groupedData[obj.type][obj.project] = 0;
+        }
+
+        groupedData[obj.type][obj.project]++;
+    }
+
+    // Get unique projects
+    const projects = input
+        .map((obj: any) => obj.project)
+        .filter(
+            (value: any, index: number, self: any) =>
+                self.indexOf(value) === index
+        );
+
+    // Transform grouped data into the desired format
+    for (const type in groupedData) {
+        const data: { x: string; y: number }[] = [];
+
+        for (const project of projects) {
+            const count = groupedData[type][project] || 0;
+            data.push({ x: project, y: count });
+        }
+
+        result.push({ id: type, data: data.reverse() });
+    }
+
+    // Calculate total number of tickets per project
+    const totalData: { x: string; y: number }[] = [];
+    for (const project of projects) {
+        const totalCount = input.filter(
+            (obj: any) => obj.project === project
+        ).length;
+        totalData.push({ x: project, y: totalCount });
+    }
+    // result.unshift({ id: "Total Tickets", data: totalData }); //Add to beginning
+
+    return result.reverse();
+};

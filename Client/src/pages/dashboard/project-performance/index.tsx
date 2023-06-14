@@ -27,11 +27,6 @@ const ProjectPerformance = () => {
     const [resolvedTickets, setResolvedTickets] = useState<number>(0);
 
     useEffect(() => {
-        setSelectedProject(
-            `${principalProject.label} - ${Math.round(
-                (principalProject.value / allTickets.length) * 100
-            )}%`
-        );
         setnewTickets(principalProject.tickets.new);
         setInProgress(principalProject.tickets.inProgress);
         setResolvedTickets(principalProject.tickets.resolved);
@@ -155,7 +150,15 @@ const ProjectPerformance = () => {
                                 ? "Selected Project"
                                 : "Principal Project"
                         }
-                        data={selectedProject}
+                        data={
+                            selectedProject
+                                ? selectedProject
+                                : `${principalProject.label} - ${Math.round(
+                                      (principalProject.value /
+                                          allTickets.length) *
+                                          100
+                                  )}%`
+                        }
                     />
                     <SidePanelOptions
                         Icon={AddCircleOutlineOutlinedIcon}
