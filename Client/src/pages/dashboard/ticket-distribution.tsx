@@ -34,6 +34,7 @@ const TickeDistribution = () => {
             <Box
                 sx={{
                     height: "40vh",
+                    maxWidth: "calc(100vw - 2rem)",
                 }}
             >
                 <ResponsiveLine
