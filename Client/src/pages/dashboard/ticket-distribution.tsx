@@ -35,6 +35,9 @@ const TickeDistribution = () => {
                 sx={{
                     height: "40vh",
                     maxWidth: "calc(100vw - 2rem)",
+                    "@media(min-width: 700px)": {
+                        maxWidth: "calc(100vw - 30rem)",
+                    },
                 }}
             >
                 <ResponsiveLine

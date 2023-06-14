@@ -56,12 +56,20 @@ const ProjectPerformance = () => {
                     display: "flex",
                     flex: "1",
                     gap: "1rem",
+                    "@media(max-width: 700px)": {
+                        flexDirection: "column",
+                        alignItems: "center",
+                    },
                 }}
             >
-                <div
-                    style={{
+                <Box
+                    sx={{
                         height: "40vh",
                         width: "100%",
+                        maxWidth: "calc(100vw - 4rem)",
+                        "@media(min-width: 700px)": {
+                            maxWidth: "calc(100vw - 40rem)",
+                        },
                     }}
                 >
                     <ResponsivePie
@@ -132,7 +140,7 @@ const ProjectPerformance = () => {
                             setResolvedTickets(data.tickets.resolved);
                         }}
                     />
-                </div>
+                </Box>
                 <Box
                     sx={{
                         width: "50%",
