@@ -47,9 +47,6 @@ const RecentActivity = () => {
                 flexDirection: "column",
                 // maxHeight: "50vh",
                 maxWidth: "calc(100vw - 2rem)",
-                "@media(max-width: 700px)": {
-                    maxHeight: "70vh",
-                },
             }}
             elevation={3}
         >
@@ -106,7 +103,11 @@ const RecentActivity = () => {
                 </Box>
             </Box>
             <Divider variant="middle" sx={{ marginTop: "1rem" }} />
-            <TableContainer>
+            <TableContainer
+                sx={{
+                    maxWidth: "calc(100vw - 6rem)",
+                }}
+            >
                 <Table>
                     <TableHead>
                         <TableRow
