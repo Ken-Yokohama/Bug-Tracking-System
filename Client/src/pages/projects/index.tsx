@@ -198,7 +198,13 @@ const Projects = () => {
                                     <TableRow
                                         hover
                                         key={index}
-                                        style={{ cursor: "pointer" }}
+                                        style={{
+                                            cursor: "pointer",
+                                            backgroundColor:
+                                                index % 2 === 0
+                                                    ? ""
+                                                    : "#EFF4F8",
+                                        }}
                                         onClick={() => {
                                             handleSelectedProject(
                                                 project.title
