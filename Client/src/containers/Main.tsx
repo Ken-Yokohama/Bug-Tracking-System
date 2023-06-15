@@ -8,12 +8,17 @@ import { setProjects } from "../features/allProjectsSlice";
 import { useDispatch } from "react-redux";
 import { getAllTickets } from "../service";
 import { setTickets } from "../features/ticketsSlice";
+import { logout } from "../utils/api";
 
 const Main = () => {
     const dispatch = useDispatch();
 
     const getTickets = async () => {
         const response = await getAllTickets();
+        if (response?.auth === false) {
+            logout();
+            return;
+        }
         if (response !== "No Documents Found") {
             dispatch(setTickets(response));
         }
@@ -21,6 +26,10 @@ const Main = () => {
 
     const getProjects = async () => {
         const response = await getAllProjects();
+        if (response?.auth === false) {
+            logout();
+            return;
+        }
         if (response !== "No Documents Found") {
             dispatch(setProjects(response));
         }

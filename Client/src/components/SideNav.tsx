@@ -9,14 +9,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { setSelectedProject } from "../features/selectedProjectSlice";
-import { clearAllStorage } from "../utils/api";
+import { logout } from "../utils/api";
 
 const SideNav = () => {
-    const logout = () => {
-        clearAllStorage();
-        window.location.reload();
-    };
-
     const [toggleMenu, setToggleMenu] = useState<Boolean>(false);
 
     const dispatch = useDispatch();
