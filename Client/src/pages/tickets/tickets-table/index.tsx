@@ -146,7 +146,7 @@ const TicketTable = ({
                                               <TableRow
                                                   hover
                                                   key={index}
-                                                  style={{
+                                                  sx={{
                                                       cursor: "pointer",
                                                       backgroundColor:
                                                           index % 2 === 0
@@ -208,7 +208,7 @@ const TicketTable = ({
                                               <TableRow
                                                   hover
                                                   key={index}
-                                                  style={{
+                                                  sx={{
                                                       cursor: "pointer",
                                                       backgroundColor:
                                                           index % 2 === 0

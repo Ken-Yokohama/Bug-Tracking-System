@@ -198,7 +198,7 @@ const Projects = () => {
                                     <TableRow
                                         hover
                                         key={index}
-                                        style={{
+                                        sx={{
                                             cursor: "pointer",
                                             backgroundColor:
                                                 index % 2 === 0
