@@ -60,8 +60,8 @@ const StatusCell = ({ status }: StatusCellProps) => {
                     display: "flex",
                     alignItems: "center",
                     gap: "0.3rem",
-                    // borderRadius: "1rem",
-                    borderRadius: "0.5rem",
+                    borderRadius: "1rem",
+                    // borderRadius: "0.5rem",
                 }}
             >
                 {icon()}

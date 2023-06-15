@@ -12,8 +12,8 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { TicketsModel } from "../../tickets/interface";
-import { formatDate } from "../../../utils/api";
 import StatusCell from "./status-cell";
+import LastUpdate from "./last-update-cell";
 
 const RecentActivity = () => {
     const allTickets = useSelector(
@@ -143,7 +143,9 @@ const RecentActivity = () => {
                                         <StatusCell status={ticket.status!} />
                                     </TableCell>
                                     <TableCell align="right">
-                                        {formatDate(ticket.updatedAt!)}
+                                        <LastUpdate
+                                            updatedAt={ticket.updatedAt}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             )
