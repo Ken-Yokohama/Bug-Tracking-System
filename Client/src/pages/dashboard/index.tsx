@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import RecentActivity from "./recent-activity";
 import ProjectPerformance from "./project-performance";
 import TickeDistribution from "./ticket-distribution";
+import RecentActivity from "./recent-activity";
 
 const Dashboard = () => {
     return (

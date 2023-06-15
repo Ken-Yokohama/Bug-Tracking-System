@@ -11,8 +11,9 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { TicketsModel } from "../tickets/interface";
-import { formatDate } from "../../utils/api";
+import { TicketsModel } from "../../tickets/interface";
+import { formatDate } from "../../../utils/api";
+import StatusCell from "./status-cell";
 
 const RecentActivity = () => {
     const allTickets = useSelector(
@@ -139,7 +140,7 @@ const RecentActivity = () => {
                                         {ticket.ticketAuthor}
                                     </TableCell>
                                     <TableCell align="right">
-                                        {ticket.status}
+                                        <StatusCell status={ticket.status!} />
                                     </TableCell>
                                     <TableCell align="right">
                                         {formatDate(ticket.updatedAt!)}
