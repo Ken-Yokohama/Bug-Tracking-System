@@ -1,39 +1,27 @@
 import { Box, TextField } from "@mui/material";
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent } from "react";
 import Modal from "@mui/material/Modal";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormHelperText from "@mui/material/FormHelperText";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllTickets } from "../../../service";
 import { createTicket } from "../service";
-import { setProjects } from "../../../features/allProjectsSlice";
 import { setTickets } from "../../../features/ticketsSlice";
-import { getAllProjects } from "../../dashboard/service";
+import { ProjectsModel } from "../../projects/interface";
 
 const AddTicketModal = ({ open, setOpen }: any) => {
     const dispatch = useDispatch();
 
+    const allProjects = useSelector(
+        (state: { allProjects: { value: [ProjectsModel] } }) =>
+            state.allProjects.value
+    );
+
     // Project Options for AutoComplete
-    const [projectOptions, setProjectOptions] = useState([]);
-
-    // Place Inside Add Ticket Modal since we only run this to fetch project options
-    const getProjects = async () => {
-        const response = await getAllProjects();
-        if (response !== "No Documents Found") {
-            dispatch(setProjects(response));
-            setProjectOptions(
-                response.map((project: { title: string }) => {
-                    return project.title;
-                })
-            );
-        }
-    };
-
-    useEffect(() => {
-        getProjects();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const projectOptions = allProjects.map((project: any) => {
+        return project.title;
+    });
 
     // Add new Ticket
     const addNewTicket = async () => {
@@ -195,7 +183,7 @@ const AddTicketModal = ({ open, setOpen }: any) => {
                         disablePortal
                         id="combo-box-demo"
                         size="small"
-                        options={projectOptions}
+                        options={projectOptions[0] ? projectOptions : []}
                         onChange={(e: SyntheticEvent, value: null | string) => {
                             if (value) {
                                 setTicketProject(value);

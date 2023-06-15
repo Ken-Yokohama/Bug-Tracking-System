@@ -13,7 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
-import { ProjectsModel } from "../../dashboard/interface";
+import { ProjectsModel } from "../../projects/interface";
 import { TicketsModel } from "../interface";
 import { formatDate } from "../../../utils/api";
 
@@ -96,8 +96,9 @@ const TicketTable = ({
             <Paper
                 sx={{
                     margin: "1rem",
+                    marginBottom: "0",
                     flex: "1",
-                    maxHeight: "40vh",
+                    maxHeight: "42vh",
                     display: "flex",
                     flexDirection: "column",
                     maxWidth: "calc(100vw - 2rem)",
@@ -145,7 +146,13 @@ const TicketTable = ({
                                               <TableRow
                                                   hover
                                                   key={index}
-                                                  style={{ cursor: "pointer" }}
+                                                  sx={{
+                                                      cursor: "pointer",
+                                                      backgroundColor:
+                                                          index % 2 === 0
+                                                              ? ""
+                                                              : "#EFF4F8",
+                                                  }}
                                                   onClick={() => {
                                                       setSelectedFilteredTicket(
                                                           ticket
@@ -170,7 +177,7 @@ const TicketTable = ({
                                                       {ticket.status}
                                                   </TableCell>
                                                   <TableCell
-                                                      width={75}
+                                                      width={100}
                                                       align="right"
                                                   >
                                                       {ticket?.createdAt
@@ -201,7 +208,13 @@ const TicketTable = ({
                                               <TableRow
                                                   hover
                                                   key={index}
-                                                  style={{ cursor: "pointer" }}
+                                                  sx={{
+                                                      cursor: "pointer",
+                                                      backgroundColor:
+                                                          index % 2 === 0
+                                                              ? ""
+                                                              : "#EFF4F8",
+                                                  }}
                                                   onClick={() => {
                                                       setSelectedFilteredTicket(
                                                           ticket
@@ -221,7 +234,7 @@ const TicketTable = ({
                                                       {ticket.status}
                                                   </TableCell>
                                                   <TableCell
-                                                      width={75}
+                                                      width={100}
                                                       align="right"
                                                   >
                                                       {ticket?.createdAt
@@ -230,7 +243,10 @@ const TicketTable = ({
                                                             )
                                                           : "--"}
                                                   </TableCell>
-                                                  <TableCell align="right">
+                                                  <TableCell
+                                                      width={75}
+                                                      align="right"
+                                                  >
                                                       {ticket.ticketAuthor}
                                                   </TableCell>
                                               </TableRow>

@@ -26,14 +26,6 @@ const Administration = () => {
 
     return (
         <div>
-            <Box
-                id="Padding for mobile menu-bar"
-                sx={{
-                    "@media(max-width: 700px)": {
-                        height: "3.1rem",
-                    },
-                }}
-            ></Box>
             {isAdmin === "checking" ? (
                 <p>Verifying Admin...</p>
             ) : isAdmin ? (

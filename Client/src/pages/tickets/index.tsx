@@ -129,15 +129,7 @@ const Tickets = () => {
     const [open, setOpen] = React.useState(false);
 
     return (
-        <Box>
-            <Box
-                id="Padding for mobile menu-bar"
-                sx={{
-                    "@media(max-width: 700px)": {
-                        height: "3.1rem",
-                    },
-                }}
-            ></Box>
+        <>
             <Box
                 sx={{
                     "@media(min-width: 700px)": {
@@ -196,7 +188,12 @@ const Tickets = () => {
                 {/* Ticket Info and Comments Container */}
                 <Box
                     sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        margin: "1rem",
+                        gap: "1rem",
                         "@media(min-width: 700px)": {
+                            flexDirection: "row",
                             display: "flex",
                             flex: "1",
                         },
@@ -204,7 +201,6 @@ const Tickets = () => {
                 >
                     <Paper
                         sx={{
-                            margin: "1rem",
                             flex: "1",
                             display: "flex",
                             flexDirection: "column",
@@ -432,7 +428,6 @@ const Tickets = () => {
                     </Paper>
                     <Paper
                         sx={{
-                            margin: "1rem",
                             flex: "1",
                             display: "flex",
                             flexDirection: "column",
@@ -505,7 +500,7 @@ const Tickets = () => {
                 </Box>
             </Box>
             <AddTicketModal open={open} setOpen={setOpen} />
-        </Box>
+        </>
     );
 };
 

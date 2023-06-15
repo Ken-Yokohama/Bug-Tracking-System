@@ -86,13 +86,36 @@ const clearCacheData = () => {
 };
 
 const deleteAllCookies = () => {
-    const cookies = document.cookie.split(";");
+    // const cookies = document.cookie.split(";");
 
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    // for (let i = 0; i < cookies.length; i++) {
+    //     const cookie = cookies[i];
+    //     const eqPos = cookie.indexOf("=");
+    //     const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    //     document.cookie =
+    //         name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    // }
+
+    // V2
+    const cookies = document.cookie.split("; ");
+
+    for (var c = 0; c < cookies.length; c++) {
+        var d = window.location.hostname.split(".");
+        while (d.length > 0) {
+            var cookieBase =
+                encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) +
+                "=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=" +
+                d.join(".") +
+                " ;path=";
+            // eslint-disable-next-line no-restricted-globals
+            var p = location.pathname.split("/");
+            document.cookie = cookieBase + "/";
+            while (p.length > 0) {
+                document.cookie = cookieBase + p.join("/");
+                p.pop();
+            }
+            d.shift();
+        }
     }
 };
 
@@ -103,10 +126,134 @@ export const clearAllStorage = () => {
     sessionStorage.clear();
 };
 
+export const logout = () => {
+    clearAllStorage();
+    window.location.reload();
+};
+
 export const formatDate = (rawDate: Date) => {
     const date = new Date(rawDate);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
+    // const month = String(date.getMonth() + 1).padStart(2, "0");
+    const month = date.toLocaleDateString(undefined, { month: "short" });
     const day = String(date.getDate()).padStart(2, "0");
-    return `${day}-${month}-${year}`;
+    return `${month} ${day} ${year}`;
+};
+
+export const countTicketsPerProject = (tickets: any) => {
+    const ticketCount: { [key: string]: number } = {};
+    const newTicketCount: { [key: string]: number } = {};
+    const inProgressCount: { [key: string]: number } = {};
+    const resolvedCount: { [key: string]: number } = {};
+
+    for (let i = 0; i < tickets.length; i++) {
+        const project = tickets[i].project;
+
+        // Total Ticket Count
+        if (ticketCount[project]) {
+            ticketCount[project]++;
+        } else {
+            ticketCount[project] = 1;
+        }
+
+        // New Ticket Count
+        if (tickets[i].status === "new") {
+            if (newTicketCount[project]) {
+                newTicketCount[project]++;
+            } else {
+                newTicketCount[project] = 1;
+            }
+        }
+
+        // In Progress Count
+        if (tickets[i].status === "in progress") {
+            if (inProgressCount[project]) {
+                inProgressCount[project]++;
+            } else {
+                inProgressCount[project] = 1;
+            }
+        }
+
+        // Resolved Count
+        if (tickets[i].status === "resolved") {
+            if (resolvedCount[project]) {
+                resolvedCount[project]++;
+            } else {
+                resolvedCount[project] = 1;
+            }
+        }
+    }
+
+    const result = [];
+
+    for (const project in ticketCount) {
+        result.push({
+            id: project,
+            label: project,
+            value: ticketCount[project],
+            tickets: {
+                new: newTicketCount[project] || 0,
+                inProgress: inProgressCount[project] || 0,
+                resolved: resolvedCount[project] || 0,
+            },
+        });
+    }
+
+    return result;
+};
+
+interface OutputObject {
+    id: string;
+    data: { x: string; y: number }[];
+}
+
+export const formatTicketDistribution = (input: any): OutputObject[] => {
+    const result: OutputObject[] = [];
+
+    // Group objects by project and type
+    const groupedData: { [type: string]: { [project: string]: number } } = {};
+
+    for (const obj of input) {
+        if (!(obj.type in groupedData)) {
+            groupedData[obj.type] = {};
+        }
+
+        if (!(obj.project in groupedData[obj.type])) {
+            groupedData[obj.type][obj.project] = 0;
+        }
+
+        groupedData[obj.type][obj.project]++;
+    }
+
+    // Get unique projects
+    const projects = input
+        .map((obj: any) => obj.project)
+        .filter(
+            (value: any, index: number, self: any) =>
+                self.indexOf(value) === index
+        );
+
+    // Transform grouped data into the desired format
+    for (const type in groupedData) {
+        const data: { x: string; y: number }[] = [];
+
+        for (const project of projects) {
+            const count = groupedData[type][project] || 0;
+            data.push({ x: project, y: count });
+        }
+
+        result.push({ id: type, data: data.reverse() });
+    }
+
+    // Calculate total number of tickets per project
+    const totalData: { x: string; y: number }[] = [];
+    for (const project of projects) {
+        const totalCount = input.filter(
+            (obj: any) => obj.project === project
+        ).length;
+        totalData.push({ x: project, y: totalCount });
+    }
+    // result.unshift({ id: "Total Tickets", data: totalData }); //Add to beginning
+
+    return result.reverse();
 };

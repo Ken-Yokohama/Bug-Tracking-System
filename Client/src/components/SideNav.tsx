@@ -2,20 +2,16 @@ import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import MenuOptions from "./MenuOptions";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
+import AssignmentTwoToneIcon from "@mui/icons-material/AssignmentTwoTone";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
 import AdminPanelSettingsTwoToneIcon from "@mui/icons-material/AdminPanelSettingsTwoTone";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { setSelectedProject } from "../features/selectedProjectSlice";
-import { clearAllStorage } from "../utils/api";
+import { logout } from "../utils/api";
 
 const SideNav = () => {
-    const logout = () => {
-        clearAllStorage();
-        window.location.reload();
-    };
-
     const [toggleMenu, setToggleMenu] = useState<Boolean>(false);
 
     const dispatch = useDispatch();
@@ -80,6 +76,12 @@ const SideNav = () => {
                     label="DashBoard"
                     link="/"
                     Icon={HomeTwoToneIcon}
+                    setToggleMenu={setToggleMenu}
+                />
+                <MenuOptions
+                    label="Projects"
+                    link="/projects"
+                    Icon={AssignmentTwoToneIcon}
                     setToggleMenu={setToggleMenu}
                 />
                 <Box onClick={handleTicketMenu}>
