@@ -18,6 +18,8 @@ const BannedIPsModel = require("./models/BannedIPSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
+app.set("trust proxy", true);
+
 const registerLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 Hour
     max: 5, // Max 5 Request Per 1 Hour
@@ -144,9 +146,18 @@ app.get("/pingServer", (req, res) => {
     ipAddress = req.socket.remoteAddress;
     console.log("req.socket.remoteAddress");
     console.log(ipAddress);
+    ipAddress = req.connection.remoteAddress;
+    console.log("req.connection.remoteAddress");
+    console.log(ipAddress);
     ipAddress = req.headers["x-forwarded-for"];
     console.log("req.headers['x-forwarded-for']");
     console.log(ipAddress);
+
+    const clientIP =
+        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+        req.socket?.remoteAddress;
+    console.log("Client IP");
+    console.log(clientIP);
 
     res.send("Server Is Up!");
 });
