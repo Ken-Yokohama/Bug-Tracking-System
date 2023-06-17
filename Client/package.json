@@ -32,7 +32,8 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "predeploy": "npm run build",
+        "check-env": "node -e \"require('fs').existsSync('.env.local') && (console.error('\\n\\n\\nERROR: .env.local file found. Please remove it before starting the script. \\n') || process.exit(1))\"",
+        "predeploy": "npm run check-env --silent && npm run build",
         "deploy": "gh-pages -d build",
         "start": "react-scripts start",
         "build": "react-scripts build",
