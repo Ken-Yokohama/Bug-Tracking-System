@@ -94,7 +94,7 @@ const SideNav = () => {
                 </Box>
                 <MenuOptions
                     label="Administration"
-                    link="administration/"
+                    link="/administration"
                     Icon={AdminPanelSettingsTwoToneIcon}
                     setToggleMenu={setToggleMenu}
                 />
