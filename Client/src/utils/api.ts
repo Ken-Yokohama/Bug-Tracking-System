@@ -92,9 +92,13 @@ const deleteAllCookies = () => {
         const cookie = cookies[i];
         const eqPos = cookie.indexOf("=");
         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        // Clear Cookies for path /Bug-Tracking-System
         document.cookie =
             name +
             "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/Bug-Tracking-System";
+        // Clear Cookies for path /
+        document.cookie =
+            name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     }
 };
 
