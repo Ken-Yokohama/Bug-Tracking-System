@@ -34,7 +34,7 @@ app.post("/register", registerLimiter, async (req, res) => {
         email: sanitizedEmail,
     }).then((doc) => {
         if (!doc) {
-            console.log("No User Found, Registering User...");
+            console.log(`No User Found, Registering - ${email}`);
             // Get Current Date
             var today = new Date();
             const dd = String(today.getDate()).padStart(2, "0");
@@ -96,6 +96,7 @@ app.post("/login", async (req, res) => {
     }
 
     if (user && correctPassword) {
+        console.log(`Logging In - ${email}`);
         const token = jwt.sign(user.toJSON(), process.env.JWTSECRET, {
             expiresIn: "24h",
             // expiresIn: "120",
