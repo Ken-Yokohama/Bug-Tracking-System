@@ -55,6 +55,7 @@ const RecentActivity = () => {
                 sx={{
                     display: "flex",
                     justifyContent: "space-between",
+                    gap: "1rem",
                 }}
             >
                 <Box>
@@ -77,7 +78,16 @@ const RecentActivity = () => {
                         proceed to resolve them
                     </span>
                 </Box>
-                <Box sx={{ display: "flex", gap: "2rem" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: "2rem",
+                        alignItems: "center",
+                        "@media(max-width: 700px)": {
+                            gap: "0.5rem",
+                        },
+                    }}
+                >
                     <Box
                         sx={{
                             display: "flex",
@@ -99,7 +109,14 @@ const RecentActivity = () => {
                         }}
                     >
                         <h1>{inProgressTickets.length}</h1>
-                        <h5 style={{ fontWeight: "normal" }}>In-Progress</h5>
+                        <h5
+                            style={{
+                                fontWeight: "normal",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            In-Progress
+                        </h5>
                     </Box>
                 </Box>
             </Box>

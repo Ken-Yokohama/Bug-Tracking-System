@@ -56,6 +56,7 @@ const StatusCell = ({ status }: StatusCellProps) => {
                 style={{
                     backgroundColor: backgroundColor(),
                     color: textColor(),
+                    whiteSpace: "nowrap",
                     padding: "4px 6px",
                     display: "flex",
                     alignItems: "center",
