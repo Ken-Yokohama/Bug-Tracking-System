@@ -14,7 +14,6 @@ const Dashboard = () => {
                     flexDirection: "column",
                     height: "100%",
                 },
-                backgroundColor: "#EFEFEF",
             }}
         >
             {/* Header */}

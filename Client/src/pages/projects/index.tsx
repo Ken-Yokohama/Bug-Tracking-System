@@ -109,11 +109,7 @@ const Projects = () => {
     };
 
     return (
-        <Box
-            sx={{
-                backgroundColor: "#EFEFEF",
-            }}
-        >
+        <Box>
             <Box
                 sx={{
                     height: "6rem",
