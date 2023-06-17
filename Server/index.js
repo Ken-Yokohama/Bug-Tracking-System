@@ -132,6 +132,22 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
 });
 
 app.get("/pingServer", (req, res) => {
+    // Test IP Address Logging
+    var ipAddress = null;
+
+    ipAddress = ip.address();
+    console.log("ip.address()");
+    console.log(ipAddress);
+    ipAddress = req.ip;
+    console.log("req.ip");
+    console.log(ipAddress);
+    ipAddress = req.socket.remoteAddress;
+    console.log("req.socket.remoteAddress");
+    console.log(ipAddress);
+    ipAddress = req.headers["x-forwarded-for"];
+    console.log("req.headers['x-forwarded-for']");
+    console.log(ipAddress);
+
     res.send("Server Is Up!");
 });
 
