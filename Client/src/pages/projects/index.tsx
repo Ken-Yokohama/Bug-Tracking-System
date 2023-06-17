@@ -167,7 +167,7 @@ const Projects = () => {
                     sx={{
                         height: "calc(100vh - 12rem)",
                         "@media(max-width: 700px)": {
-                            height: "calc(100vh - 14rem)",
+                            height: "calc(100svh - 14rem)",
                         },
                     }}
                 >

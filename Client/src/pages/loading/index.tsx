@@ -39,7 +39,7 @@ const Loading = () => {
         <div>
             <div
                 style={{
-                    height: "100vh",
+                    height: "100dvh",
                     display: "flex",
                     alignItems: "center",
                     marginLeft: "3rem",
