@@ -2,13 +2,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
-app.use(express.json());
-app.use(cors());
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const rateLimit = require("express-rate-limit");
 const ip = require("ip");
+
+app.use(express.json());
+app.use(cors());
+app.set("trust proxy", true);
 
 // Models
 const UsersModel = require("./models/UsersSchema");
@@ -18,8 +20,6 @@ const BannedIPsModel = require("./models/BannedIPSchema");
 
 mongoose.connect(process.env.MONGODBURI);
 
-app.set("trust proxy", true);
-
 const registerLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 Hour
     max: 5, // Max 5 Request Per 1 Hour
@@ -28,9 +28,12 @@ const registerLimiter = rateLimit({
 
 app.post("/register", registerLimiter, async (req, res) => {
     const { email, password } = req.body;
-    const ipAddress = ip.address();
     const sanitizedEmail = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
+    const clientIp =
+        req.ip ||
+        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+        ip.address();
 
     UsersModel.findOne({
         email: sanitizedEmail,
@@ -56,7 +59,7 @@ app.post("/register", registerLimiter, async (req, res) => {
                 password: hashedPassword,
                 role: "developer",
                 dateRegistered: today,
-                ipAddress,
+                ipAddress: clientIp,
             };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
@@ -134,39 +137,17 @@ app.get("/isUserAuth", verifyJWT, (req, res) => {
 });
 
 app.get("/pingServer", (req, res) => {
-    // Test IP Address Logging
-    var ipAddress = null;
-
-    ipAddress = ip.address();
-    console.log("ip.address()");
-    console.log(ipAddress);
-    ipAddress = req.ip;
-    console.log("req.ip");
-    console.log(ipAddress);
-    ipAddress = req.socket.remoteAddress;
-    console.log("req.socket.remoteAddress");
-    console.log(ipAddress);
-    ipAddress = req.connection.remoteAddress;
-    console.log("req.connection.remoteAddress");
-    console.log(ipAddress);
-    ipAddress = req.headers["x-forwarded-for"];
-    console.log("req.headers['x-forwarded-for']");
-    console.log(ipAddress);
-
-    const clientIP =
-        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
-        req.socket?.remoteAddress;
-    console.log("Client IP");
-    console.log(clientIP);
-
     res.send("Server Is Up!");
 });
 
 app.get("/userSecurity", async (req, res) => {
-    const ipAddress = ip.address();
+    const clientIp =
+        req.ip ||
+        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+        ip.address();
 
     const bannedUser = await BannedIPsModel.findOne({
-        ip: ipAddress,
+        ip: clientIp,
     });
 
     if (bannedUser) {
