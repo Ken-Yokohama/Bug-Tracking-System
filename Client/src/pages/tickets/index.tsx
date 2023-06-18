@@ -137,7 +137,6 @@ const Tickets = () => {
                         flexDirection: "column",
                         height: "100%",
                     },
-                    backgroundColor: "#EFEFEF",
                 }}
             >
                 <Box

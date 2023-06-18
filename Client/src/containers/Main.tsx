@@ -63,7 +63,11 @@ const Main = () => {
                 }}
             >
                 <SideNav />
-                <Box>
+                <Box
+                    style={{
+                        backgroundColor: "#EFEFEF",
+                    }}
+                >
                     <Box
                         id="Padding for mobile menu-bar"
                         sx={{

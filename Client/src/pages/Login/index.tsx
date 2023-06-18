@@ -33,8 +33,12 @@ const Login = () => {
                 password: registerPassword,
             });
 
-            setCookie("Email", response.email);
-            setCookie("AuthToken", response.token);
+            setCookie("Email", response.email, {
+                path: "/Bug-Tracking-System",
+            });
+            setCookie("AuthToken", response.token, {
+                path: "/Bug-Tracking-System",
+            });
 
             window.location.reload();
         } catch (err: any) {
@@ -55,8 +59,12 @@ const Login = () => {
                 password: loginPassword,
             });
 
-            setCookie("Email", response.email);
-            setCookie("AuthToken", response.token);
+            setCookie("Email", response.email, {
+                path: "/Bug-Tracking-System",
+            });
+            setCookie("AuthToken", response.token, {
+                path: "/Bug-Tracking-System",
+            });
 
             window.location.reload();
         } catch (err: any) {

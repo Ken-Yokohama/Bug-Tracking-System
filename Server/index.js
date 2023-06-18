@@ -2,13 +2,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
-app.use(express.json());
-app.use(cors());
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const rateLimit = require("express-rate-limit");
 const ip = require("ip");
+
+app.use(express.json());
+app.use(cors());
+app.set("trust proxy", true);
 
 // Models
 const UsersModel = require("./models/UsersSchema");
@@ -26,15 +28,18 @@ const registerLimiter = rateLimit({
 
 app.post("/register", registerLimiter, async (req, res) => {
     const { email, password } = req.body;
-    const ipAddress = ip.address();
     const sanitizedEmail = email.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
+    const clientIp =
+        req.ip ||
+        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+        ip.address();
 
     UsersModel.findOne({
         email: sanitizedEmail,
     }).then((doc) => {
         if (!doc) {
-            console.log("No User Found, Registering User...");
+            console.log(`No User Found, Registering - ${email}`);
             // Get Current Date
             var today = new Date();
             const dd = String(today.getDate()).padStart(2, "0");
@@ -54,7 +59,7 @@ app.post("/register", registerLimiter, async (req, res) => {
                 password: hashedPassword,
                 role: "developer",
                 dateRegistered: today,
-                ipAddress,
+                ipAddress: clientIp,
             };
             UsersModel.create(user).then((docs) => {
                 // Generate Web Token
@@ -96,6 +101,7 @@ app.post("/login", async (req, res) => {
     }
 
     if (user && correctPassword) {
+        console.log(`Logging In - ${email}`);
         const token = jwt.sign(user.toJSON(), process.env.JWTSECRET, {
             expiresIn: "24h",
             // expiresIn: "120",
@@ -135,10 +141,13 @@ app.get("/pingServer", (req, res) => {
 });
 
 app.get("/userSecurity", async (req, res) => {
-    const ipAddress = ip.address();
+    const clientIp =
+        req.ip ||
+        (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+        ip.address();
 
     const bannedUser = await BannedIPsModel.findOne({
-        ip: ipAddress,
+        ip: clientIp,
     });
 
     if (bannedUser) {
